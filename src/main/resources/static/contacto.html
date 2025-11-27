@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienes Raices</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+    emailjs.init("7MA3f4bI0kqc3zdBa"); 
+</script>
+<script src="js/contacto.js"></script>
+
+
+<body>
+
+    <header class="header">
+        <div class="contenedor contenido-header">
+            <div class="barra">
+                <a href="/">
+                    <img src="/img/logo.svg" alt="Logotipo de Bienes Raices">
+                </a>
+
+                <div class="mobile-menu">
+                    <img src="/img/barras.svg" alt="icono menu responsive">
+                </div>
+
+                <div class="derecha">
+                    <img class="dark-mode-boton" src="/img/dark-mode.svg">
+                    <nav class="navegacion">
+                        <a href="/nosotros.html">Nosotros</a>
+                        <a href="/anuncio.html">Anuncios</a>
+                        <a href="/blog.html">Blog</a>
+                        <a href="/contacto.html">Contacto</a>
+                    </nav>
+                </div>
+
+            </div> <!--.barra-->
+        </div>
+    </header>/
+
+    <main class="contenedor seccion">
+        <h1>Contacto</h1>
+
+        <picture>
+            <source srcset="/img/destacada3.jpg" type="image/webp">
+            <source srcset="/img/destacada3.jpg" type="image/jpeg">
+            <img loading="lazy" src="/img/destacada3.jpg" alt="Imagen Contacto">
+        </picture>
+
+        <h2>Llene el formulario de Contacto</h2>
+
+        <form id="form-contacto" class="formulario">
+            <fieldset>
+                <legend>Información Personal</legend>
+
+                <label for="nombre">Nombre</label>
+                <input type="text" placeholder="Tu Nombre" id="nombre" name="nombre" required>
+
+                <label for="email">E-mail</label>
+                <input type="email" placeholder="Tu Email" id="email" name="correo" required>
+
+                <label for="telefono">Teléfono</label>
+                <input type="tel" placeholder="Tu Teléfono" id="telefono" name="celular" required>
+
+                <label for="propiedad">Casa de interés:</label>
+                <select id="propiedad" name="casa" required>
+                    <option value="">Selecciona una casa</option>
+                </select>
+
+                <label for="mensaje">Mensaje:</label>
+                <textarea id="mensaje" name="mensaje" required></textarea>
+
+                <input type="submit" value="Enviar" class="boton-verde">
+            </fieldset>
+        </form>
+
+        <p id="estado"></p>
+
+    </main>
+
+    <footer class="footer seccion">
+        <div class="contenedor contenedor-footer">
+            <nav class="navegacion">
+                <a href="/nosotros.html">Nosotros</a>
+                <a href="/anuncio.html">Anuncios</a>
+                <a href="/blog.html">Blog</a>
+                <a href="/contacto.html">Contacto</a>
+            </nav>
+        </div>
+
+        <p class="copyright">Todos los derechos Reservados 2025 &copy;</p>
+    </footer>
+
+
+    <script src="/js/main.js"></script>
+    <script src="/js/contacto.js"></script>
+    <script src="/js/modernize.js"></script>
+</body>
+
+</html>

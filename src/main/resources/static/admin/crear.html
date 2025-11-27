@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienes Raices</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+    
+    <header class="header">
+        <div class="contenedor contenido-header">
+            <div class="barra">
+                <a href="/">
+                    <img src="/img/logo.svg" alt="Logotipo de Bienes Raices">
+                </a>
+
+                <div class="mobile-menu">
+                    <img src="/img/barras.svg" alt="icono menu responsive">
+                </div>
+
+                <div class="derecha">
+                    <img class="dark-mode-boton" src="/img/dark-mode.svg">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="contenedor seccion">
+        <h1>Nueva Propiedad</h1>
+
+        <a href="/Admin/index.html" class="boton boton-verde">Volver</a>
+
+        <form id="formPropiedad" class="formulario" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Información General</legend>
+
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" placeholder="Título Propiedad" required>
+
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" placeholder="Precio Propiedad" required>
+
+                <label for="imagen">Imagen:</label>
+                <input type="file" id="imagen" name="imagen" accept="image/jpeg, image/png" required>
+
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend>Información Propiedad</legend>
+
+                <label for="habitaciones">Habitaciones:</label>
+                <input type="number" id="habitaciones" name="habitaciones" placeholder="Ej: 3" min="1" max="9" required>
+
+                <label for="wc">Baños:</label>
+                <input type="number" id="wc" name="wc" placeholder="Ej: 3" min="1" max="9" required>
+
+                <label for="estacionamiento">Estacionamiento:</label>
+                <input type="number" id="estacionamiento" name="estacionamiento" placeholder="Ej: 3" min="1" max="9" required>
+            </fieldset>
+
+            <button type="submit" class="boton boton-verde">Crear Propiedad</button>
+        </form>
+    </main>
+
+    <footer class="footer seccion">
+        <div class="contenedor contenedor-footer"></div>
+        <p class="copyright">Todos los derechos Reservados 2025 &copy;</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/modernize.js"></script>
+    <script src="/js/crearPropiedad.js"></script>
+</body>
+</html>

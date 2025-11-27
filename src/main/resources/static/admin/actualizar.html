@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Propiedad | Bienes Raíces</title>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+    
+    <header class="header">
+        <div class="contenedor contenido-header">
+            <div class="barra">
+                <a href="/">
+                    <img src="/img/logo.svg" alt="Logotipo de Bienes Raices">
+                </a>
+
+                <div class="mobile-menu">
+                    <img src="/img/barras.svg" alt="icono menu responsive">
+                </div>
+
+                <div class="derecha">
+                    <img class="dark-mode-boton" src="/img/dark-mode.svg" alt="botón modo oscuro">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="contenedor seccion">
+        <h1>Editar Propiedad</h1>
+
+       <form id="formEditar" class="formulario" enctype="multipart/form-data">
+    <input type="hidden" id="idPropiedad">
+
+    <label for="titulo">Título</label>
+    <input type="text" id="titulo" required>
+
+    <label for="descripcion">Descripción</label>
+    <textarea id="descripcion" required></textarea>
+
+    <label for="precio">Precio</label>
+    <input type="number" id="precio" required>
+
+    <label for="wc">Baños</label>
+    <input type="number" id="wc" required>
+
+    <label for="estacionamiento">Estacionamientos</label>
+    <input type="number" id="estacionamiento" required>
+
+    <label for="habitaciones">Habitaciones</label>
+    <input type="number" id="habitaciones" required>
+
+    <label>Imagen actual</label>
+    <img id="preview" src="" alt="Vista previa" style="max-width:200px; display:block; margin-bottom:10px;">
+
+    <label for="imagen">Cambiar imagen (opcional)</label>
+    <input type="file" id="imagen" accept="image/*">
+
+    <button type="submit" class="boton boton-verde">Guardar Cambios</button>
+</form>
+
+    </main>
+
+    <footer class="footer seccion">
+        <p class="copyright">Todos los derechos Reservados 2025 &copy;</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/modernize.js"></script>
+    <script src="/js/actualizar.js"></script>
+</body>
+</html>
