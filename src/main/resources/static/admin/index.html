@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienes Raices</title>
     <link rel="stylesheet" href="/css/app.css">
 </head>
+
 <body>
-    
+
     <header class="header">
         <div class="contenedor contenido-header">
             <div class="barra">
@@ -29,20 +31,26 @@
                         <a href="contacto.html">Contacto</a>
                     </nav> -->
 
-                    
+                    <form action="/logout" method="post">
+                        <button type="submit">Cerrar sesión</button>
+                    </form>
 
                 </div>
-                
+
             </div> <!--.barra-->
         </div>
     </header>
 
     <main class="contenedor seccion">
+
+        
+        
+
         <h1>Administrador de Bienes Raices</h1>
 
         <a href="/Admin/crear.html" class="boton boton-verde">Nueva Propiedad</a>
 
-         <div id="lista-propiedades" class="contenedor-anuncios"></div>
+        <div id="lista-propiedades" class="contenedor-anuncios"></div>
 
     </main>
 
@@ -63,4 +71,5 @@
     <script src="/js/modernize.js"></script>
     <script src="/js/admin.js"></script>
 </body>
+
 </html>

@@ -38,11 +38,12 @@
     <main class="contenedor seccion">
         <h1>Inicio Sesión</h1>
 
-        <form id="formLogin" class="formulario">
-            <input type="email" name="correo" placeholder="Correo" required><br>
-            <input type="password" name="contrasena" placeholder="Contraseña" required><br>
-            <button type="submit" class="boton-verde">Ingresar</button>
-        </form>
+    <form action="/login" method="post" class="formulario">
+        <input type="text" name="username" placeholder="Usuario" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit" class="boton-verde">Ingresar</button>
+    </form>
+
 
     </main>
 
@@ -60,7 +61,7 @@
     </footer>
 
     <script src="/js/main.js"></script>
-    <script src="/js/login.js"></script>
+    <!-- <script src="/js/login.js"></script> -->
 </body>
 
 </html>
