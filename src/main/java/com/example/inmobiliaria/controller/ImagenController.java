@@ -22,14 +22,14 @@ public class ImagenController {
     @Autowired
     private GridFsTemplate gridFsTemplate;
 
-    // ✅ Subir imagen
+    //  Subir imagen
     @PostMapping("/subir")
     public ResponseEntity<String> subirImagen(@RequestParam("file") MultipartFile file) throws IOException {
         String id = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType()).toString();
         return ResponseEntity.ok(id); // devuelve el ID de la imagen
     }
 
-    // ✅ Obtener imagen por ID
+    //  Obtener imagen por ID
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> obtenerImagen(@PathVariable String id) throws IOException {
         GridFSFile file = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));

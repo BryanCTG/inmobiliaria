@@ -331,6 +331,10 @@ h4 {
     cursor: pointer
 }
 
+.btn-admin {
+    align-items: center;
+    justify-content: space-between;
+}
 .dark-mode {
     background-color: #1a1a1a
 }
@@ -784,5 +788,71 @@ h4 {
     margin: 3rem 0 0;
     padding-left: 1rem 0 3rem 0
 }
+
+.titulo-admin {
+    text-align: center;
+    margin: 40px 0;
+}
+
+/* Contenedor */
+.contenedor-contactos {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto 60px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Tarjeta oscura elegante */
+.card-contacto {
+    background-color: #1e1e1e;
+    border: 1px solid #2c2c2c;
+    border-radius: 12px;
+    padding: 20px;
+    transition: 0.2s ease-in-out;
+}
+
+
+/* Título */
+.card-contacto h3 {
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+/* Texto */
+.card-contacto p {
+    margin: 6px 0;
+    color: #cfcfcf;
+}
+
+/* Caja del mensaje */
+.card-contacto .mensaje {
+    margin-top: 12px;
+    background-color: #121212;
+    padding: 12px;
+    border-radius: 8px;
+    color: #e5e5e5;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+.mensaje {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.mensaje.exito { 
+    color: #155724;
+}
+
+.mensaje.error {
+    color: #721c24;
+}
+
 
 

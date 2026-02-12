@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.classList.toggle('dark-mode');
     });
   }
+  
 
   // =========================
   // MENÚ RESPONSIVE

@@ -38,10 +38,17 @@
     <main class="contenedor seccion">
         <h1>Inicio Sesión</h1>
 
+
+        <div id="error-message" style="color:red; display:none;">
+            Usuario o contraseña incorrectos
+        </div>
+
+
     <form action="/login" method="post" class="formulario">
         <input type="text" name="username" placeholder="Usuario" required>
-        <input type="password" name="password" placeholder="Contraseña" required>
+        <input type="password" name="password" placeholder="Contraseña" required> 
         <button type="submit" class="boton-verde">Ingresar</button>
+       
     </form>
 
 
@@ -61,7 +68,7 @@
     </footer>
 
     <script src="/js/main.js"></script>
-    <!-- <script src="/js/login.js"></script> -->
+    <script src="/js/login.js"></script>
 </body>
 
 </html>

@@ -3,6 +3,7 @@ package com.example.inmobiliaria.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "contactos")
 public class Contacto {
      @Id
     private String id;
