@@ -1,6 +1,6 @@
 
 package com.example.inmobiliaria.model;
-
+import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,8 +16,14 @@ public class Propiedad {
     private int wc;
     private int estacionamiento;
     private boolean visible = true; //  por defecto visible
-    private String imagenId;
+    private List<String> imagenes;
 
+    public List<String> getImagenes() {
+        return imagenes;
+    }
+    public void setImagenes(List<String> imagenes) {
+        this.imagenes = imagenes;
+    }
     // Getters y Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -43,6 +49,4 @@ public class Propiedad {
     public boolean isVisible() { return visible; }
     public void setVisible(boolean visible) { this.visible = visible; }
 
-    public String getImagenId() { return imagenId; }
-    public void setImagenId(String imagenId) { this.imagenId = imagenId; }
 }

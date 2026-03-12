@@ -1,20 +1,76 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 
     const form = document.getElementById("form-contacto");
     const estado = document.getElementById("estado");
+    const contenedorPropiedad = document.getElementById("propiedad-seleccionada");
+
+    // leer propiedad desde URL
+    const params = new URLSearchParams(window.location.search);
+    const propiedadId = params.get("propiedadId");
+
+    // =============================
+    // MOSTRAR CASA SELECCIONADA
+    // =============================
+
+    if (propiedadId) {
+
+        try {
+
+            const res = await fetch(`http://localhost:8080/api/propiedades/${propiedadId}`);
+
+            if (!res.ok) throw new Error("Error cargando propiedad");
+
+            const propiedad = await res.json();
+
+            // llenar campo oculto
+            form.casaInteres.value = propiedad.id;
+
+            // mostrar propiedad
+            if (contenedorPropiedad) {
+                contenedorPropiedad.innerHTML = `
+                    <div class="propiedad-seleccionada">
+
+                        <h3>Casa seleccionada</h3>
+
+                        <img 
+                        src="${propiedad.imagenId 
+                            ? `http://localhost:8080/api/imagenes/${propiedad.imagenId}`
+                            : '/img/default.jpg'}" 
+                        alt="${propiedad.titulo}"
+                        style="max-width:400px;border-radius:10px;margin-bottom:10px;">
+
+                        <h4>${propiedad.titulo}</h4>
+                        <p style="color:#71b100;font-weight:bold;">
+                            $${propiedad.precio.toLocaleString('es-CO')}
+                        </p>
+
+                    </div>
+                `;
+            }
+
+        } catch (error) {
+            console.error("Error cargando propiedad:", error);
+        }
+    }
+
+    // =============================
+    // ENVIAR FORMULARIO
+    // =============================
 
     form.addEventListener("submit", async function (e) {
+
         e.preventDefault();
 
         const contacto = {
             nombre: form.nombre.value,
             celular: form.celular.value,
             correo: form.correo.value,
-            casaInteres: form.casaInteres.value, // ahora coincide perfecto
+            casaInteres: form.casaInteres.value,
             mensaje: form.mensaje.value
         };
 
         try {
+
             const response = await fetch("http://localhost:8080/api/contacto", {
                 method: "POST",
                 headers: {
@@ -27,17 +83,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
             estado.textContent = "Mensaje enviado correctamente.";
             estado.style.color = "green";
+
             form.reset();
 
         } catch (error) {
+
             console.error(error);
+
             estado.textContent = "Hubo un error.";
             estado.style.color = "red";
         }
+
     });
 
 });
-;
 
 
 

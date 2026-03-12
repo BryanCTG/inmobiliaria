@@ -609,8 +609,9 @@ h4 {
 }
 
 .iconos-caracteristicas li img {
-    flex: 0 0 3rem;
-    margin-right: 1rem
+    width: 5rem;
+    height: 5rem;
+    margin-right: 0.8rem;
 }
 
 .iconos-caracteristicas li p {
@@ -854,5 +855,30 @@ h4 {
     color: #721c24;
 }
 
+/* ===== GALERIA DE PROPIEDAD ===== */
 
+.galeria-propiedad{
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    margin: 30px 0;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+}
 
+.galeria-propiedad::-webkit-scrollbar{
+    height: 15px;
+}
+
+.galeria-propiedad::-webkit-scrollbar-thumb{
+    background: #c8c8c8;
+    border-radius: 10px;
+}
+
+.imagen-propiedad{
+    min-width: 20px;
+    height: 640px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
