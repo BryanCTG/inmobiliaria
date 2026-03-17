@@ -20,24 +20,28 @@ async function cargarPropiedades() {
 
     propiedades.forEach(p => {
 
-      console.log("Propiedad:", p); // para verificar datos en consola
+      console.log("Propiedad:", p);
 
       const div = document.createElement('div');
       div.classList.add('anuncio');
 
-      // ✅ versión segura para imágenes
+      // 🔥 IMAGEN SEGURA
       let imagenUrl = '/img/default.jpg';
 
-      if (p.imagenes) {
+      if (p.imagenes && Array.isArray(p.imagenes) && p.imagenes.length > 0) {
 
-        if (Array.isArray(p.imagenes) && p.imagenes.length > 0) {
-          imagenUrl = `http://localhost:8080/api/imagenes/${p.imagenes[0]}`;
-        } 
-        else {
-          imagenUrl = `http://localhost:8080/api/imagenes/${p.imagenes}`;
+        let ruta = p.imagenes[0];
+
+        if (!ruta.startsWith("/uploads")) {
+          ruta = `/uploads/${ruta}`;
         }
 
+        imagenUrl = `http://localhost:8080${ruta}`;
       }
+
+      // 🔥 UBICACIÓN SEGURA
+      const ciudad = p.ciudad ? p.ciudad : 'Sin ubicación';
+      const barrio = p.barrio ? ` - ${p.barrio}` : '';
 
       div.innerHTML = `
         <picture>
@@ -49,6 +53,12 @@ async function cargarPropiedades() {
 
         <div class="contenido-anuncio">
           <h3>${p.titulo}</h3>
+
+          <p class="ubicacion">
+            <i class="fas fa-map-marker-alt"></i>
+            ${ciudad}${barrio}
+          </p>
+
           <p>${p.descripcion || ''}</p>
 
           <p class="precio">
@@ -104,7 +114,7 @@ async function cargarPropiedades() {
   }
 }
 
-// 🗑 eliminar propiedad
+// 🗑 ELIMINAR PROPIEDAD
 async function eliminarPropiedad(id) {
 
   if (!confirm('¿Deseas eliminar esta propiedad?')) return;
@@ -130,7 +140,7 @@ async function eliminarPropiedad(id) {
 
 }
 
-// 👁 cambiar visibilidad
+// 👁 CAMBIAR VISIBILIDAD
 async function toggleVisibilidad(id) {
 
   try {

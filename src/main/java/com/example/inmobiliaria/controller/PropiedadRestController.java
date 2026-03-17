@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.inmobiliaria.model.Propiedad;
@@ -25,19 +24,24 @@ public class PropiedadRestController {
 
     private final String UPLOAD_DIR = "src/main/resources/static/uploads/";
 
-    // Listar todas
+
+    // LISTAR TODAS
+    
     @GetMapping
     public List<Propiedad> listar() {
         return repo.findAll();
     }
 
-    // Obtener una propiedad
+    // OBTENER POR ID
+   
     @GetMapping("/{id}")
     public Propiedad obtenerPorId(@PathVariable String id) {
         return repo.findById(id).orElse(null);
     }
 
-    // Crear propiedad
+  
+    // CREAR PROPIEDAD
+   
     @PostMapping(consumes = {"multipart/form-data"})
     public Propiedad crear(
             @RequestPart("propiedad") Propiedad propiedad,
@@ -68,7 +72,9 @@ public class PropiedadRestController {
         return repo.save(propiedad);
     }
 
-    // Actualizar propiedad
+
+    // ACTUALIZAR PROPIEDAD 
+    
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     public Propiedad actualizar(
             @PathVariable String id,
@@ -80,13 +86,18 @@ public class PropiedadRestController {
 
         if (existente == null) return null;
 
+        //  ACTUALIZAR TODOS LOS CAMPOS
         existente.setTitulo(nueva.getTitulo());
         existente.setDescripcion(nueva.getDescripcion());
         existente.setPrecio(nueva.getPrecio());
         existente.setWc(nueva.getWc());
         existente.setEstacionamiento(nueva.getEstacionamiento());
         existente.setHabitaciones(nueva.getHabitaciones());
+        existente.setCiudad(nueva.getCiudad());
+        existente.setBarrio(nueva.getBarrio());
+        existente.setDireccion(nueva.getDireccion());
 
+        //  SOLO CAMBIAR IMÁGENES SI VIENEN NUEVAS
         if (imagenes != null && imagenes.length > 0) {
 
             List<String> rutas = new ArrayList<>();
@@ -111,7 +122,9 @@ public class PropiedadRestController {
         return repo.save(existente);
     }
 
-    // Eliminar propiedad
+    
+    // ELIMINAR PROPIEDAD
+   
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable String id) {
 
@@ -139,7 +152,9 @@ public class PropiedadRestController {
         }
     }
 
-    // Cambiar visibilidad
+    
+    // CAMBIAR VISIBILIDAD
+    
     @PatchMapping("/{id}/visibilidad")
     public Propiedad cambiarVisibilidad(@PathVariable String id) {
 
@@ -155,7 +170,9 @@ public class PropiedadRestController {
         return p;
     }
 
-    // Listar solo visibles
+    
+    // LISTAR SOLO VISIBLES
+    
     @GetMapping("/visibles")
     public List<Propiedad> listarVisibles() {
 

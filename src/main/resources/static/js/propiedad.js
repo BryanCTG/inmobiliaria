@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const propiedadId = params.get("id");
 
+    const contenedor = document.getElementById("detalle-propiedad");
+
     if (!propiedadId) {
-        document.getElementById("detalle-propiedad").innerHTML = `<p>No se encontró la propiedad.</p>`;
+        contenedor.innerHTML = `<p>No se encontró la propiedad.</p>`;
         return;
     }
 
@@ -16,18 +18,34 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const p = await res.json();
 
-        const contenedor = document.getElementById("detalle-propiedad");
-
-        // generar galería de imágenes
+        //  GALERÍA MEJORADA
         let galeria = "";
 
-        if (p.imagenes && p.imagenes.length > 0) {
+        if (p.imagenes && Array.isArray(p.imagenes) && p.imagenes.length > 0) {
 
-            galeria = p.imagenes.map(img => `
-                <img class="imagen-propiedad"
-                     src="http://localhost:8080${img}"
-                     alt="${p.titulo}">
-            `).join("");
+            galeria = p.imagenes.map(img => {
+
+    // 🔥 limpiar posibles errores de ruta
+    let ruta = img;
+
+    // Si NO empieza con /uploads, lo arreglamos
+    if (!img.startsWith("/uploads")) {
+        ruta = `/uploads/${img}`;
+    }
+
+    // 🔥 URL FINAL CORRECTA
+    const urlFinal = `http://localhost:8080${ruta}`;
+
+    console.log("Imagen:", urlFinal);
+
+    return `
+        <img class="imagen-propiedad"
+             src="${urlFinal}"
+             alt="${p.titulo}"
+             onerror="this.src='/img/default.jpg'">
+    `;
+
+}).join("");
 
         } else {
 
@@ -45,28 +63,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             <div class="resumen-propiedad">
 
-                <p class="precio">$${p.precio.toLocaleString('es-CO')}</p>
+                <p class="precio">$${(p.precio || 0).toLocaleString('es-CO')}</p>
 
                 <ul class="iconos-caracteristicas">
 
                     <li>
                         <img class="icono" src="/img/icono_wc.svg">
-                        <p>${p.wc}</p>
+                        <p>${p.wc ?? 0}</p>
                     </li>
 
                     <li>
                         <img class="icono" src="/img/icono_estacionamiento.svg">
-                        <p>${p.estacionamiento}</p>
+                        <p>${p.estacionamiento ?? 0}</p>
                     </li>
 
                     <li>
                         <img class="icono" src="/img/icono_dormitorio.svg">
-                        <p>${p.habitaciones}</p>
+                        <p>${p.habitaciones ?? 0}</p>
                     </li>
 
                 </ul>
 
-                <p>${p.descripcion}</p>
+                <p>${p.descripcion || "Sin descripción disponible."}</p>
 
             </div>
 
@@ -82,13 +100,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
         `;
 
+        //  BOTÓN VOLVER
         document.getElementById("btn-volver").addEventListener("click", () => {
             window.history.back();
         });
 
     } catch (error) {
 
-        document.getElementById("detalle-propiedad").innerHTML = `<p>Error al cargar la propiedad.</p>`;
+        console.error(error);
+
+        contenedor.innerHTML = `<p>Error al cargar la propiedad.</p>`;
 
     }
 

@@ -15,7 +15,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!res.ok) throw new Error('Error al cargar propiedades');
 
-    const propiedades = await res.json();
+    let propiedades = await res.json();
+    let propiedadesOriginales = [...propiedades];
+
+    document.getElementById("btnFiltrar").addEventListener("click", () => {
+
+  const texto = document.getElementById("filtroTexto").value.toLowerCase();
+  const min = parseFloat(document.getElementById("precioMin").value) || 0;
+  const max = parseFloat(document.getElementById("precioMax").value) || Infinity;
+  const hab = parseInt(document.getElementById("habitaciones").value) || 0;
+  const ciudad = document.getElementById("ciudad").value.toLowerCase();
+
+  propiedades = propiedadesOriginales.filter(p => {
+
+    const coincideTexto =
+      p.titulo.toLowerCase().includes(texto) ||
+      p.descripcion.toLowerCase().includes(texto);
+
+    const coincidePrecio =
+      p.precio >= min && p.precio <= max;
+
+    const coincideHabitaciones =
+      hab === 0 || p.habitaciones >= hab;
+
+    const coincideCiudad =
+      !ciudad || (p.ciudad && p.ciudad.toLowerCase().includes(ciudad));
+
+    return coincideTexto && coincidePrecio && coincideHabitaciones && coincideCiudad;
+
+  });
+
+  paginaActual = 1;
+  mostrarPagina(1);
+
+});
 
     if (propiedades.length === 0) {
       contenedor.innerHTML = '<p>No hay propiedades disponibles en este momento.</p>';
@@ -147,6 +180,16 @@ function renderizarPropiedades(lista, contenedor) {
         <div class="contenido-anuncio">
 
           <h3>${p.titulo}</h3>
+
+          <p class="ubicacion">
+           <svg xmlns="http://www.w3.org/2000/svg" class="icono-ubicacion" viewBox="0 0 24 24" fill="none">
+             <circle cx="12" cy="11" r="3" stroke="#FFC107" stroke-width="1.5"/>
+             <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1 -2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z"
+               stroke="#FFC107" stroke-width="1.5"/>
+             </svg>
+
+  ${p.ciudad || 'Ubicación no disponible'}
+</p>
 
           <p>${(p.descripcion || '').substring(0,80)}...</p>
 

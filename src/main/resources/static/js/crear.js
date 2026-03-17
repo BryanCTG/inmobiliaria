@@ -19,8 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
             habitaciones: parseInt(form.habitaciones.value),
             wc: parseInt(form.wc.value),
             estacionamiento: parseInt(form.estacionamiento.value),
-            visible: true
+            visible: true,
+
+            // 🔥 AQUÍ ESTABA EL PROBLEMA
+            ciudad: form.ciudad.value,
+            barrio: form.barrio.value,
+            direccion: form.direccion.value
         };
+
+        // 🧪 DEBUG (puedes quitarlo después)
+        console.log("Propiedad enviada:", propiedad);
 
         formData.append(
             "propiedad",
@@ -42,9 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // agregar todas las imágenes
         for (let i = 0; i < archivos.length; i++) {
-
             formData.append("imagenes", archivos[i]);
-
         }
 
         try {
@@ -76,13 +82,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
-
-
-
-
-
-
-
-
-
-

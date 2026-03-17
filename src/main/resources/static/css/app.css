@@ -882,3 +882,68 @@ h4 {
     border-radius: 10px;
     flex-shrink: 0;
 }
+
+.ubicacion {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.4rem;
+    color: #666;
+    margin: 5px 0 10px 0;
+}
+
+.icono-ubicacion {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+/*  CONTENEDOR DE FILTROS */
+.filtros {
+    display: contents;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/*  INPUTS Y SELECTS */
+.filtros input,
+.filtros select {
+    padding: 10px 14px;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    background-color: #fff;
+    transition: all 0.2s ease;
+    min-width: 140px;
+}
+
+/*  EFECTO AL HACER CLICK */
+.filtros input:focus,
+.filtros select:focus {
+    border-color: #71b100;
+    box-shadow: 0 0 0 2px rgba(113, 177, 0, 0.15);
+}
+
+/*  BOTÓN */
+.filtros button {
+    font-size: 13px;
+    border: none;
+    border-radius: 8px;
+    background-color: #71b100;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+/*  HOVER BOTÓN */
+.filtros button:hover {
+    background-color: #5a8f00;
+}
+
+/*  PLACEHOLDER MÁS SUAVE */
+.filtros input::placeholder {
+    color: #aaa;
+    font-size: 12px;
+}
