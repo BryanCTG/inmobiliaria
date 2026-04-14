@@ -1,65 +1,186 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienes Raices</title>
-    <link rel="stylesheet" href="/css/app.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contactos | Admin Bienes Raíces</title>
+  <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
+  <link rel="stylesheet" href="/css/app.css">
 </head>
+<body class="admin-body">
 
-<body>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <header class="header">
-        <div class="contenedor contenido-header">
-            <div class="barra">
-                <a href="/">
-                    <img src="/img/logo.svg" alt="Logotipo de Bienes Raices">
-                </a>
-
-                <div class="mobile-menu">
-                    <img src="/img/barras.svg" alt="icono menu responsive">
-                </div>
-
-                <div class="derecha">
-                    <img class="dark-mode-boton" src="/img/dark-mode.svg">
-                    <a href="/Admin/index.html" class="boton boton-verde">Volver</a>
-                    <!-- <nav class="navegacion">
-                        <a href="nosotros.html">Nosotros</a>
-                        <a href="anuncios.html">Anuncios</a>
-                        <a href="blog.html">Blog</a>
-                        <a href="contacto.html">Contacto</a>
-                    </nav> -->
-                </div>
-
-            </div> <!--.barra-->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon"><span class="material-symbols-rounded">home_work</span></div>
+        <div class="sidebar-logo-text">BienesRaíces<small>Panel de Administración</small></div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">
+        <p class="sidebar-section-label">Principal</p>
+        <a href="/admin/index.html" class="sidebar-link"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+      </div>
+      <div class="sidebar-section">
+        <p class="sidebar-section-label">Gestión</p>
+        <a href="/admin/propiedades.html" class="sidebar-link"><span class="material-symbols-rounded">home</span> Propiedades</a>
+        <a href="/admin/crear.html" class="sidebar-link"><span class="material-symbols-rounded">add_circle</span> Nueva Propiedad</a>
+        <a href="/admin/contactos.html" class="sidebar-link active"><span class="material-symbols-rounded">mail</span> Contactos</a>
+      </div>
+      <div class="sidebar-section">
+        <p class="sidebar-section-label">Sitio</p>
+        <a href="/" class="sidebar-link" target="_blank"><span class="material-symbols-rounded">open_in_new</span> Ver sitio</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-user-avatar"><span class="material-symbols-rounded">person</span></div>
+        <div>
+          <div class="sidebar-user-name">Administrador</div>
+          <div class="sidebar-user-role">Super Admin</div>
         </div>
+      </div>
+      <form action="/logout" method="post">
+        <button type="submit" class="btn btn-danger btn-sm" style="width:100%;justify-content:center;">
+          <span class="material-symbols-rounded">logout</span> Cerrar sesión
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggle"><span class="material-symbols-rounded">menu</span></button>
+        <div>
+          <div class="topbar-title">Mensajes de Contacto</div>
+          <div class="topbar-breadcrumb">
+            <a href="/admin/index.html">Admin</a>
+            <span class="material-symbols-rounded sep">chevron_right</span>
+            <span>Contactos</span>
+          </div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <a href="/" target="_blank" class="topbar-icon-btn"><span class="material-symbols-rounded">open_in_new</span></a>
+      </div>
     </header>
 
-    <main class="contenedor seccion">
-        <h1 class="titulo-admin">Mensajes Recibidos</h1>
+    <div class="admin-content">
 
-        <div id="contenedor-contactos" class="contenedor-contactos"></div>
+      <div class="page-header">
+        <div class="page-header-info">
+          <h1>Mensajes Recibidos</h1>
+          <p id="conteoContactos">Cargando...</p>
+        </div>
+      </div>
 
-    </main>
+      <!-- Search bar -->
+      <div class="admin-card" style="margin-bottom:24px;">
+        <div class="admin-card-body" style="padding:16px 24px;">
+          <div style="position:relative;max-width:400px;">
+            <span class="material-symbols-rounded" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--neutral-60);font-size:2rem;">search</span>
+            <input type="text" id="searchContacto" class="form-control" placeholder="Buscar por nombre o correo..." style="padding-left:44px;">
+          </div>
+        </div>
+      </div>
 
-    <footer class="footer seccion">
-        <!-- <div class="contenedor contenedor-footer">
-            <nav class="navegacion">
-                <a href="nosotros.html">Nosotros</a>
-                <a href="anuncios.html">Anuncios</a>
-                <a href="blog.html">Blog</a>
-                <a href="contacto.html">Contacto</a>
-            </nav>
-        </div> -->
+      <!-- Cards grid -->
+      <div id="contenedor-contactos" class="contact-cards-grid">
+        <div class="spinner">Cargando mensajes...</div>
+      </div>
 
-        <p class="copyright">Todos los derechos Reservados 2025 &copy;</p>
-    </footer>
+    </div>
+  </div>
 
-    <script src="/js/main.js"></script>
-    <script src="/js/modernize.js"></script>
-    <script src="/js/admin.js"></script>
-    <script src="/js/adminContacto.js"></script>
+  <script src="/js/admin-layout.js"></script>
+  <script>
+    let todosContactos = [];
+    let mapaPropiedades = {};
+
+    async function cargarContactos() {
+      try {
+        const [resC, resP] = await Promise.all([
+          fetch('http://localhost:8080/api/contacto'),
+          fetch('http://localhost:8080/api/propiedades')
+        ]);
+        todosContactos = await resC.json();
+        const propiedades = await resP.json();
+
+        propiedades.forEach(p => { mapaPropiedades[p.id] = p.titulo; });
+
+        todosContactos.reverse();
+        document.getElementById('conteoContactos').textContent = `${todosContactos.length} mensajes en total`;
+        renderizarContactos(todosContactos);
+
+      } catch(err) {
+        document.getElementById('contenedor-contactos').innerHTML =
+          '<div class="empty-state"><span class="material-symbols-rounded">error</span><h3>Error al cargar</h3><p>No se pudieron obtener los mensajes</p></div>';
+      }
+    }
+
+    function renderizarContactos(lista) {
+      const contenedor = document.getElementById('contenedor-contactos');
+      if (lista.length === 0) {
+        contenedor.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span class="material-symbols-rounded">mail</span><h3>Sin mensajes</h3><p>No hay mensajes de contacto todavía</p></div>';
+        return;
+      }
+      const medioIconos = { telefono: 'phone', correo: 'mail', whatsapp: 'chat' };
+      contenedor.innerHTML = lista.map(c => {
+        const nombrePropiedad = mapaPropiedades[c.casaInteres] || 'No especificada';
+        const iniciales = c.nombre ? c.nombre.charAt(0).toUpperCase() : '?';
+        const iconoMedio = medioIconos[c.medioContacto] || 'contact_mail';
+        return `
+          <div class="contact-card">
+            <div class="contact-card-header">
+              <div class="contact-card-avatar">${iniciales}</div>
+              <div>
+                <div class="contact-card-name">${c.nombre}</div>
+                <div class="contact-card-date">
+                  <span class="badge badge-blue" style="display:inline-flex;align-items:center;gap:4px;">
+                    <span class="material-symbols-rounded" style="font-size:1.4rem;">${iconoMedio}</span>
+                    Contactar por ${c.medioContacto || 'correo'}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="contact-card-body">
+              <div class="contact-card-row">
+                <span class="material-symbols-rounded">mail</span>
+                <span>${c.correo}</span>
+              </div>
+              ${c.celular ? `
+              <div class="contact-card-row">
+                <span class="material-symbols-rounded">phone</span>
+                <span>${c.celular}</span>
+              </div>` : ''}
+              <div class="contact-card-row">
+                <span class="material-symbols-rounded">home</span>
+                <span>${nombrePropiedad}</span>
+              </div>
+              ${c.mensaje ? `<div class="contact-card-message">"${c.mensaje}"</div>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('searchContacto').addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      const filtrados = todosContactos.filter(c =>
+        c.nombre.toLowerCase().includes(q) ||
+        c.correo.toLowerCase().includes(q)
+      );
+      renderizarContactos(filtrados);
+    });
+
+    cargarContactos();
+  </script>
 </body>
-
 </html>

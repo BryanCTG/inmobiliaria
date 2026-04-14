@@ -1,12 +1,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const contenedor = document.getElementById('lista-anuncios');
-  const paginacionContainer = document.createElement("div");
+  if (!contenedor) return;
 
-  paginacionContainer.id = "paginacion";
-  paginacionContainer.style.display = "flex";
-  paginacionContainer.style.gap = "10px";
-  paginacionContainer.style.marginTop = "30px";
-  paginacionContainer.style.justifyContent = "center";
+  const paginacionContainer = document.getElementById('paginacion');
 
   try {
     const res = await fetch('http://localhost:8080/api/propiedades/visibles');
@@ -14,188 +10,135 @@ document.addEventListener('DOMContentLoaded', async () => {
     const propiedades = await res.json();
 
     if (propiedades.length === 0) {
-      contenedor.innerHTML = '<p>No hay propiedades disponibles en este momento.</p>';
+      contenedor.innerHTML = `
+        <div class="empty-state" style="grid-column:1/-1;">
+          <span class="material-symbols-rounded">home</span>
+          <h3>Sin propiedades disponibles</h3>
+          <p>En este momento no hay propiedades publicadas. Vuelve pronto.</p>
+        </div>`;
       return;
     }
 
-    // Detectar si estamos en index.html
-    const esIndex = window.location.pathname.includes("index.html") || window.location.pathname === "/";
+    // Detectar si estamos en index (homepage)
+    const esIndex = window.location.pathname === '/' ||
+                    window.location.pathname.endsWith('index.html') ||
+                    window.location.pathname === '';
 
-    // Si ES index → mostrar solo 3 y sin paginación
     if (esIndex) {
-      const primerasTres = propiedades.slice(0, 3);
-      renderizarPropiedades(primerasTres, contenedor);
+      renderizarPropiedades(propiedades.slice(0, 3), contenedor);
       return;
     }
 
-    // Si NO es index → activar paginación
+    // Paginación para anuncio.html
     let paginaActual = 1;
-    const porPagina = 6; //  AJUSTA ESTE NÚMERO SI QUIERES MÁS O MENOS PROPIEDADES POR PÁGINA
+    const porPagina = 6;
     const totalPaginas = Math.ceil(propiedades.length / porPagina);
+
+    const textoResultados = document.getElementById('resultados-texto');
 
     function mostrarPagina(pagina) {
       paginaActual = pagina;
-
       const inicio = (pagina - 1) * porPagina;
-      const fin = inicio + porPagina;
+      const fin    = inicio + porPagina;
+      const slice  = propiedades.slice(inicio, fin);
 
-      const propiedadesPagina = propiedades.slice(inicio, fin);
+      renderizarPropiedades(slice, contenedor);
 
-      renderizarPropiedades(propiedadesPagina, contenedor);
+      if (textoResultados) {
+        textoResultados.textContent =
+          `Mostrando ${inicio + 1}–${Math.min(fin, propiedades.length)} de ${propiedades.length} propiedades`;
+      }
       renderizarPaginacion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function renderizarPaginacion() {
-      paginacionContainer.innerHTML = "";
+      if (!paginacionContainer || totalPaginas <= 1) return;
+      paginacionContainer.innerHTML = '';
 
-      // Botón anterior
+      // Prev
       if (paginaActual > 1) {
-        const btnAnterior = document.createElement("button");
-        btnAnterior.textContent = "Anterior";
-        btnAnterior.classList.add("boton-amarillo");
-        btnAnterior.onclick = () => mostrarPagina(paginaActual - 1);
-        paginacionContainer.appendChild(btnAnterior);
+        const btn = document.createElement('button');
+        btn.innerHTML = '<span class="material-symbols-rounded" style="font-size:2rem;">chevron_left</span>';
+        btn.title = 'Anterior';
+        btn.onclick = () => mostrarPagina(paginaActual - 1);
+        paginacionContainer.appendChild(btn);
       }
 
-      // Botones numéricos
+      // Pages
       for (let i = 1; i <= totalPaginas; i++) {
-        const btn = document.createElement("button");
+        const btn = document.createElement('button');
         btn.textContent = i;
-        btn.classList.add("boton-amarillo");
-
-        if (i === paginaActual) {
-          btn.style.background = "#333";
-          btn.style.color = "#fff";
-        }
-
+        btn.classList.toggle('active', i === paginaActual);
         btn.onclick = () => mostrarPagina(i);
         paginacionContainer.appendChild(btn);
       }
 
-      // Botón siguiente
+      // Next
       if (paginaActual < totalPaginas) {
-        const btnSiguiente = document.createElement("button");
-        btnSiguiente.textContent = "Siguiente";
-        btnSiguiente.classList.add("boton-amarillo");
-        btnSiguiente.onclick = () => mostrarPagina(paginaActual + 1);
-        paginacionContainer.appendChild(btnSiguiente);
+        const btn = document.createElement('button');
+        btn.innerHTML = '<span class="material-symbols-rounded" style="font-size:2rem;">chevron_right</span>';
+        btn.title = 'Siguiente';
+        btn.onclick = () => mostrarPagina(paginaActual + 1);
+        paginacionContainer.appendChild(btn);
       }
-
-      // Insertar paginación al final
-      contenedor.parentElement.appendChild(paginacionContainer);
     }
 
-    // Mostrar primera página
     mostrarPagina(1);
 
-  } catch (error) {
-    console.error('Error al cargar anuncios:', error);
-    contenedor.innerHTML = '<p>Error al cargar propiedades.</p>';
+  } catch (err) {
+    console.error('Error cargando anuncios:', err);
+    contenedor.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        <span class="material-symbols-rounded">error</span>
+        <h3>Error al cargar</h3>
+        <p>No se pudieron obtener las propiedades. Verifica tu conexión.</p>
+      </div>`;
   }
 });
 
-
-
-
-//   FUNCIÓN PARA RENDERIZAR LAS PROPIEDADES
+// ─── RENDER FUNCTION ───────────────────────────────────────────────────────────
 
 function renderizarPropiedades(lista, contenedor) {
-  contenedor.innerHTML = lista
-    .map(p => `
-      <div class="anuncio">
-        <picture>
-          <img loading="lazy"
-               src="${p.imagenId 
-                    ? `http://localhost:8080/api/imagenes/${p.imagenId}`
-                    : '/img/default.jpg'}"
-               alt="${p.titulo}">
-        </picture>
+  contenedor.innerHTML = lista.map(p => {
+    const imagenUrl = p.imagenId
+      ? `http://localhost:8080/api/imagenes/${p.imagenId}`
+      : '/img/default.jpg';
 
-        <div class="contenido-anuncio">
-          <h3>${p.titulo}</h3>
-          <p>${p.descripcion || ''}</p>
-          <p class="precio">$${p.precio.toLocaleString('es-CO')}</p>
-
-          <ul class="iconos-caracteristicas">
-            <li>
-              <img class="icono" loading="lazy" src="/img/icono_wc.svg" alt="icono wc">
-              <p>${p.wc}</p>
-            </li>
-            <li>
-              <img class="icono" loading="lazy" src="/img/icono_estacionamiento.svg" alt="icono estacionamiento">
-              <p>${p.estacionamiento}</p>
-            </li>
-            <li>
-              <img class="icono" loading="lazy" src="/img/icono_dormitorio.svg" alt="icono habitaciones">
-              <p>${p.habitaciones}</p>
-            </li>
-          </ul>
-
-          <a href="/propiedad.html?id=${p.id}" class="boton-amarillo-block">Ver Propiedad</a>
+    return `
+      <div class="property-card">
+        <div class="card-banner">
+          <div class="img-holder" style="--width:4;--height:3;">
+            <img loading="lazy" src="${imagenUrl}" alt="${p.titulo}" class="img-cover">
+          </div>
+          <span class="tag card-tag">En Venta</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title title-small">
+            <a href="/propiedad.html?id=${p.id}">${p.titulo}</a>
+          </h3>
+          <p class="card-desc">${p.descripcion || ''}</p>
+          <p class="card-price">$${p.precio.toLocaleString('es-CO')}</p>
+          <div class="card-features">
+            <div class="card-feature-item">
+              <span class="material-symbols-rounded">bed</span>
+              <span>${p.habitaciones} hab.</span>
+            </div>
+            <div class="card-feature-item">
+              <span class="material-symbols-rounded">bathroom</span>
+              <span>${p.wc} baños</span>
+            </div>
+            <div class="card-feature-item">
+              <span class="material-symbols-rounded">directions_car</span>
+              <span>${p.estacionamiento} parq.</span>
+            </div>
+          </div>
+          <a href="/propiedad.html?id=${p.id}" class="btn btn-fill" style="width:100%;justify-content:center;">
+            <span class="material-symbols-rounded">visibility</span>
+            Ver propiedad
+          </a>
         </div>
       </div>
-    `)
-    .join('');
+    `;
+  }).join('');
 }
-
-
-
-// document.addEventListener('DOMContentLoaded', async () => {
-//   const contenedor = document.getElementById('lista-anuncios');
-
-//   try {
-//     const res = await fetch('http://localhost:8080/api/propiedades/visibles');
-//     if (!res.ok) throw new Error('Error al cargar propiedades');
-//     const propiedades = await res.json();
-
-//     if (propiedades.length === 0) {
-//       contenedor.innerHTML = '<p>No hay propiedades disponibles en este momento.</p>';
-//       return;
-//     }
-
-//     // Detectar si estamos en index.html
-//     const esIndex = window.location.pathname.includes("index.html") || window.location.pathname === "/";
-
-//     // Limitar a 3 solo en index
-//     const propiedadesAMostrar = esIndex ? propiedades.slice(0, 3) : propiedades;
-
-//     contenedor.innerHTML = propiedadesAMostrar.map(p => `
-//       <div class="anuncio">
-//         <picture>
-//           <img loading="lazy"
-//                src="${p.imagenId 
-//                     ? `http://localhost:8080/api/imagenes/${p.imagenId}`
-//                     : '/img/default.jpg'}"
-//                alt="${p.titulo}">
-//         </picture>
-
-//         <div class="contenido-anuncio">
-//           <h3>${p.titulo}</h3>
-//           <p>${p.descripcion || ''}</p>
-//           <p class="precio">$${p.precio.toLocaleString('es-CO')}</p>
-
-//           <ul class="iconos-caracteristicas">
-//             <li>
-//               <img class="icono" loading="lazy" src="/img/icono_wc.svg" alt="icono wc">
-//               <p>${p.wc}</p>
-//             </li>
-//             <li>
-//               <img class="icono" loading="lazy" src="/img/icono_estacionamiento.svg" alt="icono estacionamiento">
-//               <p>${p.estacionamiento}</p>
-//             </li>
-//             <li>
-//               <img class="icono" loading="lazy" src="/img/icono_dormitorio.svg" alt="icono habitaciones">
-//               <p>${p.habitaciones}</p>
-//             </li>
-//           </ul>
-
-//           <a href="/propiedad.html?id=${p.id}" class="boton-amarillo-block">Ver Propiedad</a>
-//         </div>
-//       </div>
-//     `).join('');
-
-//   } catch (error) {
-//     console.error('Error al cargar anuncios:', error);
-//     contenedor.innerHTML = '<p>Error al cargar propiedades.</p>';
-//   }
-// });

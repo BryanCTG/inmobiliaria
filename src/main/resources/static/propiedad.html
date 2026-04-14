@@ -1,57 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle de Propiedad</title>
-    <link rel="stylesheet" href="/css/app.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle Propiedad | Bienes Raíces</title>
+  <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
 
-<header class="header">
-    <div class="contenedor contenido-header">
-        <div class="barra">
-            <a href="/">
-                <img src="/img/logo.svg" alt="Logotipo de Bienes Raices">
-            </a>
-
-            <div class="mobile-menu">
-                <img src="/img/barras.svg" alt="icono menu responsive">
-            </div>
-
-            <div class="derecha">
-                <img class="dark-mode-boton" src="/img/dark-mode.svg">
-                <nav class="navegacion">
-                    <a href="/nosotros.html">Nosotros</a>
-                    <a href="/anuncios.html">Anuncios</a>
-                    <a href="/blog.html">Blog</a>
-                    <a href="/contacto.html">Contacto</a>
-                </nav>
-            </div>
-            
+  <header class="header scrolled" id="mainHeader">
+    <div class="container">
+      <a href="/" class="logo">
+        <div class="logo-icon"><span class="material-symbols-rounded">home_work</span></div>
+        <span class="logo-text" style="color:var(--neutral-10);">Bienes<span>Raíces</span></span>
+      </a>
+      <nav class="navbar" id="navbar">
+        <ul class="navbar-list">
+          <li><a href="/" class="navbar-link" style="color:var(--neutral-20);">Inicio</a></li>
+          <li><a href="/nosotros.html" class="navbar-link" style="color:var(--neutral-20);">Nosotros</a></li>
+          <li><a href="/anuncio.html" class="navbar-link active" style="color:var(--primary-100);background:#EBF3FF;">Propiedades</a></li>
+          <li><a href="/blog.html" class="navbar-link" style="color:var(--neutral-20);">Blog</a></li>
+          <li><a href="/contacto.html" class="navbar-link" style="color:var(--neutral-20);">Contacto</a></li>
+        </ul>
+        <div class="navbar-cta">
+          <a href="/admin/login.html" class="btn-link">Admin</a>
+          <a href="/contacto.html" class="btn btn-fill">Contáctanos</a>
         </div>
+      </nav>
+      <button class="nav-toggle-btn" id="navToggle" style="color:var(--neutral-10);">
+        <span class="material-symbols-rounded">menu</span>
+      </button>
     </div>
-</header>
+  </header>
 
-<main class="contenedor seccion">
-    <div id="detalle-propiedad"></div>
-</main>
+  <main>
+    <div style="padding-top: calc(var(--header-height) + 32px);" id="contenido-propiedad">
+      <div class="spinner">Cargando propiedad...</div>
+    </div>
+  </main>
 
-<footer class="footer seccion">
-    <div class="contenedor contenedor-footer">
-        <nav class="navegacion">
+  <footer class="footer" style="margin-top:60px;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo" style="margin-bottom:16px;">
+            <div class="logo-icon"><span class="material-symbols-rounded">home_work</span></div>
+            <span class="logo-text" style="color:var(--white);">Bienes<span>Raíces</span></span>
+          </a>
+          <p>Tu aliado de confianza en el mercado inmobiliario.</p>
+        </div>
+        <div>
+          <h4 class="footer-title">Navegación</h4>
+          <div class="footer-links">
             <a href="/nosotros.html">Nosotros</a>
-            <a href="/anuncios.html">Anuncios</a>
+            <a href="/anuncio.html">Propiedades</a>
             <a href="/blog.html">Blog</a>
             <a href="/contacto.html">Contacto</a>
-        </nav>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-title">Servicios</h4>
+          <div class="footer-links">
+            <a href="#">Compra de inmuebles</a>
+            <a href="#">Venta de propiedades</a>
+            <a href="#">Arriendo</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-title">Contacto</h4>
+          <div class="footer-links">
+            <a href="mailto:info@bienesraices.com">info@bienesraices.com</a>
+            <a href="tel:+573001234567">+57 300 123 4567</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2025 Bienes Raíces. Todos los derechos reservados.</p>
+      </div>
     </div>
+  </footer>
 
-    <p class="copyright">Todos los derechos Reservados 2025 &copy;</p>
-</footer>
-
-<script src="/js/propiedad.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/modernize.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/propiedad.js"></script>
+  <script>
+    AOS.init({ duration: 700, once: true });
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('navbar').classList.toggle('open');
+    });
+  </script>
 </body>
 </html>

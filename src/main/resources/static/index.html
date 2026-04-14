@@ -1,165 +1,321 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienes Raices</title>
-    <link rel="stylesheet" href="/css/app.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienes Raíces – Tu hogar ideal</title>
+  <meta name="description" content="Encuentra la propiedad de tus sueños con nuestra selección exclusiva de casas y departamentos.">
+  <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
 </head>
-
 <body>
 
-    <header class="header inicio">
-        <div class="contenedor contenido-header">
-            <div class="barra">
-                <a href="/">
-                    <img src="/img/logo.svg" alt="Logotipo de Bienes Raices">
-                </a>
-
-                <div class="mobile-menu">
-                    <img src="/img/barras.svg" alt="icono menu responsive">
-                </div>
-
-                <div class="derecha">
-                    <img class="dark-mode-boton" src="/img/dark-mode.svg">
-                    <nav class="navegacion">
-                        <a href="/nosotros.html">Nosotros</a>
-                        <a href="/anuncio.html">Anuncios</a>
-                        <a href="/blog.html">Blog</a>
-                        <a href="/contacto.html">Contacto</a>
-
-                    </nav>
-                </div>
-
-
-            </div> <!--.barra-->
-
-            <h1>Venta de Casas y Departamentos Exclusivos de Lujo</h1>
+  <!-- HEADER -->
+  <header class="header" id="mainHeader">
+    <div class="container">
+      <a href="/" class="logo">
+        <div class="logo-icon"><span class="material-symbols-rounded">home_work</span></div>
+        <span class="logo-text">Bienes<span>Raíces</span></span>
+      </a>
+      <nav class="navbar" id="navbar">
+        <ul class="navbar-list">
+          <li><a href="/" class="navbar-link active">Inicio</a></li>
+          <li><a href="/nosotros.html" class="navbar-link">Nosotros</a></li>
+          <li><a href="/anuncio.html" class="navbar-link">Propiedades</a></li>
+          <li><a href="/blog.html" class="navbar-link">Blog</a></li>
+          <li><a href="/contacto.html" class="navbar-link">Contacto</a></li>
+        </ul>
+        <div class="navbar-cta">
+          <a href="/admin/login.html" class="btn-link">Admin</a>
+          <a href="/contacto.html" class="btn btn-fill">Contáctanos</a>
         </div>
-    </header>
-
-    <main class="contenedor seccion">
-        <h1>Más Sobre Nosotros</h1>
-
-        <div class="iconos-nosotros">
-            <div class="icono">
-                <img src="/img/icono1.svg" alt="Icono seguridad" loading="lazy">
-                <h3>Seguridad</h3>
-                <p>Possimus, suscipit repudiandae. Autem deserunt aliquid deleniti sit minus consectetur obcaecati
-                    molestiae dolorem natus dolores reiciendis tempore, explicabo cum nobis laudantium. Voluptates?</p>
-            </div>
-            <div class="icono">
-                <img src="/img/icono2.svg" alt="Icono Precio" loading="lazy">
-                <h3>Precio</h3>
-                <p>Possimus, suscipit repudiandae. Autem deserunt aliquid deleniti sit minus consectetur obcaecati
-                    molestiae dolorem natus dolores reiciendis tempore, explicabo cum nobis laudantium. Voluptates?</p>
-            </div>
-            <div class="icono">
-                <img src="/img/icono3.svg" alt="Icono Tiempo" loading="lazy">
-                <h3>A Tiempo</h3>
-                <p>Possimus, suscipit repudiandae. Autem deserunt aliquid deleniti sit minus consectetur obcaecati
-                    molestiae dolorem natus dolores reiciendis tempore, explicabo cum nobis laudantium. Voluptates?</p>
-            </div>
-        </div>
-    </main>
-
-    <section class="seccion contenedor">
-        <h2>Casas y Depas en Venta</h2>
-
-         <div id="lista-anuncios" class="contenedor-anuncios" ></div>
-
-
-        <div class="alinear-derecha">
-            <a href="/anuncio.html" class="boton-verde">Ver Todas</a>
-        </div> 
-    </section>
-
-    <section class="imagen-contacto">
-        <h2>Encuentra la casa de tus sueños</h2>
-        <p>Llena el formulario de contacto y un asesor se pondrá en contacto contigo a la brevedad</p>
-        <a href="contacto.html" class="boton-amarillo">Contactános</a>
-    </section>
-
-    <div class="contenedor seccion seccion-inferior">
-        <section class="blog">
-            <h3>Nuestro Blog</h3>
-
-            <article class="entrada-blog">
-                <div class="imagen">
-                    <picture>
-                        <source srcset="/img/blog1.jpg" type="image/webp">
-                        <source srcset="/img/blog1.jpg" type="image/jpeg">
-                        <img loading="lazy" src="/img/blog1.jpg" alt="Texto Entrada Blog">
-                    </picture>
-                </div>
-
-                <div class="texto-entrada">
-
-                    <h4>Terraza en el techo de tu casa</h4>
-                    <p class="informacion-meta">Escrito el: <span>21/04/2025</span> por: <span>Admin</span> </p>
-
-                    <p>
-                        Consejos para construir una terraza en el techo de tu casa con los mejores materiales y
-                        ahorrando dinero
-                    </p>
-
-                </div>
-            </article>
-
-            <article class="entrada-blog">
-                <div class="imagen">
-                    <picture>
-                        <source srcset="/img/blog2.jpg" type="image/webp">
-                        <source srcset="/img/blog2.jpg" type="image/jpeg">
-                        <img loading="lazy" src="/img/blog2.jpg" alt="Texto Entrada Blog">
-                    </picture>
-                </div>
-
-                <div class="texto-entrada">
-
-                    <h4>Guía para la decoración de tu hogar</h4>
-                    <p class="informacion-meta">Escrito el: <span>21/04/2025</span> por: <span>Admin</span> </p>
-
-                    <p>
-                        Maximiza el espacio en tu hogar con esta guia, aprende a combinar muebles y colores para darle
-                        vida a tu espacio
-                    </p>
-
-                </div>
-            </article>
-        </section>
-
-        <section class="testimoniales">
-            <h3>Testimoniales</h3>
-
-            <div class="testimonial">
-                <blockquote>
-                    El personal se comportó de una excelente forma, muy buena atención y la casa que me ofrecieron
-                    cumple con todas mis expectativas.
-                </blockquote>
-                <p>- Juan De la torre</p>
-            </div>
-        </section>
+      </nav>
+      <button class="nav-toggle-btn" id="navToggle" aria-label="Abrir menú">
+        <span class="material-symbols-rounded">menu</span>
+      </button>
     </div>
+  </header>
 
-    <footer class="footer seccion">
-        <div class="contenedor contenedor-footer">
-            <nav class="navegacion">
-                <a href="/nosotros.html">Nosotros</a>
-                <a href="/anuncio.html">Anuncios</a>
-                <a href="/blog.html">Blog</a>
-                <a href="/contacto.html">Contacto</a>
-            </nav>
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <span class="hero-eyebrow" data-aos="fade-down">
+          <span class="material-symbols-rounded" style="font-size:1.6rem">verified</span>
+          La inmobiliaria de confianza
+        </span>
+        <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+          Encuentra un lugar donde <span>ser tú mismo</span>
+        </h1>
+        <p class="hero-text" data-aos="fade-up" data-aos-delay="200">
+          Ofrecemos propiedades exclusivas que se adaptan a tu estilo de vida. Compra, vende o arrienda con el respaldo de expertos.
+        </p>
+        <form class="search-bar" data-aos="fade-up" data-aos-delay="300" onsubmit="buscarPropiedades(event)">
+          <label class="search-item">
+            <span class="label-medium label">Operación</span>
+            <select class="search-item-field body-medium" id="searchTipo">
+              <option value="">Cualquiera</option>
+              <option value="compra">Comprar</option>
+              <option value="venta">Vender</option>
+              <option value="arriendo">Arrendar</option>
+            </select>
+            <span class="material-symbols-rounded">real_estate_agent</span>
+          </label>
+          <label class="search-item">
+            <span class="label-medium label">Tipo de propiedad</span>
+            <select class="search-item-field body-medium" id="searchCategoria">
+              <option value="">Cualquiera</option>
+              <option value="casa">Casa</option>
+              <option value="apartamento">Apartamento</option>
+              <option value="villa">Villa</option>
+            </select>
+            <span class="material-symbols-rounded">apartment</span>
+          </label>
+          <label class="search-item">
+            <span class="label-medium label">Ubicación</span>
+            <input type="text" class="search-item-field body-medium" id="searchUbicacion" placeholder="Ciudad o zona...">
+          </label>
+          <a href="/anuncio.html" class="btn btn-fill">
+            <span class="material-symbols-rounded">search</span>
+            Buscar
+          </a>
+        </form>
+      </div>
+      <div class="hero-shape"></div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" style="background: var(--white);">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-eyebrow">¿Por qué elegirnos?</span>
+          <h2 class="section-title">Tu mejor decisión inmobiliaria</h2>
+          <p class="section-text">Contamos con años de experiencia acompañando a familias en la búsqueda de su hogar ideal.</p>
         </div>
+        <div class="features-grid">
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+            <div class="feature-icon"><span class="material-symbols-rounded">verified_user</span></div>
+            <h3>Seguridad Garantizada</h3>
+            <p>Todas nuestras propiedades pasan por un riguroso proceso de verificación legal y técnica para tu total tranquilidad.</p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-icon"><span class="material-symbols-rounded">payments</span></div>
+            <h3>Precios Justos</h3>
+            <p>Ofrecemos tasaciones precisas y precios competitivos en el mercado. Sin sorpresas, sin costos ocultos.</p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-icon"><span class="material-symbols-rounded">schedule</span></div>
+            <h3>Atención Inmediata</h3>
+            <p>Nuestro equipo responde en menos de 24 horas. Siempre disponibles para resolver tus dudas.</p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-icon"><span class="material-symbols-rounded">handshake</span></div>
+            <h3>Asesoría Experta</h3>
+            <p>Te acompañamos en cada paso del proceso, desde la búsqueda hasta la firma de escrituras.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <p class="copyright">Todos los derechos Reservados 2025 &copy;</p>
-    </footer>
+    <!-- FEATURED PROPERTIES -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-eyebrow">Propiedades destacadas</span>
+          <h2 class="section-title">Casas y Apartamentos en Venta</h2>
+          <p class="section-text">Descubre nuestra selección más exclusiva de propiedades disponibles.</p>
+        </div>
+        <div id="lista-anuncios" class="properties-grid">
+          <div class="spinner">Cargando propiedades...</div>
+        </div>
+        <div style="text-align:center; margin-top:40px;" data-aos="fade-up">
+          <a href="/anuncio.html" class="btn btn-outline">
+            <span class="material-symbols-rounded">grid_view</span>
+            Ver todas las propiedades
+          </a>
+        </div>
+      </div>
+    </section>
 
-    <script src="/js/main.js"></script>
-    <script src="/js/modernize.js"></script>
-    <script src="/js/anuncios.js"></script>
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container" data-aos="fade-up">
+        <h2 class="cta-title headline-medium">Encuentra la casa de tus sueños</h2>
+        <p class="cta-text body-large">Llena el formulario y un asesor se pondrá en contacto contigo a la brevedad</p>
+        <a href="/contacto.html" class="btn btn-white">
+          <span class="material-symbols-rounded">mail</span>
+          Contáctanos ahora
+        </a>
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <section class="section" style="background: var(--white);">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-eyebrow">Blog inmobiliario</span>
+          <h2 class="section-title">Últimas publicaciones</h2>
+          <p class="section-text">Consejos, tendencias y guías para compradores y vendedores.</p>
+        </div>
+        <div class="blog-grid">
+          <div class="blog-card" data-aos="fade-up">
+            <div class="card-banner"><div class="img-holder"><img src="/img/blog1.jpg" alt="Terraza en el techo" class="img-cover" loading="lazy"></div></div>
+            <div class="card-body">
+              <div class="meta">
+                <span><span class="material-symbols-rounded" style="font-size:1.6rem">calendar_today</span> 21 Abr 2025</span>
+                <span><span class="material-symbols-rounded" style="font-size:1.6rem">person</span> Admin</span>
+              </div>
+              <h3><a href="/blog.html">Terraza en el techo de tu casa</a></h3>
+              <p>Consejos para construir una terraza con los mejores materiales y ahorrando dinero.</p>
+              <a href="/blog.html" class="btn-link" style="font-size:1.4rem">Leer más →</a>
+            </div>
+          </div>
+          <div class="blog-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="card-banner"><div class="img-holder"><img src="/img/blog2.jpg" alt="Decoración hogar" class="img-cover" loading="lazy"></div></div>
+            <div class="card-body">
+              <div class="meta">
+                <span><span class="material-symbols-rounded" style="font-size:1.6rem">calendar_today</span> 18 Abr 2025</span>
+                <span><span class="material-symbols-rounded" style="font-size:1.6rem">person</span> Admin</span>
+              </div>
+              <h3><a href="/blog.html">Guía para decoración de tu hogar</a></h3>
+              <p>Maximiza el espacio con esta guía, aprende a combinar muebles y colores.</p>
+              <a href="/blog.html" class="btn-link" style="font-size:1.4rem">Leer más →</a>
+            </div>
+          </div>
+          <div class="blog-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="card-banner"><div class="img-holder"><img src="/img/blog3.jpg" alt="Inversión inmobiliaria" class="img-cover" loading="lazy"></div></div>
+            <div class="card-body">
+              <div class="meta">
+                <span><span class="material-symbols-rounded" style="font-size:1.6rem">calendar_today</span> 10 Abr 2025</span>
+                <span><span class="material-symbols-rounded" style="font-size:1.6rem">person</span> Admin</span>
+              </div>
+              <h3><a href="/blog.html">Cómo invertir en bienes raíces</a></h3>
+              <p>Todo lo que necesitas saber antes de hacer tu primera inversión inmobiliaria.</p>
+              <a href="/blog.html" class="btn-link" style="font-size:1.4rem">Leer más →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-eyebrow">Testimoniales</span>
+          <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card" data-aos="fade-up">
+            <div class="stars">★★★★★</div>
+            <blockquote>"El personal se comportó de una excelente forma, muy buena atención y la casa que me ofrecieron cumple con todas mis expectativas."</blockquote>
+            <div class="author">
+              <div style="width:44px;height:44px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:1.8rem;flex-shrink:0;">J</div>
+              <div>
+                <div class="author-name">Juan De la Torre</div>
+                <div class="author-role">Cliente satisfecho</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="stars">★★★★★</div>
+            <blockquote>"Encontré mi departamento ideal en tiempo récord. El equipo me guió en todo el proceso de compra sin complicaciones."</blockquote>
+            <div class="author">
+              <div style="width:44px;height:44px;background:linear-gradient(135deg,#0F4392,#21FFFF22);background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:1.8rem;flex-shrink:0;">M</div>
+              <div>
+                <div class="author-name">María Fernández</div>
+                <div class="author-role">Compradora</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="stars">★★★★★</div>
+            <blockquote>"Vendí mi casa al mejor precio del mercado gracias al equipo de Bienes Raíces. Altamente recomendado."</blockquote>
+            <div class="author">
+              <div style="width:44px;height:44px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:1.8rem;flex-shrink:0;">C</div>
+              <div>
+                <div class="author-name">Carlos Morales</div>
+                <div class="author-role">Vendedor</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo" style="margin-bottom:16px;">
+            <div class="logo-icon"><span class="material-symbols-rounded">home_work</span></div>
+            <span class="logo-text" style="color:var(--white);">Bienes<span>Raíces</span></span>
+          </a>
+          <p>Tu aliado de confianza en el mercado inmobiliario. Encontramos el hogar perfecto para cada familia.</p>
+        </div>
+        <div>
+          <h4 class="footer-title">Navegación</h4>
+          <div class="footer-links">
+            <a href="/nosotros.html">Nosotros</a>
+            <a href="/anuncio.html">Propiedades</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/contacto.html">Contacto</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-title">Servicios</h4>
+          <div class="footer-links">
+            <a href="#">Compra de inmuebles</a>
+            <a href="#">Venta de propiedades</a>
+            <a href="#">Arriendo</a>
+            <a href="#">Asesoría legal</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-title">Contacto</h4>
+          <div class="footer-links">
+            <a href="mailto:info@bienesraices.com">info@bienesraices.com</a>
+            <a href="tel:+573001234567">+57 300 123 4567</a>
+            <a href="#">Cartagena, Colombia</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2025 Bienes Raíces. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/anuncios.js"></script>
+  <script>
+    AOS.init({ duration: 700, once: true, offset: 60 });
+
+    // Header scroll effect
+    const header = document.getElementById('mainHeader');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Mobile nav
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('navbar').classList.toggle('open');
+    });
+
+    function buscarPropiedades(e) {
+      e.preventDefault();
+      window.location.href = '/anuncio.html';
+    }
+  </script>
 </body>
-
 </html>
