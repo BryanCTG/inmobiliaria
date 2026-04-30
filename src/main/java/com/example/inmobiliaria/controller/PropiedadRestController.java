@@ -54,21 +54,7 @@ public class PropiedadRestController {
         MultipartFile[] archivos = normalizarImagenes(imagenes, imagen);
 
         if (archivos != null) {
-            asegurarCarpetaUploads();
-
-            for (MultipartFile archivo : archivos) {
-
-                if (!archivo.isEmpty()) {
-
-                    String nombreArchivo = System.currentTimeMillis() + "_" + archivo.getOriginalFilename();
-
-                    Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
-
-                    Files.write(rutaArchivo, archivo.getBytes());
-
-                    rutas.add("/uploads/" + nombreArchivo);
-                }
-            }
+            rutas.addAll(guardarImagenes(archivos));
         }
 
         propiedad.setImagenes(rutas);
@@ -106,24 +92,7 @@ public class PropiedadRestController {
         //  SOLO CAMBIAR IMÁGENES SI VIENEN NUEVAS
         MultipartFile[] archivos = normalizarImagenes(imagenes, imagen);
         if (archivos != null && archivos.length > 0) {
-            asegurarCarpetaUploads();
-
-            List<String> rutas = new ArrayList<>();
-
-            for (MultipartFile archivo : archivos) {
-
-                if (!archivo.isEmpty()) {
-
-                    String nombreArchivo = System.currentTimeMillis() + "_" + archivo.getOriginalFilename();
-
-                    Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
-
-                    Files.write(rutaArchivo, archivo.getBytes());
-
-                    rutas.add("/uploads/" + nombreArchivo);
-                }
-            }
-
+            List<String> rutas = guardarImagenes(archivos);
             existente.setImagenes(rutas);
         }
 
@@ -132,6 +101,25 @@ public class PropiedadRestController {
 
     
     
+
+    private List<String> guardarImagenes(MultipartFile[] archivos) throws IOException {
+        asegurarCarpetaUploads();
+
+        List<String> rutas = new ArrayList<>();
+        for (MultipartFile archivo : archivos) {
+            if (archivo.isEmpty()) {
+                continue;
+            }
+
+            String nombreArchivo = System.currentTimeMillis() + "_" + archivo.getOriginalFilename();
+            Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
+            Files.write(rutaArchivo, archivo.getBytes());
+            rutas.add("/uploads/" + nombreArchivo);
+        }
+
+        return rutas;
+    }
+
     private MultipartFile[] normalizarImagenes(MultipartFile[] imagenes, MultipartFile imagen) {
         if (imagenes != null && imagenes.length > 0) {
             return imagenes;
