@@ -187,7 +187,7 @@
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:14px;">
-              <img src="${p.imagenId ? `http://localhost:8080/api/imagenes/${p.imagenId}` : '/img/default.jpg'}"
+              <img src="${(p.imagenes && p.imagenes.length > 0) ? p.imagenes[0] : '/img/default.jpg'}"
                    alt="${p.titulo}" class="table-img">
               <div>
                 <div class="table-property-name">${p.titulo}</div>

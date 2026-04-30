@@ -101,15 +101,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderizarPropiedades(lista, contenedor) {
   contenedor.innerHTML = lista.map(p => {
-    const imagenUrl = p.imagenId
-      ? `http://localhost:8080/api/imagenes/${p.imagenId}`
+    const imagenUrl = (p.imagenes && p.imagenes.length > 0)
+      ? p.imagenes[0]
       : '/img/default.jpg';
 
     return `
       <div class="property-card">
         <div class="card-banner">
           <div class="img-holder" style="--width:4;--height:3;">
-            <img loading="lazy" src="${imagenUrl}" alt="${p.titulo}" class="img-cover">
+            <img loading="lazy" src="${imagenUrl}" alt="${p.titulo}" class="img-cover" onerror="this.src='/img/default.jpg'">
           </div>
           <span class="tag card-tag">En Venta</span>
         </div>
@@ -132,6 +132,11 @@ function renderizarPropiedades(lista, contenedor) {
               <span class="material-symbols-rounded">directions_car</span>
               <span>${p.estacionamiento} parq.</span>
             </div>
+            ${p.metrosCuadrados ? `
+            <div class="card-feature-item">
+              <span class="material-symbols-rounded">square_foot</span>
+              <span>${p.metrosCuadrados} m²</span>
+            </div>` : ''}
           </div>
           <a href="/propiedad.html?id=${p.id}" class="btn btn-fill" style="width:100%;justify-content:center;">
             <span class="material-symbols-rounded">visibility</span>

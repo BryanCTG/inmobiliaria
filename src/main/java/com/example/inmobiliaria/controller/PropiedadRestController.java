@@ -22,7 +22,7 @@ public class PropiedadRestController {
     @Autowired
     private PropiedadRepository repo;
 
-    private final String UPLOAD_DIR = "src/main/resources/static/uploads/";
+    private final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
 
 
     // LISTAR TODAS
@@ -56,17 +56,17 @@ public class PropiedadRestController {
         if (archivos != null) {
             asegurarCarpetaUploads();
 
-            for (MultipartFile imagen : archivos) {
+            for (MultipartFile imagen1 : archivos) {
 
-                if (!imagen.isEmpty()) {
+                if (!imagen1.isEmpty()) {
 
-                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
+                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen1.getOriginalFilename();
 
-                    Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
+                        Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
 
-                    Files.write(rutaArchivo, imagen.getBytes());
+                        Files.write(rutaArchivo, imagen1.getBytes());
 
-                    rutas.add("/uploads/" + nombreArchivo);
+                        rutas.add("/uploads/" + nombreArchivo);
                 }
             }
         }
@@ -110,15 +110,15 @@ public class PropiedadRestController {
 
             List<String> rutas = new ArrayList<>();
 
-            for (MultipartFile imagen : archivos) {
+            for (MultipartFile imagen1 : archivos) {
 
-                if (!imagen.isEmpty()) {
+                if (!imagen1.isEmpty()) {
 
-                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
+                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen1.getOriginalFilename();
 
                     Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
 
-                    Files.write(rutaArchivo, imagen.getBytes());
+                    Files.write(rutaArchivo, imagen1.getBytes());
 
                     rutas.add("/uploads/" + nombreArchivo);
                 }
@@ -144,9 +144,9 @@ public class PropiedadRestController {
         return null;
     }
 
-    private void asegurarCarpetaUploads() throws IOException {
-        Files.createDirectories(Paths.get(UPLOAD_DIR));
-    }
+   private void asegurarCarpetaUploads() throws IOException {
+    Files.createDirectories(Paths.get(UPLOAD_DIR));
+}
 
     // ELIMINAR PROPIEDAD
    
@@ -163,10 +163,10 @@ public class PropiedadRestController {
 
                     try {
 
-                        Path archivo = Paths.get("src/main/resources/static" + ruta);
-
+                        Path archivo = Paths.get(System.getProperty("user.dir") + ruta);
                         Files.deleteIfExists(archivo);
 
+                        
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

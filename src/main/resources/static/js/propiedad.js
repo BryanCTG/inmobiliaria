@@ -21,9 +21,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!res.ok) throw new Error('Propiedad no encontrada');
     const p = await res.json();
 
-    const imagenUrl = p.imagenId
-      ? `http://localhost:8080/api/imagenes/${p.imagenId}`
-      : '/img/default.jpg';
+    const imagenes = (p.imagenes && p.imagenes.length > 0) ? p.imagenes : ['/img/default.jpg'];
+    const imagenPrincipal = imagenes[0];
+
+    // Galería de miniaturas si hay más de una imagen
+    const galeriaHTML = imagenes.length > 1
+      ? `<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+          ${imagenes.map((src, i) => `
+            <img src="${src}" alt="Imagen ${i+1}" onerror="this.src='/img/default.jpg'"
+              style="width:80px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--primary-100)':'transparent'};"
+              onclick="document.getElementById('imgPrincipal').src=this.src;
+                       document.querySelectorAll('.thumb-gallery img').forEach(t=>t.style.borderColor='transparent');
+                       this.style.borderColor='var(--primary-100)';">
+          `).join('')}
+         </div>`
+      : '';
 
     // Update page title
     document.title = `${p.titulo} | Bienes Raíces`;
@@ -48,8 +60,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             <!-- Gallery -->
             <div>
               <div class="property-gallery">
-                <img src="${imagenUrl}" alt="${p.titulo}" onerror="this.src='/img/default.jpg'">
+                <img id="imgPrincipal" src="${imagenPrincipal}" alt="${p.titulo}" onerror="this.src='/img/default.jpg'">
               </div>
+              <div class="thumb-gallery">${galeriaHTML}</div>
               <div class="admin-card" style="margin-top:24px;">
                 <div class="admin-card-header">
                   <h2 style="font-size:var(--fs-title-medium);">Descripción</h2>
@@ -89,6 +102,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                       <span>Parqueadero(s)</span>
                     </div>
                   </div>
+                  ${p.metrosCuadrados ? `
+                  <div class="property-feature">
+                    <span class="material-symbols-rounded">square_foot</span>
+                    <div>
+                      <strong>${p.metrosCuadrados} m²</strong>
+                      <span>Área</span>
+                    </div>
+                  </div>` : ''}
                 </div>
 
                 <div style="margin-top:24px;display:flex;flex-direction:column;gap:12px;">
