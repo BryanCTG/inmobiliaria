@@ -101,9 +101,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderizarPropiedades(lista, contenedor) {
   contenedor.innerHTML = lista.map(p => {
-    const imagenUrl = p.imagenId
-      ? `http://localhost:8080/api/imagenes/${p.imagenId}`
-      : '/img/default.jpg';
+    const imagenUrl = Array.isArray(p.imagenes) && p.imagenes.length > 0
+      ? p.imagenes[0]
+      : (p.imagenId ? `http://localhost:8080/api/imagenes/${p.imagenId}` : '/img/default.jpg');
 
     return `
       <div class="property-card">
@@ -131,6 +131,10 @@ function renderizarPropiedades(lista, contenedor) {
             <div class="card-feature-item">
               <span class="material-symbols-rounded">directions_car</span>
               <span>${p.estacionamiento} parq.</span>
+            </div>
+            <div class="card-feature-item">
+              <span class="material-symbols-rounded">straighten</span>
+              <span>${p.metrosCuadrados || 0} m²</span>
             </div>
           </div>
           <a href="/propiedad.html?id=${p.id}" class="btn btn-fill" style="width:100%;justify-content:center;">

@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('wc').value             = p.wc;
     document.getElementById('estacionamiento').value = p.estacionamiento;
     document.getElementById('habitaciones').value   = p.habitaciones;
+    document.getElementById('metrosCuadrados').value = p.metrosCuadrados || ''; 
 
     // Update subtitle
     const subtitulo = document.getElementById('nombrePropiedad');
@@ -31,8 +32,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Preview image
     const preview = document.getElementById('preview');
-    if (preview && p.imagenId) {
-      preview.src = `http://localhost:8080/api/imagenes/${p.imagenId}`;
+    if (preview && Array.isArray(p.imagenes) && p.imagenes.length > 0) {
+      preview.src = p.imagenes[0];
     } else if (preview) {
       preview.src = '/img/default.jpg';
     }
@@ -63,13 +64,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       precio:          parseFloat(document.getElementById('precio').value),
       wc:              parseInt(document.getElementById('wc').value),
       estacionamiento: parseInt(document.getElementById('estacionamiento').value),
-      habitaciones:    parseInt(document.getElementById('habitaciones').value)
+      habitaciones:    parseInt(document.getElementById('habitaciones').value),
+      metrosCuadrados: parseFloat(document.getElementById('metrosCuadrados').value)
     };
 
     formData.append('propiedad', new Blob([JSON.stringify(propiedad)], { type: 'application/json' }));
 
-    const imagenFile = document.getElementById('imagen').files[0];
-    if (imagenFile) formData.append('imagen', imagenFile);
+    const archivos = Array.from(document.getElementById('imagen').files || []).slice(0, 4);
+    archivos.forEach((file) => formData.append('imagenes', file));
 
     try {
       const res = await fetch(`http://localhost:8080/api/propiedades/${id}`, {
