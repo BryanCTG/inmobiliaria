@@ -17,6 +17,7 @@ public class Propiedad {
     private int habitaciones;
     private int wc;
     private int estacionamiento;
+    private double metrosCuadrados;
 
     private boolean visible = true;
 
@@ -84,6 +85,15 @@ public class Propiedad {
 
     public void setEstacionamiento(int estacionamiento) {
         this.estacionamiento = estacionamiento;
+    }
+
+
+    public double getMetrosCuadrados() {
+        return metrosCuadrados;
+    }
+
+    public void setMetrosCuadrados(double metrosCuadrados) {
+        this.metrosCuadrados = metrosCuadrados;
     }
 
     public boolean isVisible() {

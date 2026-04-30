@@ -45,14 +45,18 @@ public class PropiedadRestController {
     @PostMapping(consumes = {"multipart/form-data"})
     public Propiedad crear(
             @RequestPart("propiedad") Propiedad propiedad,
-            @RequestPart(value = "imagenes", required = false) MultipartFile[] imagenes
+            @RequestPart(value = "imagenes", required = false) MultipartFile[] imagenes,
+            @RequestPart(value = "imagen", required = false) MultipartFile imagen
     ) throws IOException {
 
         List<String> rutas = new ArrayList<>();
 
-        if (imagenes != null) {
+        MultipartFile[] archivos = normalizarImagenes(imagenes, imagen);
 
-            for (MultipartFile imagen : imagenes) {
+        if (archivos != null) {
+            asegurarCarpetaUploads();
+
+            for (MultipartFile imagen : archivos) {
 
                 if (!imagen.isEmpty()) {
 
@@ -79,7 +83,8 @@ public class PropiedadRestController {
     public Propiedad actualizar(
             @PathVariable String id,
             @RequestPart("propiedad") Propiedad nueva,
-            @RequestPart(value = "imagenes", required = false) MultipartFile[] imagenes
+            @RequestPart(value = "imagenes", required = false) MultipartFile[] imagenes,
+            @RequestPart(value = "imagen", required = false) MultipartFile imagen
     ) throws IOException {
 
         Propiedad existente = repo.findById(id).orElse(null);
@@ -96,13 +101,16 @@ public class PropiedadRestController {
         existente.setCiudad(nueva.getCiudad());
         existente.setBarrio(nueva.getBarrio());
         existente.setDireccion(nueva.getDireccion());
+        existente.setMetrosCuadrados(nueva.getMetrosCuadrados());
 
         //  SOLO CAMBIAR IMÁGENES SI VIENEN NUEVAS
-        if (imagenes != null && imagenes.length > 0) {
+        MultipartFile[] archivos = normalizarImagenes(imagenes, imagen);
+        if (archivos != null && archivos.length > 0) {
+            asegurarCarpetaUploads();
 
             List<String> rutas = new ArrayList<>();
 
-            for (MultipartFile imagen : imagenes) {
+            for (MultipartFile imagen : archivos) {
 
                 if (!imagen.isEmpty()) {
 
@@ -123,6 +131,23 @@ public class PropiedadRestController {
     }
 
     
+    
+    private MultipartFile[] normalizarImagenes(MultipartFile[] imagenes, MultipartFile imagen) {
+        if (imagenes != null && imagenes.length > 0) {
+            return imagenes;
+        }
+
+        if (imagen != null && !imagen.isEmpty()) {
+            return new MultipartFile[]{imagen};
+        }
+
+        return null;
+    }
+
+    private void asegurarCarpetaUploads() throws IOException {
+        Files.createDirectories(Paths.get(UPLOAD_DIR));
+    }
+
     // ELIMINAR PROPIEDAD
    
     @DeleteMapping("/{id}")
