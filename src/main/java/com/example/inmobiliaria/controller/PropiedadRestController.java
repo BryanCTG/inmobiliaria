@@ -6,8 +6,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,27 +48,28 @@ public class PropiedadRestController {
     public Propiedad crear(
             @RequestPart("propiedad") Propiedad propiedad,
             @RequestPart(value = "imagenes", required = false) MultipartFile[] imagenes,
+            @RequestPart(value = "imagenes[]", required = false) MultipartFile[] imagenesArray,
             @RequestPart(value = "imagen", required = false) MultipartFile imagen
     ) throws IOException {
 
         List<String> rutas = new ArrayList<>();
 
-        MultipartFile[] archivos = normalizarImagenes(imagenes, imagen);
+        MultipartFile[] archivos = normalizarImagenes(imagenes, imagenesArray, imagen);
 
         if (archivos != null) {
             asegurarCarpetaUploads();
 
-            for (MultipartFile imagen1 : archivos) {
+            for (MultipartFile imagen : archivos) {
 
-                if (!imagen1.isEmpty()) {
+                if (!imagen.isEmpty()) {
 
-                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen1.getOriginalFilename();
+                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
 
-                        Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
+                    Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
 
-                        Files.write(rutaArchivo, imagen1.getBytes());
+                    Files.write(rutaArchivo, imagen.getBytes());
 
-                        rutas.add("/uploads/" + nombreArchivo);
+                    rutas.add("/uploads/" + nombreArchivo);
                 }
             }
         }
@@ -84,6 +87,7 @@ public class PropiedadRestController {
             @PathVariable String id,
             @RequestPart("propiedad") Propiedad nueva,
             @RequestPart(value = "imagenes", required = false) MultipartFile[] imagenes,
+            @RequestPart(value = "imagenes[]", required = false) MultipartFile[] imagenesArray,
             @RequestPart(value = "imagen", required = false) MultipartFile imagen
     ) throws IOException {
 
@@ -104,21 +108,21 @@ public class PropiedadRestController {
         existente.setMetrosCuadrados(nueva.getMetrosCuadrados());
 
         //  SOLO CAMBIAR IMÁGENES SI VIENEN NUEVAS
-        MultipartFile[] archivos = normalizarImagenes(imagenes, imagen);
+        MultipartFile[] archivos = normalizarImagenes(imagenes, imagenesArray, imagen);
         if (archivos != null && archivos.length > 0) {
             asegurarCarpetaUploads();
 
             List<String> rutas = new ArrayList<>();
 
-            for (MultipartFile imagen1 : archivos) {
+            for (MultipartFile imagen : archivos) {
 
-                if (!imagen1.isEmpty()) {
+                if (!imagen.isEmpty()) {
 
-                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen1.getOriginalFilename();
+                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen.getOriginalFilename();
 
                     Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
 
-                    Files.write(rutaArchivo, imagen1.getBytes());
+                    Files.write(rutaArchivo, imagen.getBytes());
 
                     rutas.add("/uploads/" + nombreArchivo);
                 }
@@ -132,9 +136,33 @@ public class PropiedadRestController {
 
     
     
-    private MultipartFile[] normalizarImagenes(MultipartFile[] imagenes, MultipartFile imagen) {
+
+    private List<String> guardarImagenes(MultipartFile[] archivos) throws IOException {
+        Path uploadsDir = asegurarCarpetaUploads();
+
+        List<String> rutas = new ArrayList<>();
+        for (MultipartFile archivo : archivos) {
+            if (archivo.isEmpty()) {
+                continue;
+            }
+
+            String nombreLimpio = StringUtils.cleanPath(archivo.getOriginalFilename());
+            String nombreArchivo = UUID.randomUUID() + "_" + nombreLimpio;
+            Path rutaArchivo = uploadsDir.resolve(nombreArchivo);
+            Files.write(rutaArchivo, archivo.getBytes());
+            rutas.add("/uploads/" + nombreArchivo);
+        }
+
+        return rutas;
+    }
+
+    private MultipartFile[] normalizarImagenes(MultipartFile[] imagenes, MultipartFile[] imagenesArray, MultipartFile imagen) {
         if (imagenes != null && imagenes.length > 0) {
             return imagenes;
+        }
+
+        if (imagenesArray != null && imagenesArray.length > 0) {
+            return imagenesArray;
         }
 
         if (imagen != null && !imagen.isEmpty()) {
@@ -144,9 +172,9 @@ public class PropiedadRestController {
         return null;
     }
 
-   private void asegurarCarpetaUploads() throws IOException {
-    Files.createDirectories(Paths.get(UPLOAD_DIR));
-}
+    private void asegurarCarpetaUploads() throws IOException {
+        Files.createDirectories(Paths.get(UPLOAD_DIR));
+    }
 
     // ELIMINAR PROPIEDAD
    
@@ -163,7 +191,8 @@ public class PropiedadRestController {
 
                     try {
 
-                        Path archivo = Paths.get(System.getProperty("user.dir") + ruta);
+                        Path archivo = Paths.get("src/main/resources/static" + ruta);
+
                         Files.deleteIfExists(archivo);
 
                         
