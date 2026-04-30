@@ -20,14 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
       habitaciones:    parseInt(form.habitaciones.value),
       wc:              parseInt(form.wc.value),
       estacionamiento: parseInt(form.estacionamiento.value),
+      metrosCuadrados: parseFloat(form.metrosCuadrados.value),
       visible:         true
     };
 
     formData.append('propiedad', new Blob([JSON.stringify(propiedad)], { type: 'application/json' }));
 
-    if (form.imagen.files[0]) {
-      formData.append('imagen', form.imagen.files[0]);
-    }
+    const archivos = Array.from(form.imagen.files || []).slice(0, 4);
+    archivos.forEach((file) => formData.append('imagenes', file));
 
     try {
       const response = await fetch('http://localhost:8080/api/propiedades', {
