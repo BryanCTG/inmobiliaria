@@ -89,6 +89,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                       <span>Parqueadero(s)</span>
                     </div>
                   </div>
+                  <div class="property-feature">
+                    <span class="material-symbols-rounded">straighten</span>
+                    <div>
+                      <strong>${p.metrosCuadrados || 0}</strong>
+                      <span>Metros cuadrados</span>
+                    </div>
+                  </div>
                 </div>
 
                 <div style="margin-top:24px;display:flex;flex-direction:column;gap:12px;">
