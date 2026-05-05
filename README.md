@@ -1,161 +1,182 @@
-# 🏠 Proyecto Inmobiliaria - Spring Boot + MongoDB
 
-Este proyecto es una aplicación web de **gestión inmobiliaria** desarrollada con **Spring Boot**, **Spring Security** y **MongoDB**, orientada a la administración de propiedades y el control de acceso para administradores.
+# Belar Inmobiliaria
 
----
-
-## 📌 Funcionalidades principales
-
-### 🌐 Sitio público
-
-* Visualización de propiedades inmobiliarias.
-* Página de inicio y catálogo.
-* Formulario de contacto para interesados.
-* Consumo de APIs públicas.
-
-### 🔐 Panel de administración
-
-* Login seguro para administradores.
-* Autenticación con **Spring Security**.
-* Usuarios almacenados en **MongoDB**.
-* Validación de contraseñas con **BCrypt**.
-* Acceso restringido por roles (`ADMIN`).
-* Gestión protegida de rutas `/admin/**`.
+Sistema web completo para la gestión de bienes raíces, enfocado en la administración de propiedades y la gestión de clientes mediante un panel administrativo tipo CRM.
 
 ---
 
-## 🧑‍💻 Tecnologías utilizadas
+## Descripción
 
-### Backend
+Belar Inmobiliaria es una aplicación full stack que permite gestionar propiedades y clientes desde un panel administrativo. El sistema integra dos bases de datos para optimizar el manejo de información: MySQL para propiedades y MongoDB para contactos.
 
-* Java 17+
-* Spring Boot
-* Spring Security
-* Spring Data MongoDB
-* Maven
+Incluye funcionalidades de tipo CRM para el seguimiento de clientes interesados en propiedades.
+
+---
+
+## Características principales
+
+### Gestión de propiedades
+- Crear, editar y eliminar propiedades
+- Asociación de propiedades con vendedores
+- Catálogo público de propiedades
+- Página individual con información detallada
+
+### Gestión de contactos (CRM)
+- Registro de clientes desde formulario web
+- Visualización de contactos en el panel administrativo
+- Estados de contacto:
+  - Pendiente
+  - Atendido
+- Marcado de contactos como atendidos
+- Filtros por estado
+- Búsqueda por nombre o correo
+- Paginación para grandes volúmenes de datos
+
+### Panel administrativo
+- Acceso exclusivo para administrador
+- Interfaz organizada tipo dashboard
+- Métricas en tiempo real:
+  - Total de contactos
+  - Contactos pendientes
+  - Contactos atendidos
+
+---
+
+## Tecnologías utilizadas
 
 ### Frontend
+- HTML5
+- CSS3 (Flexbox y Grid)
+- JavaScript (Vanilla)
 
-* HTML5
-* CSS3
-* JavaScript
+### Backend
+- Java
+- Spring Boot
+- API REST
 
 ### Base de datos
+- MySQL (gestión de propiedades)
+- MongoDB (gestión de contactos)
 
-* MongoDB
-
----
-
-## 🔑 Seguridad y autenticación
-
-* Autenticación basada en **username** (no correo).
-* Usuarios cargados desde la colección `usuarios`.
-* Contraseñas almacenadas de forma segura con **BCrypt**.
-* Roles manejados con prefijo `ROLE_` (`ROLE_ADMIN`).
-* Servicio personalizado: `CustomUserDetailsService`.
-
-### Flujo de login
-
-1. El administrador accede a `/admin/login.html`.
-2. Ingresa usuario y contraseña.
-3. Spring Security valida contra MongoDB.
-4. Si es correcto, redirige a `/admin/index.html`.
-5. Si falla, vuelve al login con `?error=true`.
+### Herramientas
+- Mongoose
+- Express (versión anterior del proyecto)
+- Postman
+- Git y GitHub
 
 ---
 
-## 📂 Estructura del proyecto
+## Estructura del proyecto
 
 ```
-com.example.inmobiliaria
-│
-├── config
-│   ├── SecurityConfig.java
-│   └── CustomUserDetailsService.java
-│
-├── model
-│   └── Usuario.java
-│
-├── repository
-│   └── UsuarioRepository.java
-│
-├── controller
-│   └── (Controladores REST y Web)
-│
-└── resources
-    ├── static
-    │   ├── admin
-    │   │   ├── login.html
-    │   │   └── index.html
-    │   ├── css
-    │   ├── js
-    │   └── img
-    └── application.properties
-```
+
+/admin
+├── contactos.html
+├── propiedades.html
+├── crear.html
+
+/css
+/js
+/backend (Spring Boot)
+
+````
 
 ---
 
-## 🗄️ Modelo de usuario (MongoDB)
+## Instalación
 
-```json
-{
-  "nombre": "Administrador",
-  "username": "admin",
-  "email": "admin@inmobiliaria.com",
-  "password": "$2a$10$hashBCrypt",
-  "rol": "ADMIN",
-  "enabled": true
-}
-```
-
----
-
-## ▶️ Cómo ejecutar el proyecto
-
-1. Clonar el repositorio
+### 1. Clonar el repositorio
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/BryanCTG/inmobiliaria.git
+cd inmobiliaria
+````
+
+---
+
+### 2. Configurar backend (Spring Boot)
+
+Editar el archivo application.properties:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/inmobiliaria
+spring.datasource.username=root
+spring.datasource.password=tu_password
+
+spring.data.mongodb.uri=mongodb://localhost:27017/inmobiliaria
 ```
 
-2. Configurar MongoDB y `application.properties`
+---
 
-3. Ejecutar el proyecto
+### 3. Ejecutar el backend
 
 ```bash
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
-4. Acceder desde el navegador
+---
 
-* Sitio público: `http://localhost:8080/`
-* Login admin: `http://localhost:8080/admin/login.html`
+### 4. Ejecutar frontend
+
+Abrir en el navegador:
+
+```
+/admin/contactos.html
+```
+
+O utilizar un servidor local.
 
 ---
 
-## ✅ Estado actual del proyecto
+## Funcionalidades destacadas
 
-* Login funcional con Spring Security
-* Roles y permisos correctamente configurados
-* MongoDB integrado
-* Estructura preparada para ampliación (CRUD, más roles, JWT, etc.)
-
----
-
-## 🚀 Próximas mejoras (opcional)
-
-* CRUD completo de propiedades desde el panel admin
-* Creación automática del usuario administrador
-* Manejo de errores personalizados
-* Implementación de JWT
-* Subida de imágenes de propiedades
+* Sistema de contactos tipo CRM
+* Estados visuales de clientes
+* Panel administrativo con métricas
+* Paginación eficiente para grandes cantidades de datos
+* Interfaz moderna y organizada
 
 ---
 
-## ✍️ Autor
+## Objetivo del proyecto
 
-Proyecto desarrollado con fines académicos y de aprendizaje en **Ingeniería de Sistemas**, enfocado en buenas prácticas de seguridad y arquitectura con Spring Boot.
+Este proyecto fue desarrollado como parte de formación en Ingeniería de Sistemas con el objetivo de:
+
+* Aplicar arquitectura cliente-servidor
+* Integrar múltiples bases de datos
+* Desarrollar una solución real para gestión inmobiliaria
+* Implementar un sistema tipo CRM funcional
 
 ---
 
-📌 *Este proyecto está en constante mejora y aprendizaje.*
+## Mejoras futuras
+
+* Notificaciones en tiempo real
+* Implementación de WebSockets
+* Sistema de roles (administrador y vendedores)
+* Optimización de carga de imágenes
+* Despliegue en la nube
+
+---
+
+## Autor
+
+Bryan Beltrán
+
+GitHub: [https://github.com/BryanCTG](https://github.com/BryanCTG)
+
+---
+
+## Contribuciones
+
+Las contribuciones son bienvenidas.
+Puedes hacer un fork del proyecto y enviar un pull request.
+
+---
+
+## Licencia
+
+Proyecto de uso educativo.
+
+```
+```
