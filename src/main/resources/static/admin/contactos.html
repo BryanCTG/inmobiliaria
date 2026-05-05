@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contactos | Admin Bienes Raíces</title>
+  <title>Contactos | Admin Belar</title>
   <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +19,7 @@
     <div class="sidebar-header">
       <div class="sidebar-logo">
         <div class="sidebar-logo-icon"><span class="material-symbols-rounded">home_work</span></div>
-        <div class="sidebar-logo-text">BienesRaíces<small>Panel de Administración</small></div>
+        <div class="sidebar-logo-text">Belar<small>Panel de Administración</small></div>
       </div>
     </div>
     <nav class="sidebar-nav">
@@ -81,17 +81,42 @@
         </div>
       </div>
 
-      <!-- Search bar -->
+      <!-- Filtros + Búsqueda -->
       <div class="admin-card" style="margin-bottom:24px;">
         <div class="admin-card-body" style="padding:16px 24px;">
-          <div style="position:relative;max-width:400px;">
-            <span class="material-symbols-rounded" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--neutral-60);font-size:2rem;">search</span>
-            <input type="text" id="searchContacto" class="form-control" placeholder="Buscar por nombre o correo..." style="padding-left:44px;">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+            <div style="position:relative;flex:1;min-width:200px;">
+              <span class="material-symbols-rounded" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--neutral-60);font-size:2rem;">search</span>
+              <input type="text" id="searchContacto" class="form-control" placeholder="Buscar por nombre o correo..." style="padding-left:44px;">
+            </div>
+            <select id="filtroEstado" class="form-control" style="max-width:200px;">
+              <option value="">Todos los estados</option>
+              <option value="pendiente">⏳ Pendientes</option>
+              <option value="atendido">✅ Atendidos</option>
+            </select>
           </div>
         </div>
       </div>
 
-      <!-- Cards grid -->
+      <!-- Resumen de estados -->
+      <div style="display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
+        <div id="statPendientes" style="background:#FEF9C3;border:1px solid #FDE047;border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
+          <span class="material-symbols-rounded" style="font-size:2.4rem;color:#A16207;">schedule</span>
+          <div>
+            <div style="font-size:2.4rem;font-weight:700;color:#A16207;line-height:1;" id="numeroPendientes">—</div>
+            <div style="font-size:var(--fs-label-small);color:#A16207;">Pendientes</div>
+          </div>
+        </div>
+        <div id="statAtendidos" style="background:#DCFCE7;border:1px solid #86EFAC;border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
+          <span class="material-symbols-rounded" style="font-size:2.4rem;color:#15803D;">check_circle</span>
+          <div>
+            <div style="font-size:2.4rem;font-weight:700;color:#15803D;line-height:1;" id="numeroAtendidos">—</div>
+            <div style="font-size:var(--fs-label-small);color:#15803D;">Atendidos</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards de contactos -->
       <div id="contenedor-contactos" class="contact-cards-grid">
         <div class="spinner">Cargando mensajes...</div>
       </div>
@@ -114,9 +139,9 @@
         const propiedades = await resP.json();
 
         propiedades.forEach(p => { mapaPropiedades[p.id] = p.titulo; });
-
         todosContactos.reverse();
-        document.getElementById('conteoContactos').textContent = `${todosContactos.length} mensajes en total`;
+
+        actualizarContadores();
         renderizarContactos(todosContactos);
 
       } catch(err) {
@@ -125,31 +150,56 @@
       }
     }
 
+    function actualizarContadores() {
+      const pendientes = todosContactos.filter(c => !c.atendido).length;
+      const atendidos  = todosContactos.filter(c => c.atendido).length;
+      document.getElementById('numeroPendientes').textContent = pendientes;
+      document.getElementById('numeroAtendidos').textContent  = atendidos;
+      document.getElementById('conteoContactos').textContent  =
+        `${todosContactos.length} mensajes — ${pendientes} pendientes, ${atendidos} atendidos`;
+    }
+
     function renderizarContactos(lista) {
       const contenedor = document.getElementById('contenedor-contactos');
       if (lista.length === 0) {
-        contenedor.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span class="material-symbols-rounded">mail</span><h3>Sin mensajes</h3><p>No hay mensajes de contacto todavía</p></div>';
+        contenedor.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span class="material-symbols-rounded">mail</span><h3>Sin mensajes</h3><p>No hay mensajes que coincidan con el filtro</p></div>';
         return;
       }
+
       const medioIconos = { telefono: 'phone', correo: 'mail', whatsapp: 'chat' };
+
       contenedor.innerHTML = lista.map(c => {
         const nombrePropiedad = mapaPropiedades[c.casaInteres] || 'No especificada';
-        const iniciales = c.nombre ? c.nombre.charAt(0).toUpperCase() : '?';
+        const iniciales  = c.nombre ? c.nombre.charAt(0).toUpperCase() : '?';
         const iconoMedio = medioIconos[c.medioContacto] || 'contact_mail';
+        const atendido   = c.atendido === true;
+
         return `
-          <div class="contact-card">
+          <div class="contact-card" style="border-left-color:${atendido ? 'var(--success)' : 'var(--primary-100)'};">
+            
+            <!-- Header de la card -->
             <div class="contact-card-header">
-              <div class="contact-card-avatar">${iniciales}</div>
-              <div>
+              <div class="contact-card-avatar" style="background:${atendido ? 'linear-gradient(135deg,#22c55e,#15803d)' : ''};">
+                ${iniciales}
+              </div>
+              <div style="flex:1;">
                 <div class="contact-card-name">${c.nombre}</div>
-                <div class="contact-card-date">
+                <div class="contact-card-date" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:4px;">
                   <span class="badge badge-blue" style="display:inline-flex;align-items:center;gap:4px;">
                     <span class="material-symbols-rounded" style="font-size:1.4rem;">${iconoMedio}</span>
-                    Contactar por ${c.medioContacto || 'correo'}
+                    ${c.medioContacto || 'correo'}
+                  </span>
+                  <!-- Badge de estado -->
+                  <span class="badge ${atendido ? 'badge-green' : ''}" 
+                        style="${!atendido ? 'background:#FEF9C3;color:#A16207;' : ''}display:inline-flex;align-items:center;gap:4px;">
+                    <span class="material-symbols-rounded" style="font-size:1.4rem;">${atendido ? 'check_circle' : 'schedule'}</span>
+                    ${atendido ? 'Atendido' : 'Pendiente'}
                   </span>
                 </div>
               </div>
             </div>
+
+            <!-- Datos -->
             <div class="contact-card-body">
               <div class="contact-card-row">
                 <span class="material-symbols-rounded">mail</span>
@@ -166,19 +216,73 @@
               </div>
               ${c.mensaje ? `<div class="contact-card-message">"${c.mensaje}"</div>` : ''}
             </div>
+
+            <!-- Acciones -->
+            <div style="display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--neutral-95);">
+              <button onclick="toggleAtendido('${c.id}')"
+                class="btn btn-sm ${atendido ? 'btn-outline' : 'btn-fill'}"
+                style="flex:1;justify-content:center;">
+                <span class="material-symbols-rounded" style="font-size:1.6rem;">${atendido ? 'undo' : 'check_circle'}</span>
+                ${atendido ? 'Marcar pendiente' : 'Marcar atendido'}
+              </button>
+              <button onclick="eliminarContacto('${c.id}')"
+                class="btn btn-danger btn-sm"
+                title="Eliminar mensaje">
+                <span class="material-symbols-rounded" style="font-size:1.6rem;">delete</span>
+              </button>
+            </div>
+
           </div>
         `;
       }).join('');
     }
 
-    document.getElementById('searchContacto').addEventListener('input', function() {
-      const q = this.value.toLowerCase();
-      const filtrados = todosContactos.filter(c =>
-        c.nombre.toLowerCase().includes(q) ||
-        c.correo.toLowerCase().includes(q)
+    async function toggleAtendido(id) {
+      try {
+        const res = await fetch(`http://localhost:8080/api/contacto/${id}/atendido`, { method: 'PATCH' });
+        if (!res.ok) throw new Error();
+        // Actualizar localmente sin recargar todo
+        const idx = todosContactos.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          todosContactos[idx].atendido = !todosContactos[idx].atendido;
+        }
+        actualizarContadores();
+        aplicarFiltros();
+      } catch {
+        alert('Error al actualizar el estado del mensaje');
+      }
+    }
+
+    async function eliminarContacto(id) {
+      if (!confirm('¿Seguro que deseas eliminar este mensaje? Esta acción no se puede deshacer.')) return;
+      try {
+        const res = await fetch(`http://localhost:8080/api/contacto/${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error();
+        todosContactos = todosContactos.filter(c => c.id !== id);
+        actualizarContadores();
+        aplicarFiltros();
+      } catch {
+        alert('Error al eliminar el mensaje');
+      }
+    }
+
+    function aplicarFiltros() {
+      const q    = document.getElementById('searchContacto').value.toLowerCase();
+      const est  = document.getElementById('filtroEstado').value;
+      let lista  = todosContactos;
+
+      if (q) lista = lista.filter(c =>
+        c.nombre.toLowerCase().includes(q) || c.correo.toLowerCase().includes(q)
       );
-      renderizarContactos(filtrados);
-    });
+
+      if (est === 'pendiente') lista = lista.filter(c => !c.atendido);
+      if (est === 'atendido')  lista = lista.filter(c => c.atendido);
+
+      renderizarContactos(lista);
+    }
+
+    document.getElementById('searchContacto').addEventListener('input', aplicarFiltros);
+    document.getElementById('filtroEstado').addEventListener('change', aplicarFiltros);
 
     cargarContactos();
   </script>
