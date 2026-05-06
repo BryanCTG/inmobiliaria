@@ -6,8 +6,6 @@
 
 ## 📸 Vista previa
 
-> **📌 Recomendación de imágenes:** Agrega capturas de pantalla reales de tu proyecto en una carpeta `/screenshots` en la raíz del repositorio y referencia las imágenes así:
-
 ```
 /screenshots/
 ├── hero.png           → Página de inicio (sección hero)
@@ -19,7 +17,7 @@
 └── admin-contactos.png → Vista CRM de mensajes
 ```
 
-Una vez agregadas, descomenta y usa estas líneas en el README:
+
 
 ```markdown
 | Inicio | Propiedades | Detalle |
