@@ -10,6 +10,121 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
   <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <style>
+    /* ── Paginación ───────────────────────────────────────────── */
+    .paginacion-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 32px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .paginacion-info {
+      font-size: var(--fs-label-medium);
+      color: var(--neutral-60);
+    }
+
+    .paginacion-info strong {
+      color: var(--neutral-20);
+    }
+
+    .paginacion-controles {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .page-btn {
+      min-width: 36px;
+      height: 36px;
+      padding: 0 10px;
+      border-radius: var(--radius-small);
+      border: 2px solid var(--neutral-90);
+      background: var(--white);
+      color: var(--neutral-40);
+      font-size: var(--fs-label-medium);
+      font-weight: var(--weight-semiBold);
+      font-family: var(--font-primary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      transition: all var(--transition-duration-quick) var(--transition-easing-quick);
+    }
+
+    .page-btn:hover:not(:disabled) {
+      border-color: var(--primary-100);
+      color: var(--primary-100);
+      background: #EBF3FF;
+    }
+
+    .page-btn.active {
+      background: var(--primary-100);
+      border-color: var(--primary-100);
+      color: var(--white);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .page-btn .material-symbols-rounded {
+      font-size: 1.8rem;
+      display: block;
+    }
+
+    .page-ellipsis {
+      min-width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--neutral-60);
+      font-size: var(--fs-label-medium);
+      font-weight: var(--weight-semiBold);
+      pointer-events: none;
+    }
+
+    .por-pagina-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--fs-label-medium);
+      color: var(--neutral-60);
+    }
+
+    .por-pagina-selector select {
+      border: 2px solid var(--neutral-90);
+      border-radius: var(--radius-small);
+      padding: 6px 10px;
+      font-size: var(--fs-label-medium);
+      font-family: var(--font-primary);
+      font-weight: var(--weight-semiBold);
+      color: var(--neutral-20);
+      background: var(--white);
+      cursor: pointer;
+      width: auto;
+    }
+
+    .por-pagina-selector select:focus {
+      border-color: var(--primary-100);
+      outline: none;
+    }
+
+    /* animación suave al cambiar página */
+    #contenedor-contactos {
+      transition: opacity 150ms ease;
+    }
+    #contenedor-contactos.fade-out {
+      opacity: 0;
+    }
+  </style>
 </head>
 <body class="admin-body">
 
@@ -98,16 +213,16 @@
         </div>
       </div>
 
-      <!-- Resumen de estados -->
+      <!-- Contadores de estado -->
       <div style="display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
-        <div id="statPendientes" style="background:#FEF9C3;border:1px solid #FDE047;border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
+        <div style="background:#FEF9C3;border:1px solid #FDE047;border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
           <span class="material-symbols-rounded" style="font-size:2.4rem;color:#A16207;">schedule</span>
           <div>
             <div style="font-size:2.4rem;font-weight:700;color:#A16207;line-height:1;" id="numeroPendientes">—</div>
             <div style="font-size:var(--fs-label-small);color:#A16207;">Pendientes</div>
           </div>
         </div>
-        <div id="statAtendidos" style="background:#DCFCE7;border:1px solid #86EFAC;border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
+        <div style="background:#DCFCE7;border:1px solid #86EFAC;border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
           <span class="material-symbols-rounded" style="font-size:2.4rem;color:#15803D;">check_circle</span>
           <div>
             <div style="font-size:2.4rem;font-weight:700;color:#15803D;line-height:1;" id="numeroAtendidos">—</div>
@@ -116,19 +231,54 @@
         </div>
       </div>
 
-      <!-- Cards de contactos -->
+      <!-- Grid de cards -->
       <div id="contenedor-contactos" class="contact-cards-grid">
         <div class="spinner">Cargando mensajes...</div>
       </div>
+
+      <!-- ── PAGINADOR ─────────────────────────────────────────── -->
+      <div class="paginacion-wrapper" id="paginacionWrapper" style="display:none;">
+
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;gap:12px;">
+          <!-- Texto info -->
+          <span class="paginacion-info" id="paginacionInfo"></span>
+
+          <!-- Selector de items por página -->
+          <div class="por-pagina-selector">
+            <span>Mostrar</span>
+            <select id="selectPorPagina">
+              <option value="6">6</option>
+              <option value="9" selected>9</option>
+              <option value="12">12</option>
+              <option value="18">18</option>
+            </select>
+            <span>por página</span>
+          </div>
+        </div>
+
+        <!-- Botones de página -->
+        <div class="paginacion-controles" id="paginacionControles"></div>
+
+      </div>
+      <!-- ── FIN PAGINADOR ──────────────────────────────────────── -->
 
     </div>
   </div>
 
   <script src="/js/admin-layout.js"></script>
   <script>
-    let todosContactos = [];
+    // ═══════════════════════════════════════════════════════════
+    //  ESTADO GLOBAL
+    // ═══════════════════════════════════════════════════════════
+    let todosContactos  = [];   // todos los contactos cargados
+    let listaFiltrada   = [];   // resultado de búsqueda/filtro
     let mapaPropiedades = {};
+    let paginaActual    = 1;
+    let porPagina       = 9;    // valor inicial del selector
 
+    // ═══════════════════════════════════════════════════════════
+    //  CARGA INICIAL
+    // ═══════════════════════════════════════════════════════════
     async function cargarContactos() {
       try {
         const [resC, resP] = await Promise.all([
@@ -139,30 +289,174 @@
         const propiedades = await resP.json();
 
         propiedades.forEach(p => { mapaPropiedades[p.id] = p.titulo; });
-        todosContactos.reverse();
+        todosContactos.reverse();   // más reciente primero
 
+        listaFiltrada = [...todosContactos];
         actualizarContadores();
-        renderizarContactos(todosContactos);
+        mostrarPagina(1);
 
-      } catch(err) {
+      } catch (err) {
         document.getElementById('contenedor-contactos').innerHTML =
           '<div class="empty-state"><span class="material-symbols-rounded">error</span><h3>Error al cargar</h3><p>No se pudieron obtener los mensajes</p></div>';
       }
     }
 
+    // ═══════════════════════════════════════════════════════════
+    //  PAGINACIÓN
+    // ═══════════════════════════════════════════════════════════
+    function mostrarPagina(pagina) {
+      paginaActual = pagina;
+      const total      = listaFiltrada.length;
+      const totalPags  = Math.max(1, Math.ceil(total / porPagina));
+      if (paginaActual > totalPags) paginaActual = totalPags;
+
+      const inicio = (paginaActual - 1) * porPagina;
+      const fin    = Math.min(inicio + porPagina, total);
+      const slice  = listaFiltrada.slice(inicio, fin);
+
+      // Animación fade
+      const contenedor = document.getElementById('contenedor-contactos');
+      contenedor.classList.add('fade-out');
+      setTimeout(() => {
+        renderizarContactos(slice);
+        contenedor.classList.remove('fade-out');
+        actualizarPaginador(total, totalPags);
+        // Scroll suave al top del grid
+        contenedor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 150);
+    }
+
+    function actualizarPaginador(total, totalPags) {
+      const wrapper    = document.getElementById('paginacionWrapper');
+      const infoEl     = document.getElementById('paginacionInfo');
+      const controlesEl = document.getElementById('paginacionControles');
+
+      if (total === 0) { wrapper.style.display = 'none'; return; }
+      wrapper.style.display = 'flex';
+
+      const inicio = (paginaActual - 1) * porPagina + 1;
+      const fin    = Math.min(paginaActual * porPagina, total);
+      infoEl.innerHTML = `Mostrando <strong>${inicio}–${fin}</strong> de <strong>${total}</strong> mensajes`;
+
+      // Construir botones
+      controlesEl.innerHTML = '';
+
+      // ← Anterior
+      const btnPrev = crearBotonPag('', false, paginaActual === 1, () => mostrarPagina(paginaActual - 1));
+      btnPrev.innerHTML = '<span class="material-symbols-rounded">chevron_left</span>';
+      btnPrev.title = 'Página anterior';
+      controlesEl.appendChild(btnPrev);
+
+      // Páginas con ellipsis
+      const paginas = paginasAMostrar(paginaActual, totalPags);
+      let anteriorFueEllipsis = false;
+
+      paginas.forEach(p => {
+        if (p === '...') {
+          if (!anteriorFueEllipsis) {
+            const el = document.createElement('span');
+            el.className = 'page-ellipsis';
+            el.textContent = '…';
+            controlesEl.appendChild(el);
+            anteriorFueEllipsis = true;
+          }
+          return;
+        }
+        anteriorFueEllipsis = false;
+        const btn = crearBotonPag(p, p === paginaActual, false, () => mostrarPagina(p));
+        controlesEl.appendChild(btn);
+      });
+
+      // → Siguiente
+      const btnNext = crearBotonPag('', false, paginaActual === totalPags, () => mostrarPagina(paginaActual + 1));
+      btnNext.innerHTML = '<span class="material-symbols-rounded">chevron_right</span>';
+      btnNext.title = 'Página siguiente';
+      controlesEl.appendChild(btnNext);
+    }
+
+    /** Devuelve el array de páginas/ellipsis a renderizar */
+    function paginasAMostrar(actual, total) {
+      if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+      const delta = 1; // vecinos a cada lado de la página actual
+      const rango = [];
+
+      for (let i = Math.max(2, actual - delta); i <= Math.min(total - 1, actual + delta); i++) {
+        rango.push(i);
+      }
+
+      const resultado = [1];
+      if (rango[0] > 2)             resultado.push('...');
+      rango.forEach(p => resultado.push(p));
+      if (rango[rango.length - 1] < total - 1) resultado.push('...');
+      resultado.push(total);
+
+      return resultado;
+    }
+
+    function crearBotonPag(label, activo, deshabilitado, onClick) {
+      const btn = document.createElement('button');
+      btn.className = 'page-btn' + (activo ? ' active' : '');
+      btn.textContent = label;
+      btn.disabled    = deshabilitado;
+      if (!deshabilitado) btn.addEventListener('click', onClick);
+      return btn;
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    //  FILTROS  (reinician siempre a página 1)
+    // ═══════════════════════════════════════════════════════════
+    function aplicarFiltros() {
+      const q   = document.getElementById('searchContacto').value.toLowerCase().trim();
+      const est = document.getElementById('filtroEstado').value;
+
+      listaFiltrada = todosContactos.filter(c => {
+        const coincideTexto = !q ||
+          c.nombre.toLowerCase().includes(q) ||
+          c.correo.toLowerCase().includes(q);
+        const coincideEstado =
+          est === '' ? true :
+          est === 'pendiente' ? !c.atendido :
+          c.atendido;
+        return coincideTexto && coincideEstado;
+      });
+
+      mostrarPagina(1);
+    }
+
+    document.getElementById('searchContacto').addEventListener('input',  aplicarFiltros);
+    document.getElementById('filtroEstado').addEventListener('change', aplicarFiltros);
+
+    document.getElementById('selectPorPagina').addEventListener('change', function () {
+      porPagina = parseInt(this.value);
+      mostrarPagina(1);
+    });
+
+    // ═══════════════════════════════════════════════════════════
+    //  CONTADORES
+    // ═══════════════════════════════════════════════════════════
     function actualizarContadores() {
       const pendientes = todosContactos.filter(c => !c.atendido).length;
-      const atendidos  = todosContactos.filter(c => c.atendido).length;
+      const atendidos  = todosContactos.filter(c =>  c.atendido).length;
       document.getElementById('numeroPendientes').textContent = pendientes;
       document.getElementById('numeroAtendidos').textContent  = atendidos;
       document.getElementById('conteoContactos').textContent  =
         `${todosContactos.length} mensajes — ${pendientes} pendientes, ${atendidos} atendidos`;
     }
 
+    // ═══════════════════════════════════════════════════════════
+    //  RENDER DE CARDS
+    // ═══════════════════════════════════════════════════════════
     function renderizarContactos(lista) {
       const contenedor = document.getElementById('contenedor-contactos');
+
       if (lista.length === 0) {
-        contenedor.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span class="material-symbols-rounded">mail</span><h3>Sin mensajes</h3><p>No hay mensajes que coincidan con el filtro</p></div>';
+        contenedor.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1;">
+            <span class="material-symbols-rounded">mail</span>
+            <h3>Sin mensajes</h3>
+            <p>No hay mensajes que coincidan con el filtro</p>
+          </div>`;
         return;
       }
 
@@ -176,10 +470,10 @@
 
         return `
           <div class="contact-card" style="border-left-color:${atendido ? 'var(--success)' : 'var(--primary-100)'};">
-            
-            <!-- Header de la card -->
+
             <div class="contact-card-header">
-              <div class="contact-card-avatar" style="background:${atendido ? 'linear-gradient(135deg,#22c55e,#15803d)' : ''};">
+              <div class="contact-card-avatar"
+                   style="background:${atendido ? 'linear-gradient(135deg,#22c55e,#15803d)' : ''};">
                 ${iniciales}
               </div>
               <div style="flex:1;">
@@ -189,8 +483,7 @@
                     <span class="material-symbols-rounded" style="font-size:1.4rem;">${iconoMedio}</span>
                     ${c.medioContacto || 'correo'}
                   </span>
-                  <!-- Badge de estado -->
-                  <span class="badge ${atendido ? 'badge-green' : ''}" 
+                  <span class="badge ${atendido ? 'badge-green' : ''}"
                         style="${!atendido ? 'background:#FEF9C3;color:#A16207;' : ''}display:inline-flex;align-items:center;gap:4px;">
                     <span class="material-symbols-rounded" style="font-size:1.4rem;">${atendido ? 'check_circle' : 'schedule'}</span>
                     ${atendido ? 'Atendido' : 'Pendiente'}
@@ -199,7 +492,6 @@
               </div>
             </div>
 
-            <!-- Datos -->
             <div class="contact-card-body">
               <div class="contact-card-row">
                 <span class="material-symbols-rounded">mail</span>
@@ -217,7 +509,6 @@
               ${c.mensaje ? `<div class="contact-card-message">"${c.mensaje}"</div>` : ''}
             </div>
 
-            <!-- Acciones -->
             <div style="display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--neutral-95);">
               <button onclick="toggleAtendido('${c.id}')"
                 class="btn btn-sm ${atendido ? 'btn-outline' : 'btn-fill'}"
@@ -237,17 +528,17 @@
       }).join('');
     }
 
+    // ═══════════════════════════════════════════════════════════
+    //  ACCIONES
+    // ═══════════════════════════════════════════════════════════
     async function toggleAtendido(id) {
       try {
         const res = await fetch(`http://localhost:8080/api/contacto/${id}/atendido`, { method: 'PATCH' });
         if (!res.ok) throw new Error();
-        // Actualizar localmente sin recargar todo
         const idx = todosContactos.findIndex(c => c.id === id);
-        if (idx !== -1) {
-          todosContactos[idx].atendido = !todosContactos[idx].atendido;
-        }
+        if (idx !== -1) todosContactos[idx].atendido = !todosContactos[idx].atendido;
         actualizarContadores();
-        aplicarFiltros();
+        aplicarFiltros();          // re-filtra y re-pagina manteniendo la búsqueda activa
       } catch {
         alert('Error al actualizar el estado del mensaje');
       }
@@ -259,31 +550,18 @@
         const res = await fetch(`http://localhost:8080/api/contacto/${id}`, { method: 'DELETE' });
         if (!res.ok) throw new Error();
         todosContactos = todosContactos.filter(c => c.id !== id);
+        listaFiltrada  = listaFiltrada.filter(c => c.id !== id);
         actualizarContadores();
-        aplicarFiltros();
+        // Si la página actual queda vacía, retrocedemos una
+        const totalPags = Math.max(1, Math.ceil(listaFiltrada.length / porPagina));
+        if (paginaActual > totalPags) paginaActual = totalPags;
+        mostrarPagina(paginaActual);
       } catch {
         alert('Error al eliminar el mensaje');
       }
     }
 
-    function aplicarFiltros() {
-      const q    = document.getElementById('searchContacto').value.toLowerCase();
-      const est  = document.getElementById('filtroEstado').value;
-      let lista  = todosContactos;
-
-      if (q) lista = lista.filter(c =>
-        c.nombre.toLowerCase().includes(q) || c.correo.toLowerCase().includes(q)
-      );
-
-      if (est === 'pendiente') lista = lista.filter(c => !c.atendido);
-      if (est === 'atendido')  lista = lista.filter(c => c.atendido);
-
-      renderizarContactos(lista);
-    }
-
-    document.getElementById('searchContacto').addEventListener('input', aplicarFiltros);
-    document.getElementById('filtroEstado').addEventListener('change', aplicarFiltros);
-
+    // ── Arranque ────────────────────────────────────────────────
     cargarContactos();
   </script>
 </body>

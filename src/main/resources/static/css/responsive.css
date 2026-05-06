@@ -1,0 +1,751 @@
+/*
+ * responsive.css — Belar Inmobiliaria
+ * Incluir DESPUÉS de app.css en todos los HTML:
+ * <link rel="stylesheet" href="/css/responsive.css">
+ *
+ * Breakpoints:
+ *   1280px  Large laptop
+ *   1024px  Tablet landscape / laptop pequeño
+ *    900px  Entre tablet y móvil
+ *    768px  Tablet portrait
+ *    600px  Teléfonos grandes
+ *    480px  Teléfonos estándar
+ *    360px  Teléfonos pequeños
+ */
+
+/* ================================================================
+   BASE — Ajustes universales
+================================================================ */
+
+* { -webkit-tap-highlight-color: transparent; }
+
+img { max-width: 100%; height: auto; }
+
+/* Mínimo de 44 px para todos los elementos interactivos */
+button, a.btn, .btn, .navbar-link, .sidebar-link,
+.page-btn, .topbar-icon-btn {
+  min-height: 44px;
+}
+
+/* Scroll horizontal oculto en todo el body */
+body { overflow-x: hidden; }
+
+
+/* ================================================================
+   1280px — Desktop ajustado
+================================================================ */
+@media (max-width: 1280px) {
+  .container { padding-inline: 28px; }
+
+  .footer-grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 28px;
+  }
+}
+
+
+/* ================================================================
+   1024px — Tablet landscape / laptop pequeño
+================================================================ */
+@media (max-width: 1024px) {
+
+  /* ── Tipografía ── */
+  :root {
+    --fs-headline-large:  3.0rem;
+    --fs-headline-medium: 2.4rem;
+  }
+
+  /* ── Contenedor ── */
+  .container { padding-inline: 20px; }
+
+  /* ── Grids de la sección pública ── */
+  .properties-grid     { grid-template-columns: repeat(2, 1fr); }
+  .blog-grid           { grid-template-columns: repeat(2, 1fr); }
+  .features-grid       { grid-template-columns: repeat(2, 1fr); }
+  .testimonials-grid   { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid          { grid-template-columns: repeat(2, 1fr); }
+
+  /* ── Detalle propiedad ── */
+  .property-gallery img { height: 380px; }
+
+  /* ── Sección nosotros ── */
+  .about-img img { height: 340px; }
+
+  /* ── Admin: layout 2fr 1fr → columna única (inline-style override) ── */
+  .admin-content > form > div[style*="grid-template-columns"],
+  .admin-content > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* La card sticky de imagen deja de ser sticky en tablet */
+  .admin-content [style*="position:sticky"],
+  .admin-content [style*="position: sticky"] {
+    position: static !important;
+  }
+
+  /* ── Blog: post destacado ── */
+  .admin-card[style*="grid-template-columns:1fr 1fr"],
+  .admin-card[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  .admin-card[style*="grid-template-columns:1fr 1fr"] img,
+  .admin-card[style*="grid-template-columns: 1fr 1fr"] img {
+    height: 260px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* ── Admin stats ── */
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+
+  /* ── Contact cards grid ── */
+  .contact-cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+
+/* ================================================================
+   900px — Zona intermedia
+================================================================ */
+@media (max-width: 900px) {
+
+  /* ── Hero ── */
+  .hero-title { font-size: clamp(2.6rem, 5vw, 3.6rem); }
+
+  /* ── Propiedades 2 col ya asignadas, se mantienen ── */
+
+  /* ── Formulario de características (3 col → 2 col) ── */
+  [style*="grid-template-columns: 1fr 1fr 1fr"],
+  [style*="grid-template-columns:1fr 1fr 1fr"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* ── Footer ── */
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .footer-brand { grid-column: 1 / -1; }
+
+  /* ── Page hero ── */
+  .page-hero { padding-block: 100px 64px; }
+
+  /* ── Sección contacto ── */
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-info-card { order: 2; }   /* datos debajo del formulario */
+
+  /* ── Tabla admin: card view ── */
+  .data-table tbody tr {
+    border: 1px solid var(--neutral-90);
+    border-radius: var(--radius-medium);
+    margin-bottom: 12px;
+    background: var(--white);
+  }
+  .data-table tbody tr:hover { background: #FAFCFF; }
+}
+
+
+/* ================================================================
+   768px — Tablet portrait / móvil grande
+================================================================ */
+@media (max-width: 768px) {
+
+  /* ── Tipografía ── */
+  :root {
+    --fs-headline-large:  2.6rem;
+    --fs-headline-medium: 2.0rem;
+    --fs-headline-small:  1.8rem;
+    --fs-title-large:     1.8rem;
+    --fs-title-medium:    1.7rem;
+    --header-height: 68px;
+  }
+
+  /* ── Secciones ── */
+  .section { padding-block: 52px; }
+
+  /* ── Container ── */
+  .container { padding-inline: 16px; }
+
+  /* ── Hero ── */
+  .hero .container { padding-block: 60px 80px; }
+  .hero-title { font-size: clamp(2.2rem, 6vw, 3.0rem); }
+  .hero-text  { font-size: var(--fs-body-medium); }
+  .hero-eyebrow { font-size: 1.2rem; }
+
+  /* Search bar apilada */
+  .search-bar        { flex-direction: column; padding: 8px; gap: 0; }
+  .search-item       { border-right: none; border-bottom: 1px solid var(--neutral-90); min-width: unset; }
+  .search-item:last-of-type { border-bottom: none; }
+  .search-bar .btn   { width: 100%; justify-content: center; margin-top: 8px; }
+
+  /* ── Grids públicos ── */
+  .properties-grid   { grid-template-columns: 1fr; }
+  .blog-grid         { grid-template-columns: 1fr; }
+  .features-grid     { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+
+  /* ── Property detail ── */
+  .property-detail-grid { grid-template-columns: 1fr; }
+  .property-gallery img { height: 260px; border-radius: var(--radius-medium); }
+
+  .property-features-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  /* ── About ── */
+  .about-grid { grid-template-columns: 1fr; }
+  .about-img img { height: 260px; }
+
+  /* ── Stats ── */
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stats-row  { grid-template-columns: 1fr 1fr; }
+
+  /* ── CTA ── */
+  .cta-section { padding-block: 52px; }
+  .cta-title   { font-size: var(--fs-headline-small); }
+  .cta-text    { font-size: var(--fs-body-medium); }
+
+  /* ── Page hero ── */
+  .page-hero { padding-block: 88px 52px; }
+  .page-hero-title { font-size: 2.6rem; }
+
+  /* ── Section header ── */
+  .section-title { font-size: 2.2rem; }
+  .section-header { margin-bottom: 32px; }
+
+  /* ── Formularios ── */
+  .form-grid       { grid-template-columns: 1fr; }
+  .admin-form-grid { grid-template-columns: 1fr; }
+  .form-card       { padding: 28px 20px; }
+
+  /* ── Footer ── */
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-brand { grid-column: auto; }
+  .footer { padding-block: 44px 20px; }
+  .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
+
+  /* ── Login ── */
+  .login-box { padding: 36px 24px; }
+  .login-page { padding: 16px; }
+
+  /* ── Admin sidebar ── */
+  .sidebar         { transform: translateX(-100%); }
+  .sidebar.open    { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,.35); }
+  .sidebar-toggle-btn { display: flex; }
+  .admin-main      { margin-left: 0; }
+
+  /* ── Admin topbar ── */
+  .admin-topbar     { padding-inline: 16px; height: 64px; }
+  .topbar-breadcrumb { display: none; }
+  .topbar-title     { font-size: var(--fs-title-small); }
+
+  /* ── Admin content ── */
+  .admin-content { padding: 20px 16px; }
+  .page-header   { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .page-header-info h1 { font-size: var(--fs-title-large); }
+  .admin-card-header { flex-wrap: wrap; gap: 10px; }
+
+  /* ── Quick actions ── */
+  .quick-actions-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* ── Contact cards ── */
+  .contact-cards-grid { grid-template-columns: 1fr; }
+
+  /* ── Tabla admin — card view ── */
+  .data-table thead          { display: none; }
+  .data-table,
+  .data-table tbody,
+  .data-table tr,
+  .data-table td             { display: block; width: 100%; }
+  .data-table tbody td       { padding: 5px 16px; border-bottom: none; }
+  .data-table tbody tr       {
+    border-bottom: 1px solid var(--neutral-90);
+    padding: 12px 0;
+    border-radius: var(--radius-medium);
+    margin-bottom: 8px;
+    background: var(--white);
+  }
+  .data-table tbody tr:hover { background: #f6f9ff; }
+  .table-actions             { justify-content: flex-start; padding: 8px 16px 4px; flex-wrap: wrap; }
+
+  /* ── Paginación ── */
+  .paginacion-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .paginacion-controles { flex-wrap: wrap; }
+
+  /* ── Propiedad card ── */
+  .property-card .card-features {
+    gap: 10px;
+  }
+
+  /* ── Blog: featured post ── */
+  .admin-card[style*="grid-template-columns:1fr 1fr"] > div:first-child img,
+  .admin-card[style*="grid-template-columns: 1fr 1fr"] > div:first-child img {
+    height: 220px;
+  }
+
+  /* ── Contacto detalle ── */
+  .contact-info-list { gap: 14px; }
+  .contact-info-item { gap: 10px; }
+}
+
+
+/* ================================================================
+   600px — Teléfonos grandes
+================================================================ */
+@media (max-width: 600px) {
+
+  /* ── Tipografía ── */
+  :root {
+    --fs-headline-large:  2.4rem;
+    --fs-headline-medium: 1.9rem;
+    --fs-headline-small:  1.7rem;
+  }
+
+  /* ── Hero ── */
+  .hero .container { padding-block: 52px 72px; }
+  .hero-title { font-size: 2.2rem; line-height: 1.2; }
+  .hero-text { margin-bottom: 28px; }
+
+  /* ── Features: 1 col ── */
+  .features-grid { grid-template-columns: 1fr; }
+
+  /* ── Stats row: 2 col forced ── */
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .stat-widget { padding: 16px 14px; gap: 10px; }
+  .stat-widget-value { font-size: 2.4rem; }
+  .stat-widget-icon  { width: 44px; height: 44px; font-size: 2.0rem; }
+
+  /* ── Stats grid: 2 col ── */
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stat-card  { padding: 22px 12px; }
+  .stat-number { font-size: 2.8rem; }
+
+  /* ── Contact page ── */
+  .contact-info-card p { font-size: var(--fs-body-medium); }
+
+  /* ── Property detail ── */
+  .property-gallery img { height: 230px; }
+  .property-features-list { grid-template-columns: 1fr; }
+
+  /* ── Admin filtros bar ── */
+  .admin-card-body div[style*="display:flex"][style*="gap:12px"] {
+    flex-direction: column !important;
+  }
+
+  /* ── Formulario crear/editar: características 3 col → 1 col ── */
+  [style*="grid-template-columns: 1fr 1fr 1fr"],
+  [style*="grid-template-columns:1fr 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Formulario precio + m² → 1 col ── */
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Acciones de tabla ── */
+  .table-actions { gap: 6px; }
+
+  /* ── Sidebar más estrecha ── */
+  .sidebar { width: 260px; }
+
+  /* ── Admin form: fieldset ── */
+  .fieldset-section { padding: 18px 14px; }
+
+  /* ── Botones del panel de acción rápida ── */
+  .quick-action-btn span:last-child { font-size: 1.3rem; }
+
+  /* ── Paginación info + selector ── */
+  .paginacion-wrapper > div:first-child { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+
+/* ================================================================
+   480px — Teléfonos estándar
+================================================================ */
+@media (max-width: 480px) {
+
+  /* ── Tipografía ── */
+  :root {
+    --fs-headline-large:  2.2rem;
+    --fs-headline-medium: 1.8rem;
+    --fs-headline-small:  1.6rem;
+    --header-height: 64px;
+  }
+
+  /* ── General ── */
+  .container { padding-inline: 14px; }
+  .section   { padding-block: 40px; }
+
+  /* ── Botones ── */
+  .btn    { font-size: var(--fs-label-medium); padding: 10px 18px; }
+  .btn-sm { padding: 8px 12px; }
+
+  /* ── Hero ── */
+  .hero .container { padding-block: 48px 64px; }
+  .hero-title { font-size: 2.0rem; }
+
+  /* ── Sección page hero ── */
+  .page-hero { padding-block: 84px 48px; }
+  .page-hero-title { font-size: 2.2rem; }
+  .page-hero-text { font-size: var(--fs-body-medium); }
+
+  /* ── Sección header ── */
+  .section-title { font-size: 2.0rem; }
+  .section-text  { font-size: var(--fs-body-medium); }
+
+  /* ── Property card ── */
+  .property-card .card-title { font-size: var(--fs-title-small); }
+  .property-card .card-price { font-size: 1.8rem; }
+  .property-card .card-features { gap: 8px; }
+  .card-feature-item { font-size: 1.2rem; }
+
+  /* ── Property detail ── */
+  .property-gallery img { height: 210px; }
+  .property-info-card { padding: 20px 16px; }
+  .property-info-card [style*="font-size:3.2rem"],
+  .property-info-card [style*="font-size: 3.2rem"] {
+    font-size: 2.4rem !important;
+  }
+
+  /* ── About ── */
+  .about-img img { height: 200px; }
+
+  /* ── CTA ── */
+  .cta-title { font-size: 1.8rem; }
+
+  /* ── Features card ── */
+  .feature-card { padding: 24px 18px; }
+  .feature-icon { width: 52px; height: 52px; }
+
+  /* ── Testimonial ── */
+  .testimonial-card blockquote { font-size: var(--fs-body-medium); }
+
+  /* ── Blog card ── */
+  .blog-card .card-body { padding: 18px; }
+
+  /* ── Admin topbar ── */
+  .admin-topbar { padding-inline: 12px; height: 60px; }
+  .topbar-icon-btn { width: 36px; height: 36px; font-size: 1.8rem; }
+  .topbar-right { gap: 6px; }
+
+  /* ── Admin stats row: 1 col ── */
+  .stats-row { grid-template-columns: 1fr; }
+  .stat-widget { padding: 16px; }
+
+  /* ── Admin content ── */
+  .admin-content { padding: 14px 12px; }
+  .page-header-info h1 { font-size: var(--fs-title-medium); }
+  .admin-card-header h2 { font-size: var(--fs-title-small); }
+
+  /* ── Quick actions: 2x2 ── */
+  .quick-actions-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .quick-action-btn { padding: 16px 10px; gap: 8px; }
+  .quick-action-btn .material-symbols-rounded { font-size: 2.4rem; }
+  .quick-action-btn span:last-child { font-size: 1.2rem; }
+
+  /* ── Stats grid: 1x2 ── */
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stat-card  { padding: 18px 10px; }
+  .stat-number { font-size: 2.6rem; }
+
+  /* ── Sidebar ── */
+  .sidebar { width: 248px; }
+  .sidebar-link { font-size: var(--fs-label-medium); padding: 10px 16px; }
+
+  /* ── Login ── */
+  .login-box { padding: 28px 16px; }
+  .login-header h1 { font-size: var(--fs-headline-small); }
+
+  /* ── Forms ── */
+  .form-card { padding: 20px 14px; }
+  .form-control { font-size: var(--fs-body-medium); padding: 10px 12px; }
+  .form-label { font-size: 1.2rem; }
+  textarea.form-control { min-height: 100px; }
+
+  /* ── Contact card ── */
+  .contact-card { padding: 18px 14px; }
+  .contact-card-name { font-size: var(--fs-label-large); }
+
+  /* ── Paginación ── */
+  .page-btn { min-width: 32px; height: 32px; padding: 0 6px; font-size: 1.2rem; }
+  .page-ellipsis { min-width: 20px; font-size: 1.2rem; }
+  .paginacion-info { font-size: 1.2rem; }
+  .por-pagina-selector { font-size: 1.2rem; }
+  .por-pagina-selector select { padding: 4px 8px; font-size: 1.2rem; }
+
+  /* ── Contadores de estado ── */
+  #statPendientes,
+  #statAtendidos { padding: 12px 14px; }
+  #numeroPendientes,
+  #numeroAtendidos { font-size: 2rem; }
+
+  /* ── Tabla card view refinado ── */
+  .table-img { width: 48px; height: 48px; }
+  .table-property-name { font-size: var(--fs-label-medium); }
+  .table-price { font-size: var(--fs-label-large); }
+
+  /* ── Footer ── */
+  .footer { padding-block: 36px 16px; }
+  .footer-title { font-size: var(--fs-body-large); margin-bottom: 14px; }
+  .footer-links { gap: 8px; }
+  .footer-copyright { font-size: 1.1rem; }
+
+  /* ── Badge ── */
+  .badge { font-size: 1.1rem; padding: 3px 8px; }
+  .tag   { font-size: 1.1rem; padding: 3px 10px; }
+}
+
+
+/* ================================================================
+   360px — Teléfonos pequeños (Galaxy A, iPhone SE)
+================================================================ */
+@media (max-width: 360px) {
+
+  :root {
+    --fs-headline-large:  2.0rem;
+    --fs-headline-medium: 1.7rem;
+    --header-height: 60px;
+  }
+
+  .container { padding-inline: 12px; }
+
+  /* ── Hero ── */
+  .hero-title { font-size: 1.9rem; }
+  .hero .container { padding-block: 44px 60px; }
+
+  /* ── Sidebar ── */
+  .sidebar { width: 220px; }
+
+  /* ── Botones ── */
+  .btn { font-size: 1.3rem; padding: 9px 14px; }
+
+  /* ── Admin topbar ── */
+  .admin-topbar { height: 56px; }
+
+  /* ── Stats: 1 col total ── */
+  .stats-row  { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+
+  /* ── Quick actions: wrap bien ── */
+  .quick-actions-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quick-action-btn   { padding: 14px 8px; }
+
+  /* ── Property card ── */
+  .property-card .card-body { padding: 16px; }
+
+  /* ── Property gallery ── */
+  .property-gallery img { height: 190px; }
+
+  /* ── Contact card ── */
+  .contact-card { padding: 14px 12px; }
+  .contact-card-avatar { width: 38px; height: 38px; font-size: 1.6rem; }
+
+  /* ── Paginación: botones más chicos ── */
+  .page-btn { min-width: 28px; height: 28px; }
+  .paginacion-controles { gap: 3px; }
+
+  /* ── Login ── */
+  .login-box { padding: 24px 14px; }
+
+  /* ── Formularios ── */
+  .form-card { padding: 16px 12px; }
+
+  /* ── Table actions ── */
+  .table-actions { flex-wrap: wrap; gap: 6px; }
+}
+
+
+/* ================================================================
+   UTILITARIOS RESPONSIVE
+   Clases helper para los HTML existentes
+================================================================ */
+
+/* Ocultar en móvil */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+@media (min-width: 769px) {
+  .hide-desktop { display: none !important; }
+}
+
+/* Texto centrado en móvil */
+@media (max-width: 480px) {
+  .text-center-mobile { text-align: center; }
+}
+
+
+/* ================================================================
+   CORRECCIONES ESPECÍFICAS DE PÁGINAS
+================================================================ */
+
+/* ── anuncio.html / index.html: resultados texto ── */
+@media (max-width: 600px) {
+  #resultados-texto { font-size: var(--fs-label-medium); }
+}
+
+/* ── propiedad.html: breadcrumb ── */
+@media (max-width: 480px) {
+  [style*="display:flex"][style*="gap:8px"][style*="font-size:var(--fs-label-medium)"] {
+    font-size: 1.1rem !important;
+    gap: 4px !important;
+    flex-wrap: wrap;
+  }
+}
+
+/* ── propiedades.html: galería de thumbs ── */
+@media (max-width: 480px) {
+  .thumb-gallery img {
+    width: 64px !important;
+    height: 50px !important;
+  }
+}
+
+/* ── blog.html: featured post ── */
+@media (max-width: 768px) {
+  /* El post destacado pasa a una sola columna */
+  .admin-card[style*="display:grid"] {
+    display: block !important;
+  }
+  .admin-card[style*="display:grid"] > div:first-child {
+    overflow: hidden;
+  }
+  .admin-card[style*="display:grid"] > div:first-child img {
+    width: 100% !important;
+    min-height: unset !important;
+    height: 220px;
+    object-fit: cover;
+  }
+  .admin-card[style*="display:grid"] > div:last-child {
+    padding: 24px 20px !important;
+  }
+}
+
+/* ── admin/crear.html + actualizar.html: layout 2fr 1fr ── */
+/* Se usa una clase adicional .admin-prop-grid en el HTML */
+.admin-prop-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .admin-prop-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-prop-grid .sticky-card {
+    position: static !important;
+  }
+}
+
+/* ── nosotros.html: stats grid ── */
+@media (max-width: 768px) {
+  .stats-grid .stat-card {
+    padding: 24px 14px;
+  }
+}
+@media (max-width: 480px) {
+  .stats-grid .stat-number { font-size: 2.8rem; }
+}
+
+/* ── contacto.html: radio group ── */
+@media (max-width: 480px) {
+  .radio-group { gap: 12px; }
+  .radio-option span { font-size: var(--fs-label-medium); }
+}
+
+/* ── admin/contactos.html: contadores de estado ── */
+@media (max-width: 480px) {
+  #statPendientes > div > div:first-child,
+  #statAtendidos  > div > div:first-child {
+    font-size: 2rem;
+  }
+}
+
+/* ── admin/index.html: tabla recientes ── */
+@media (max-width: 768px) {
+  #tablaRecientes td[style*="display:flex"][style*="gap:12px"],
+  #tablaRecientes td [style*="display:flex"][style*="gap:12px"] {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+  }
+}
+
+/* ── Mapa picker (crear/actualizar) ── */
+@media (max-width: 768px) {
+  #mapaPicker { height: 280px; }
+}
+@media (max-width: 480px) {
+  #mapaPicker { height: 240px; }
+}
+
+/* ── Coordenadas + botones del mapa ── */
+@media (max-width: 600px) {
+  #toggleMap, #btnBuscarDir { width: 100%; justify-content: center; }
+  div[style*="display:flex"][style*="flex-wrap:wrap"][style*="align-items:center"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}
+
+/* ── admin/propiedades.html: filtros ── */
+@media (max-width: 600px) {
+  #filtroVisibilidad { max-width: 100% !important; }
+}
+
+/* ── Sidebar logo responsive ── */
+@media (max-width: 360px) {
+  .sidebar-logo-text { font-size: 1.6rem; }
+}
+
+/* ── Modal eliminar ── */
+@media (max-width: 480px) {
+  #modalEliminar > div {
+    padding: 28px 20px !important;
+    border-radius: var(--radius-large) !important;
+  }
+  #modalEliminar h3 { font-size: var(--fs-title-medium) !important; }
+  #modalEliminar p  { font-size: var(--fs-body-medium) !important; }
+  #modalEliminar > div > div:last-child { flex-direction: column; }
+  #modalEliminar > div > div:last-child .btn { width: 100%; justify-content: center; }
+}
+
+
+/* ================================================================
+   FIXES DE ACCESIBILIDAD Y TOUCH
+================================================================ */
+
+/* Focus visible para teclado/accesibilidad */
+:focus-visible {
+  outline: 2px solid var(--primary-100);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Inputs y botones: fuente heredada en todos los navegadores */
+input, select, textarea, button {
+  font-family: var(--font-primary);
+}
+
+/* Scroll suave en contenedores con overflow-x */
+.admin-card > div[style*="overflow-x:auto"],
+.admin-card > div[style*="overflow-x: auto"] {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Evitar zoom en inputs en iOS */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important; /* previene zoom automático en iOS */
+  }
+}
