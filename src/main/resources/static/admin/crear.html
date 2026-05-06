@@ -9,7 +9,33 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="/css/app.css">
+  <style>
+    #mapaPicker { width: 100%; height: 380px; border-radius: var(--radius-medium); border: 2px solid var(--neutral-90); }
+    #mapWrapper { display: none; margin-top: 16px; }
+    .coords-chip {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      background: #DCFCE7;
+      color: #15803D;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: var(--fs-label-medium);
+      font-weight: var(--weight-semiBold);
+      margin-top: 10px;
+    }
+    .map-hint {
+      color: var(--neutral-60);
+      font-size: var(--fs-label-medium);
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  </style>
 </head>
 <body class="admin-body">
 
@@ -61,7 +87,7 @@
         <div>
           <div class="topbar-title">Nueva Propiedad</div>
           <div class="topbar-breadcrumb">
-            <a href="/admin/index.html">Login</a>
+            <a href="/admin/index.html">Admin</a>
             <span class="material-symbols-rounded sep">chevron_right</span>
             <a href="/admin/propiedades.html">Propiedades</a>
             <span class="material-symbols-rounded sep">chevron_right</span>
@@ -93,8 +119,10 @@
         <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px;align-items:start;">
 
           <!-- Left column -->
-          <div>
-            <div class="admin-card" style="margin-bottom:24px;">
+          <div style="display:flex;flex-direction:column;gap:24px;">
+
+            <!-- Información general -->
+            <div class="admin-card">
               <div class="admin-card-header">
                 <h2><span class="material-symbols-rounded" style="vertical-align:middle;margin-right:6px;font-size:2rem;color:var(--primary-100);">info</span>Información general</h2>
               </div>
@@ -106,68 +134,113 @@
                   </div>
                   <div class="form-group">
                     <label class="form-label" for="descripcion">Descripción *</label>
-                    <textarea id="descripcion" name="descripcion" class="form-control" rows="4" placeholder="Describe las características principales de la propiedad..." required></textarea>
+                    <textarea id="descripcion" name="descripcion" class="form-control" rows="4" placeholder="Describe las características principales..." required></textarea>
                   </div>
-                  <div class="form-group">
-                    <label class="form-label" for="precio">Precio (COP) *</label>
-                    <input type="number" id="precio" name="precio" class="form-control" placeholder="Ej: 350000000" min="0" required>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label" for="metrosCuadrados">
-                      <span class="material-symbols-rounded" style="font-size:1.6rem;vertical-align:middle;">straighten</span>
-                      m² *
-                    </label>
-                    <input type="number" id="metrosCuadrados" name="metrosCuadrados" class="form-control" placeholder="120" min="1" step="0.1" required>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                    <div class="form-group">
+                      <label class="form-label" for="precio">Precio (COP) *</label>
+                      <input type="number" id="precio" name="precio" class="form-control" placeholder="350000000" min="0" required>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="metrosCuadrados">
+                        <span class="material-symbols-rounded" style="font-size:1.6rem;vertical-align:middle;">straighten</span> m² *
+                      </label>
+                      <input type="number" id="metrosCuadrados" name="metrosCuadrados" class="form-control" placeholder="120" min="1" step="0.1" required>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
+            <!-- Características -->
             <div class="admin-card">
               <div class="admin-card-header">
                 <h2><span class="material-symbols-rounded" style="vertical-align:middle;margin-right:6px;font-size:2rem;color:var(--primary-100);">category</span>Características</h2>
               </div>
               <div class="admin-card-body">
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:20px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
                   <div class="form-group">
-                    <label class="form-label" for="habitaciones">
-                      <span class="material-symbols-rounded" style="font-size:1.6rem;vertical-align:middle;">bed</span>
-                      Habitaciones *
-                    </label>
+                    <label class="form-label" for="habitaciones"><span class="material-symbols-rounded" style="font-size:1.6rem;vertical-align:middle;">bed</span> Habitaciones *</label>
                     <input type="number" id="habitaciones" name="habitaciones" class="form-control" placeholder="3" min="1" max="20" required>
                   </div>
                   <div class="form-group">
-                    <label class="form-label" for="wc">
-                      <span class="material-symbols-rounded" style="font-size:1.6rem;vertical-align:middle;">bathroom</span>
-                      Baños *
-                    </label>
+                    <label class="form-label" for="wc"><span class="material-symbols-rounded" style="font-size:1.6rem;vertical-align:middle;">bathroom</span> Baños *</label>
                     <input type="number" id="wc" name="wc" class="form-control" placeholder="2" min="1" max="10" required>
                   </div>
                   <div class="form-group">
-                    <label class="form-label" for="estacionamiento">
-                      <span class="material-symbols-rounded" style="font-size:1.6rem;vertical-align:middle;">directions_car</span>
-                      Parqueaderos *
-                    </label>
+                    <label class="form-label" for="estacionamiento"><span class="material-symbols-rounded" style="font-size:1.6rem;vertical-align:middle;">directions_car</span> Parqueaderos *</label>
                     <input type="number" id="estacionamiento" name="estacionamiento" class="form-control" placeholder="1" min="0" max="10" required>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Right column - Image -->
+            <!-- Ubicación -->
+            <div class="admin-card">
+              <div class="admin-card-header">
+                <h2><span class="material-symbols-rounded" style="vertical-align:middle;margin-right:6px;font-size:2rem;color:var(--primary-100);">location_on</span>Ubicación</h2>
+              </div>
+              <div class="admin-card-body">
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+                    <div class="form-group">
+                      <label class="form-label" for="ciudad">Ciudad</label>
+                      <input type="text" id="ciudad" name="ciudad" class="form-control" placeholder="Bogotá">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="barrio">Barrio / Sector</label>
+                      <input type="text" id="barrio" name="barrio" class="form-control" placeholder="Chapinero">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="direccion">Dirección</label>
+                      <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Cra 7 # 45-20">
+                    </div>
+                  </div>
+
+                  <!-- Hidden coordinate inputs -->
+                  <input type="hidden" id="latitud" name="latitud">
+                  <input type="hidden" id="longitud" name="longitud">
+
+                  <!-- Map controls -->
+                  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                    <button type="button" id="btnBuscarDir" class="btn btn-outline btn-sm">
+                      <span class="material-symbols-rounded" style="font-size:1.8rem;">search</span>
+                      Buscar dirección
+                    </button>
+                    <button type="button" id="toggleMap" class="btn btn-sm" style="background:#EBF3FF;color:var(--primary-100);border:none;">
+                      <span class="material-symbols-rounded" style="font-size:1.8rem;">map</span>
+                      <span>Seleccionar en mapa</span>
+                    </button>
+                    <span id="coordsDisplay" class="coords-chip">
+                      <span class="material-symbols-rounded" style="font-size:1.6rem;">check_circle</span>
+                      Ubicación marcada
+                    </span>
+                  </div>
+
+                  <p class="map-hint">
+                    <span class="material-symbols-rounded" style="font-size:1.6rem;">info</span>
+                    Completa la dirección y pulsa "Buscar", o haz clic directamente en el mapa para marcar la ubicación exacta.
+                  </p>
+
+                  <div id="mapWrapper">
+                    <div id="mapaPicker"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /left column -->
+
+          <!-- Right column -->
           <div>
             <div class="admin-card" style="position:sticky;top:100px;">
               <div class="admin-card-header">
                 <h2><span class="material-symbols-rounded" style="vertical-align:middle;margin-right:6px;font-size:2rem;color:var(--primary-100);">image</span>Imagen</h2>
               </div>
               <div class="admin-card-body">
-
-                <!-- Preview -->
                 <div id="previewWrapper" style="display:none;margin-bottom:16px;">
                   <img id="previewImagen" src="" alt="Vista previa" style="width:100%;height:200px;object-fit:cover;border-radius:var(--radius-medium);border:2px solid var(--neutral-90);">
                 </div>
-
                 <div class="file-upload">
                   <input type="file" id="imagen" name="imagenes" accept="image/jpeg,image/png,image/webp" multiple required onchange="previewImg(event)">
                   <div class="file-upload-label">
@@ -175,10 +248,9 @@
                     Seleccionar imagen
                   </div>
                 </div>
-                <p style="color:var(--neutral-60);font-size:var(--fs-label-medium);margin-top:10px;text-align:center;">Hasta 4 imágenes (JPG, PNG o WEBP). Máx 5MB c/u</p>
-
+                <p style="color:var(--neutral-60);font-size:var(--fs-label-medium);margin-top:10px;text-align:center;">Hasta 4 imágenes (JPG, PNG o WEBP)</p>
                 <div style="margin-top:24px;">
-                  <button type="submit" class="btn btn-fill" style="width:100%;justify-content:center;">
+                  <button type="submit" class="btn btn-fill" style="width:100%;justify-content:center;padding:14px;font-size:var(--fs-label-large);">
                     <span class="material-symbols-rounded">save</span>
                     Publicar propiedad
                   </button>
@@ -193,6 +265,8 @@
     </div>
   </div>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="/js/admin-layout.js"></script>
   <script src="/js/crear.js"></script>
   <script>

@@ -27,112 +27,55 @@ public class Propiedad {
     private String ciudad;
     private String barrio;
 
+    // Coordenadas para el mapa
+    private Double latitud;
+    private Double longitud;
+
 
     // GETTERS Y SETTERS
 
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public String getId() {
-        return id;
-    }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public String getTitulo() {
-        return titulo;
-    }
+    public double getPrecio() { return precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
+    public int getHabitaciones() { return habitaciones; }
+    public void setHabitaciones(int habitaciones) { this.habitaciones = habitaciones; }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
+    public int getWc() { return wc; }
+    public void setWc(int wc) { this.wc = wc; }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+    public int getEstacionamiento() { return estacionamiento; }
+    public void setEstacionamiento(int estacionamiento) { this.estacionamiento = estacionamiento; }
 
-    public double getPrecio() {
-        return precio;
-    }
+    public double getMetrosCuadrados() { return metrosCuadrados; }
+    public void setMetrosCuadrados(double metrosCuadrados) { this.metrosCuadrados = metrosCuadrados; }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
+    public boolean isVisible() { return visible; }
+    public void setVisible(boolean visible) { this.visible = visible; }
 
-    public int getHabitaciones() {
-        return habitaciones;
-    }
+    public List<String> getImagenes() { return imagenes; }
+    public void setImagenes(List<String> imagenes) { this.imagenes = imagenes; }
 
-    public void setHabitaciones(int habitaciones) {
-        this.habitaciones = habitaciones;
-    }
+    public String getDireccion() { return direccion; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
 
-    public int getWc() {
-        return wc;
-    }
+    public String getCiudad() { return ciudad; }
+    public void setCiudad(String ciudad) { this.ciudad = ciudad; }
 
-    public void setWc(int wc) {
-        this.wc = wc;
-    }
+    public String getBarrio() { return barrio; }
+    public void setBarrio(String barrio) { this.barrio = barrio; }
 
-    public int getEstacionamiento() {
-        return estacionamiento;
-    }
+    public Double getLatitud() { return latitud; }
+    public void setLatitud(Double latitud) { this.latitud = latitud; }
 
-    public void setEstacionamiento(int estacionamiento) {
-        this.estacionamiento = estacionamiento;
-    }
-
-
-    public double getMetrosCuadrados() {
-        return metrosCuadrados;
-    }
-
-    public void setMetrosCuadrados(double metrosCuadrados) {
-        this.metrosCuadrados = metrosCuadrados;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
-    public List<String> getImagenes() {
-        return imagenes;
-    }
-
-    public void setImagenes(List<String> imagenes) {
-        this.imagenes = imagenes;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public String getBarrio() {
-        return barrio;
-    }
-
-    public void setBarrio(String barrio) {
-        this.barrio = barrio;
-    }
+    public Double getLongitud() { return longitud; }
+    public void setLongitud(Double longitud) { this.longitud = longitud; }
 }
