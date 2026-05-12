@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+# Imágenes subidas en runtime
+uploads/
+
+# Logs
+*.log
+logs/
+
+# Variables de entorno / configuración sensible
+.env
+application-prod.properties
+application-local.properties
+
+# Screenshots del README (opcional, son pesadas)
+screenshots/uploads/
