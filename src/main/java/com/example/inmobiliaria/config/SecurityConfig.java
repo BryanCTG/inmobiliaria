@@ -34,6 +34,7 @@ public class SecurityConfig {
                     "/css/**",
                     "/js/**",
                     "/img/**"
+                    
                 ).permitAll()
 
                 // Páginas públicas
@@ -50,7 +51,8 @@ public class SecurityConfig {
                      "/js/**",
                      "/img/**",
                      "/admin/login",
-                    "/admin/login.html"
+                    "/admin/login.html",
+                    "/api/prediccion/**"
                  ).permitAll()
 
             
@@ -63,7 +65,7 @@ public class SecurityConfig {
             )
 
             .formLogin(form -> form
-                .loginPage("/admin/login.html")     // 👈 AQUÍ
+                .loginPage("/admin/login.html")    
                 .loginProcessingUrl("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
