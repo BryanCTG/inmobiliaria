@@ -165,19 +165,19 @@
     let todasLasPropiedades = [];
     let idAEliminar = null;
 
-    async function cargarPropiedades() {
-      try {
-        const res = await fetch('http://localhost:8080/api/propiedades');
-        if (!res.ok) throw new Error('Error al obtener propiedades');
-        todasLasPropiedades = await res.json();
-        renderizarTabla(todasLasPropiedades);
-        document.getElementById('conteo-propiedades').textContent = `${todasLasPropiedades.length} propiedades en total`;
-      } catch (err) {
-        document.getElementById('lista-propiedades').innerHTML =
-          '<tr><td colspan="5"><div class="empty-state"><span class="material-symbols-rounded">error</span><h3>Error al cargar</h3><p>No se pudieron obtener las propiedades</p></div></td></tr>';
-      }
-    }
-
+async function cargarPropiedades() {
+  try {
+    const res = await fetch('http://localhost:8080/api/propiedades');
+    if (!res.ok) throw new Error('Error al obtener propiedades');
+    todasLasPropiedades = await res.json();
+    todasLasPropiedades.reverse(); // más reciente primero
+    renderizarTabla(todasLasPropiedades);
+    document.getElementById('conteo-propiedades').textContent = `${todasLasPropiedades.length} propiedades en total`;
+  } catch (err) {
+    document.getElementById('lista-propiedades').innerHTML =
+      '<tr><td colspan="5"><div class="empty-state"><span class="material-symbols-rounded">error</span><h3>Error al cargar</h3><p>No se pudieron obtener las propiedades</p></div></td></tr>';
+  }
+}
     function renderizarTabla(lista) {
       const tbody = document.getElementById('lista-propiedades');
       if (lista.length === 0) {
