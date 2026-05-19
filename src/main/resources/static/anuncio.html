@@ -12,6 +12,189 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/app.css">
   <link rel="stylesheet" href="/css/responsive.css">
+  <style>
+    /* ── Barra de filtros ─────────────────────────────────── */
+    .filtros-card {
+      background: var(--white);
+      border-radius: var(--radius-large);
+      box-shadow: var(--shadow-2);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+    }
+
+    .filtros-titulo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--fs-label-large);
+      font-weight: var(--weight-semiBold);
+      color: var(--neutral-40);
+      margin-bottom: 16px;
+    }
+
+    .filtros-titulo .material-symbols-rounded {
+      font-size: 2rem;
+      color: var(--primary-100);
+    }
+
+    .filtros-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(4, 1fr) auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .filtro-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .filtro-label {
+      font-size: 1.1rem;
+      font-weight: var(--weight-semiBold);
+      color: var(--neutral-60);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .filtro-control {
+      background: var(--neutral-98);
+      border: 2px solid var(--neutral-90);
+      border-radius: var(--radius-small);
+      padding: 10px 14px;
+      color: var(--neutral-10);
+      font-size: var(--fs-body-medium);
+      font-family: var(--font-primary);
+      transition: border-color var(--transition-duration-quick);
+      width: 100%;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .filtro-control:focus {
+      border-color: var(--primary-100);
+      background: var(--white);
+    }
+
+    .filtro-control::placeholder {
+      color: var(--neutral-60);
+    }
+
+    /* Select arrow */
+    .filtro-select-wrapper {
+      position: relative;
+    }
+    .filtro-select-wrapper .material-symbols-rounded {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.8rem;
+      color: var(--primary-100);
+      pointer-events: none;
+    }
+
+    .btn-filtrar {
+      background: var(--primary-100);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-small);
+      padding: 10px 20px;
+      font-size: var(--fs-label-large);
+      font-weight: var(--weight-semiBold);
+      font-family: var(--font-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: background var(--transition-duration-quick);
+      height: 42px;
+    }
+    .btn-filtrar:hover { background: var(--primary-90); }
+
+    .btn-limpiar {
+      background: var(--neutral-95);
+      color: var(--neutral-40);
+      border: none;
+      border-radius: var(--radius-small);
+      padding: 10px 16px;
+      font-size: var(--fs-label-medium);
+      font-weight: var(--weight-semiBold);
+      font-family: var(--font-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      transition: all var(--transition-duration-quick);
+      height: 42px;
+    }
+    .btn-limpiar:hover { background: var(--neutral-90); color: var(--neutral-20); }
+
+    /* Chips de filtros activos */
+    .filtros-activos {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .chip-filtro {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #EBF3FF;
+      color: var(--primary-100);
+      font-size: var(--fs-label-small);
+      font-weight: var(--weight-semiBold);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      animation: fadeIn 200ms ease;
+    }
+    .chip-filtro button {
+      background: none;
+      border: none;
+      color: var(--primary-100);
+      cursor: pointer;
+      display: flex;
+      padding: 0;
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+    .chip-filtro button .material-symbols-rounded { font-size: 1.5rem; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+    /* Resultados heading */
+    .resultados-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Responsive filtros */
+    @media (max-width: 1024px) {
+      .filtros-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .filtros-grid .filtro-btns { grid-column: 1 / -1; display: flex; gap: 8px; justify-content: flex-end; }
+    }
+    @media (max-width: 600px) {
+      .filtros-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .filtros-grid .filtro-grupo-busqueda { grid-column: 1 / -1; }
+      .filtros-grid .filtro-btns { grid-column: 1 / -1; }
+    }
+    @media (max-width: 400px) {
+      .filtros-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
@@ -28,7 +211,6 @@
           <li><a href="/nosotros.html" class="navbar-link" style="color:var(--neutral-20);">Nosotros</a></li>
           <li><a href="/anuncio.html" class="navbar-link active" style="color:var(--primary-100);background:#EBF3FF;">Propiedades</a></li>
           <li><a href="/blog.html" class="navbar-link" style="color:var(--neutral-20);">Blog</a></li>
-          
         </ul>
         <div class="navbar-cta">
           <a href="/admin/login.html" class="btn-link">Login</a>
@@ -53,8 +235,108 @@
   <main>
     <section class="section">
       <div class="container">
-        <!-- Results count -->
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;">
+
+        <!-- ── BARRA DE FILTROS ─────────────────────────────── -->
+        <div class="filtros-card" data-aos="fade-up">
+          <div class="filtros-titulo">
+            <span class="material-symbols-rounded">tune</span>
+            Buscar propiedades
+          </div>
+
+          <div class="filtros-grid">
+
+            <!-- Búsqueda libre -->
+            <div class="filtro-group filtro-grupo-busqueda">
+              <span class="filtro-label">Buscar</span>
+              <input
+                type="text"
+                id="fBusqueda"
+                class="filtro-control"
+                placeholder="Título o descripción...">
+            </div>
+
+            <!-- Ciudad -->
+            <div class="filtro-group">
+              <span class="filtro-label">Ciudad</span>
+              <div class="filtro-select-wrapper">
+                <select id="fCiudad" class="filtro-control">
+                  <option value="">Todas</option>
+                  <option value="Cartagena">Cartagena</option>
+                  <option value="Bogota">Bogotá</option>
+                  <option value="Medellin">Medellín</option>
+                  <option value="Barranquilla">Barranquilla</option>
+                </select>
+                <span class="material-symbols-rounded">location_on</span>
+              </div>
+            </div>
+
+            <!-- Habitaciones -->
+            <div class="filtro-group">
+              <span class="filtro-label">Habitaciones</span>
+              <div class="filtro-select-wrapper">
+                <select id="fHabitaciones" class="filtro-control">
+                  <option value="">Cualquiera</option>
+                  <option value="1">1+</option>
+                  <option value="2">2+</option>
+                  <option value="3">3+</option>
+                  <option value="4">4+</option>
+                  <option value="5">5+</option>
+                </select>
+                <span class="material-symbols-rounded">bed</span>
+              </div>
+            </div>
+
+            <!-- Baños -->
+            <div class="filtro-group">
+              <span class="filtro-label">Baños</span>
+              <div class="filtro-select-wrapper">
+                <select id="fBanos" class="filtro-control">
+                  <option value="">Cualquiera</option>
+                  <option value="1">1+</option>
+                  <option value="2">2+</option>
+                  <option value="3">3+</option>
+                </select>
+                <span class="material-symbols-rounded">bathroom</span>
+              </div>
+            </div>
+
+            <!-- Precio máximo -->
+            <div class="filtro-group">
+              <span class="filtro-label">Precio máx.</span>
+              <div class="filtro-select-wrapper">
+                <select id="fPrecio" class="filtro-control">
+                  <option value="">Sin límite</option>
+                  <option value="200000000">$200M</option>
+                  <option value="400000000">$400M</option>
+                  <option value="600000000">$600M</option>
+                  <option value="800000000">$800M</option>
+                  <option value="1000000000">$1.000M</option>
+                  <option value="2000000000">$2.000M</option>
+                </select>
+                <span class="material-symbols-rounded">payments</span>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="filtro-btns" style="display:flex;gap:8px;align-items:flex-end;">
+              <button class="btn-filtrar" id="btnFiltrar">
+                <span class="material-symbols-rounded" style="font-size:1.8rem;">search</span>
+                Buscar
+              </button>
+              <button class="btn-limpiar" id="btnLimpiar" title="Limpiar filtros">
+                <span class="material-symbols-rounded" style="font-size:1.8rem;">close</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Chips de filtros activos -->
+          <div class="filtros-activos" id="chipsActivos"></div>
+        </div>
+        <!-- ── FIN FILTROS ──────────────────────────────────── -->
+
+        <!-- Cabecera de resultados -->
+        <div class="resultados-header">
           <p id="resultados-texto" class="body-large" style="color:var(--neutral-50);">Cargando propiedades...</p>
         </div>
 
@@ -64,6 +346,7 @@
 
         <!-- Pagination -->
         <div id="paginacion" class="pagination"></div>
+
       </div>
     </section>
   </main>
