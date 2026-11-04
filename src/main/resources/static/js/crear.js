@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitBtn = form.querySelector('button[type="submit"]');
     const textoOriginal = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="material-symbols-rounded" style="animation:spin .7s linear infinite;">refresh</span> Publicando...';
+    submitBtn.innerHTML = '<i class="ph ph-arrows-clockwise" style="animation:spin .7s linear infinite;"></i> Publicando...';
     submitBtn.disabled = true;
     ocultarMensaje();
 

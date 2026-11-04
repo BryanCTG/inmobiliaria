@@ -4,13 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Propiedades | Admin Belar Inmobiliaria</title>
-  <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="/img/belar-mark.svg" type="image/svg+xml">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#131209">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
-  <link rel="stylesheet" href="/css/app.css">
-  <link rel="stylesheet" href="/css/responsive.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body class="admin-body">
 
@@ -19,9 +20,9 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">
-        <img src="/img/logo.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
+        <img src="/img/belar-mark.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
         <div class="sidebar-logo-text">
-          BienesRaíces
+          Belar Inmobiliaria
           <small>Panel de Administración</small>
         </div>
       </div>
@@ -30,31 +31,31 @@
       <div class="sidebar-section">
         <p class="sidebar-section-label">Principal</p>
         <a href="/admin/index.html" class="sidebar-link">
-          <span class="material-symbols-rounded">dashboard</span> Dashboard
+          <i class="ph ph-squares-four"></i> Dashboard
         </a>
       </div>
       <div class="sidebar-section">
         <p class="sidebar-section-label">Gestión</p>
         <a href="/admin/propiedades.html" class="sidebar-link active">
-          <span class="material-symbols-rounded">home</span> Propiedades
+          <i class="ph ph-house"></i> Propiedades
         </a>
         <a href="/admin/crear.html" class="sidebar-link">
-          <span class="material-symbols-rounded">add_circle</span> Nueva Propiedad
+          <i class="ph ph-plus-circle"></i> Nueva Propiedad
         </a>
         <a href="/admin/contactos.html" class="sidebar-link">
-          <span class="material-symbols-rounded">mail</span> Contactos
+          <i class="ph ph-envelope-simple"></i> Contactos
         </a>
       </div>
       <div class="sidebar-section">
         <p class="sidebar-section-label">Sitio</p>
         <a href="/" class="sidebar-link" target="_blank">
-          <span class="material-symbols-rounded">open_in_new</span> Ver sitio
+          <i class="ph ph-arrow-square-out"></i> Ver sitio
         </a>
       </div>
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="sidebar-user-avatar"><span class="material-symbols-rounded">person</span></div>
+        <div class="sidebar-user-avatar"><i class="ph ph-user"></i></div>
         <div>
           <div class="sidebar-user-name">Administrador</div>
           <div class="sidebar-user-role">Super Admin</div>
@@ -62,7 +63,7 @@
       </div>
       <form action="/logout" method="post">
         <button type="submit" class="btn btn-danger btn-sm" style="width:100%;justify-content:center;">
-          <span class="material-symbols-rounded">logout</span> Cerrar sesión
+          <i class="ph ph-sign-out"></i> Cerrar sesión
         </button>
       </form>
     </div>
@@ -72,20 +73,19 @@
     <header class="admin-topbar">
       <div class="topbar-left">
         <button class="sidebar-toggle-btn" id="sidebarToggle">
-          <span class="material-symbols-rounded">menu</span>
+          <i class="ph ph-list"></i>
         </button>
         <div>
           <div class="topbar-title">Propiedades</div>
           <div class="topbar-breadcrumb">
             <a href="/admin/index.html">Admin</a>
-            <span class="material-symbols-rounded sep">chevron_right</span>
+            <i class="ph ph-caret-right sep"></i>
             <span>Propiedades</span>
           </div>
         </div>
       </div>
       <div class="topbar-right">
-        <a href="/" target="_blank" class="topbar-icon-btn"><span class="material-symbols-rounded">open_in_new</span></a>
-        <button class="topbar-icon-btn"><span class="material-symbols-rounded">notifications</span></button>
+        <a href="/" target="_blank" class="topbar-icon-btn"><i class="ph ph-arrow-square-out"></i></a>
       </div>
     </header>
 
@@ -97,7 +97,7 @@
           <p id="conteo-propiedades">Cargando...</p>
         </div>
         <a href="/admin/crear.html" class="btn btn-fill">
-          <span class="material-symbols-rounded">add</span>
+          <i class="ph ph-plus"></i>
           Nueva propiedad
         </a>
       </div>
@@ -107,7 +107,7 @@
         <div class="admin-card-body" style="padding:16px 24px;">
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
             <div style="position:relative;flex:1;min-width:200px;">
-              <span class="material-symbols-rounded" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--neutral-60);font-size:2rem;">search</span>
+              <i class="ph ph-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--neutral-60);font-size:2rem;"></i>
               <input type="text" id="searchInput" class="form-control" placeholder="Buscar propiedad..." style="padding-left:44px;">
             </div>
             <select id="filtroVisibilidad" class="form-control" style="max-width:200px;">
@@ -145,15 +145,15 @@
   <!-- Modal confirmar eliminación -->
   <div id="modalEliminar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;">
     <div style="background:var(--white);border-radius:var(--radius-large);padding:36px;max-width:440px;width:90%;box-shadow:var(--shadow-4);text-align:center;">
-      <div style="width:64px;height:64px;background:#FEE2E2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
-        <span class="material-symbols-rounded" style="font-size:3.2rem;color:#DC2626;">delete</span>
+      <div style="width:64px;height:64px;background:rgba(232,138,130,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+        <i class="ph ph-trash" style="font-size:3.2rem;color:#E88A82;"></i>
       </div>
       <h3 style="font-size:var(--fs-title-large);margin-bottom:10px;color:var(--neutral-10);">¿Eliminar propiedad?</h3>
       <p style="color:var(--neutral-50);margin-bottom:28px;font-size:var(--fs-body-large);">Esta acción no se puede deshacer. La propiedad será eliminada permanentemente.</p>
       <div style="display:flex;gap:12px;justify-content:center;">
         <button id="cancelarEliminar" class="btn btn-outline">Cancelar</button>
         <button id="confirmarEliminar" class="btn btn-danger">
-          <span class="material-symbols-rounded">delete</span>
+          <i class="ph ph-trash"></i>
           Eliminar
         </button>
       </div>
@@ -176,13 +176,13 @@ async function cargarPropiedades() {
     document.getElementById('conteo-propiedades').textContent = `${todasLasPropiedades.length} propiedades en total`;
   } catch (err) {
     document.getElementById('lista-propiedades').innerHTML =
-      '<tr><td colspan="5"><div class="empty-state"><span class="material-symbols-rounded">error</span><h3>Error al cargar</h3><p>No se pudieron obtener las propiedades</p></div></td></tr>';
+      '<tr><td colspan="5"><div class="empty-state"><i class="ph ph-warning-circle"></i><h3>Error al cargar</h3><p>No se pudieron obtener las propiedades</p></div></td></tr>';
   }
 }
     function renderizarTabla(lista) {
       const tbody = document.getElementById('lista-propiedades');
       if (lista.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><span class="material-symbols-rounded">home</span><h3>Sin resultados</h3><p>No hay propiedades que coincidan</p></div></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><i class="ph ph-house"></i><h3>Sin resultados</h3><p>No hay propiedades que coincidan</p></div></td></tr>';
         return;
       }
       tbody.innerHTML = lista.map(p => `
@@ -200,28 +200,28 @@ async function cargarPropiedades() {
           <td><span class="table-price">$${p.precio.toLocaleString('es-CO')}</span></td>
           <td>
             <div style="display:flex;gap:14px;align-items:center;font-size:var(--fs-label-medium);color:var(--neutral-50);">
-              <span style="display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">bed</span>${p.habitaciones}</span>
-              <span style="display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">bathroom</span>${p.wc}</span>
-              <span style="display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">directions_car</span>${p.estacionamiento}</span>
-              <span style="display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">square_foot</span>${p.metrosCuadrados}</span>
+              <span style="display:flex;align-items:center;gap:4px;"><i class="ph ph-bed" style="font-size:1.8rem;color:var(--primary-100);"></i>${p.habitaciones}</span>
+              <span style="display:flex;align-items:center;gap:4px;"><i class="ph ph-bathtub" style="font-size:1.8rem;color:var(--primary-100);"></i>${p.wc}</span>
+              <span style="display:flex;align-items:center;gap:4px;"><i class="ph ph-car" style="font-size:1.8rem;color:var(--primary-100);"></i>${p.estacionamiento}</span>
+              <span style="display:flex;align-items:center;gap:4px;"><i class="ph ph-ruler" style="font-size:1.8rem;color:var(--primary-100);"></i>${p.metrosCuadrados}</span>
             </div>
           </td>
           <td>
             <span class="badge ${p.visible ? 'badge-green' : 'badge-gray'}">
-              <span class="material-symbols-rounded" style="font-size:1.4rem;">${p.visible ? 'visibility' : 'visibility_off'}</span>
+              <i class="ph ph-${p.visible ? 'eye' : 'eye-slash'}" style="font-size:1.4rem;"></i>
               ${p.visible ? 'Publicada' : 'Oculta'}
             </span>
           </td>
           <td>
             <div class="table-actions" style="justify-content:flex-end;">
               <a href="/admin/actualizar.html?id=${p.id}" class="btn btn-outline btn-sm" title="Editar">
-                <span class="material-symbols-rounded" style="font-size:1.6rem;">edit</span>
+                <i class="ph ph-pencil-simple" style="font-size:1.6rem;"></i>
               </a>
               <button onclick="pedirToggle('${p.id}')" class="btn btn-sm ${p.visible ? 'btn-yellow' : 'btn-fill'}" title="${p.visible ? 'Ocultar' : 'Publicar'}">
-                <span class="material-symbols-rounded" style="font-size:1.6rem;">${p.visible ? 'visibility_off' : 'visibility'}</span>
+                <i class="ph ph-${p.visible ? 'eye-slash' : 'eye'}" style="font-size:1.6rem;"></i>
               </button>
               <button onclick="pedirEliminar('${p.id}')" class="btn btn-danger btn-sm" title="Eliminar">
-                <span class="material-symbols-rounded" style="font-size:1.6rem;">delete</span>
+                <i class="ph ph-trash" style="font-size:1.6rem;"></i>
               </button>
             </div>
           </td>

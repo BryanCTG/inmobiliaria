@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const submitBtn = form.querySelector('button[type="submit"]');
     const textoOriginal = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="material-symbols-rounded" style="animation:spin .7s linear infinite;">refresh</span> Guardando...';
+    submitBtn.innerHTML = '<i class="ph ph-arrows-clockwise" style="animation:spin .7s linear infinite;"></i> Guardando...';
     submitBtn.disabled = true;
 
     const latVal = document.getElementById('latitud').value;
