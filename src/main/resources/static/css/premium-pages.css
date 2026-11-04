@@ -189,3 +189,25 @@ select.control option { background: var(--surface); color: var(--text); }
 @media (max-width: 480px) {
   .filters-grid { grid-template-columns: 1fr; }
 }
+
+/* ───────────────── Consentimiento, textos legales y pie ───────────────── */
+.check-row { display: flex; align-items: flex-start; gap: var(--s-100); font-size: 0.875rem; line-height: 1.25rem; color: var(--text-muted); cursor: pointer; }
+.check-row input { appearance: none; -webkit-appearance: none; flex-shrink: 0; width: 20px; height: 20px; margin-top: var(--s-25); border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--field); cursor: pointer; display: grid; place-items: center; transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.check-row input:hover { border-color: var(--gold); }
+.check-row input:checked { background: var(--gold); border-color: var(--gold); }
+.check-row input:checked::after { content: ''; width: 5px; height: 10px; border: solid var(--gold-ink); border-width: 0 2px 2px 0; transform: translateY(-1px) rotate(45deg); }
+.check-row a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+.legal { max-width: 760px; display: flex; flex-direction: column; gap: var(--s-200); }
+.legal h2 { margin-top: var(--s-300); font-size: 1.5rem; line-height: 2rem; font-weight: 600; letter-spacing: -0.01em; }
+.legal p, .legal li { color: var(--text-muted); text-wrap: pretty; }
+.legal ul { display: flex; flex-direction: column; gap: var(--s-75); padding-left: var(--s-300); }
+.legal li { list-style: disc; padding-left: var(--s-50); }
+.legal li::marker { color: var(--gold); }
+.legal a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+.legal .updated { font-size: 0.875rem; line-height: 1.25rem; color: var(--text-faint); }
+.notice { display: flex; align-items: flex-start; gap: var(--s-100); padding: var(--s-200); background: var(--gold-soft); border: 1px solid rgba(201, 169, 110, 0.35); border-radius: var(--r-xl); font-size: 0.875rem; line-height: 1.25rem; color: var(--text); }
+.notice i.ph { color: var(--gold); font-size: 1.25rem; margin-top: var(--s-25); }
+.footer-legal { display: flex; flex-wrap: wrap; gap: var(--s-300); }
+.footer-legal a { color: var(--text-muted); transition: color var(--dur-fast) var(--ease); }
+.footer-legal a:hover { color: var(--gold); }

@@ -40,6 +40,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!form.checkValidity()) {
       const campo = form.querySelector(':invalid');
       const etiqueta = campo?.closest('.field')?.querySelector('label')?.textContent.replace('*', '').trim() || 'Este campo';
+      if (campo?.type === 'checkbox') {
+        mostrar('error', 'Debes aceptar la política de privacidad para poder enviar tu mensaje.');
+        campo.focus();
+        return;
+      }
       mostrar('error', campo?.validity.typeMismatch
         ? `${etiqueta}: escribe un formato válido.`
         : `${etiqueta}: revisa este campo antes de enviar.`);
