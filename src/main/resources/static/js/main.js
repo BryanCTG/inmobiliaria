@@ -1,9 +1,14 @@
+/**
+ * Formulario de contacto: carga las propiedades en el selector, preselecciona la que llega
+ * por la URL (?propiedad=ID), valida en el navegador y envía a la API.
+ */
 document.addEventListener('DOMContentLoaded', function () {
 
-  // ─── CARGAR PROPIEDADES EN SELECT (formulario de contacto) ────────────────
+  // ─── Propiedades en el selector (y preselección desde la URL) ─────────────
   const selectPropiedad = document.getElementById('propiedad');
   if (selectPropiedad) {
-    fetch('http://localhost:8080/api/propiedades/visibles')
+    const preseleccion = new URLSearchParams(window.location.search).get('propiedad');
+    fetch('/api/propiedades/visibles')
       .then(r => r.json())
       .then(data => {
         data.forEach(p => {
@@ -12,60 +17,69 @@ document.addEventListener('DOMContentLoaded', function () {
           opt.textContent = p.titulo;
           selectPropiedad.appendChild(opt);
         });
+        if (preseleccion) selectPropiedad.value = preseleccion;
       })
-      .catch(err => console.error('Error al cargar propiedades para select:', err));
+      .catch(err => console.error('Error al cargar propiedades para el selector:', err));
   }
 
-  // ─── FORMULARIO DE CONTACTO ───────────────────────────────────────────────
-  const formContacto = document.getElementById('formContacto');
-  if (formContacto) {
-    formContacto.addEventListener('submit', async function (e) {
-      e.preventDefault();
+  // ─── Formulario ───────────────────────────────────────────────────────────
+  const form = document.getElementById('formContacto');
+  if (!form) return;
 
-      const submitBtn = formContacto.querySelector('button[type="submit"]');
-      const textoOriginal = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<span class="material-symbols-rounded" style="animation:spin .7s linear infinite;">refresh</span> Enviando...';
-      submitBtn.disabled = true;
+  const mensajeDiv = document.getElementById('mensajeContacto');
+  const mostrar = (tipo, texto) => {
+    mensajeDiv.textContent = texto;
+    mensajeDiv.className = `form-message ${tipo === 'ok' ? 'is-ok' : 'is-error'}`;
+  };
 
-      const mensajeDiv = document.getElementById('mensajeContacto');
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    mensajeDiv.className = 'form-message';
 
-      const datos = {
-        nombre:        document.getElementById('nombre')?.value,
-        correo:        document.getElementById('email')?.value,
-        celular:       document.getElementById('telefono')?.value,
-        casaInteres:   document.getElementById('propiedad')?.value,
-        mensaje:       document.getElementById('mensaje')?.value,
-        medioContacto: document.querySelector('input[name="contacto"]:checked')?.value
-      };
+    // Validación en el navegador con mensajes específicos
+    if (!form.checkValidity()) {
+      const campo = form.querySelector(':invalid');
+      const etiqueta = campo?.closest('.field')?.querySelector('label')?.textContent.replace('*', '').trim() || 'Este campo';
+      mostrar('error', campo?.validity.typeMismatch
+        ? `${etiqueta}: escribe un formato válido.`
+        : `${etiqueta}: revisa este campo antes de enviar.`);
+      campo?.focus();
+      return;
+    }
 
-      try {
-        const res = await fetch('http://localhost:8080/api/contacto', {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(datos)
-        });
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const textoOriginal = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="ph ph-spinner spin" aria-hidden="true"></i> Enviando';
+    submitBtn.disabled = true;
 
-        if (!res.ok) throw new Error('Error al enviar');
+    const datos = {
+      nombre:        document.getElementById('nombre').value.trim(),
+      correo:        document.getElementById('email').value.trim(),
+      celular:       document.getElementById('telefono').value.trim(),
+      casaInteres:   document.getElementById('propiedad').value,
+      mensaje:       document.getElementById('mensaje').value.trim(),
+      medioContacto: form.querySelector('input[name="contacto"]:checked')?.value
+    };
 
-        if (mensajeDiv) {
-          mensajeDiv.textContent   = '✓ ¡Mensaje enviado! Te contactaremos a la brevedad.';
-          mensajeDiv.className     = 'form-message exito';
-          mensajeDiv.style.display = 'block';
-        }
-        formContacto.reset();
+    try {
+      const res = await fetch('/api/contacto', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(datos)
+      });
 
-      } catch (err) {
-        console.error('Error enviando contacto:', err);
-        if (mensajeDiv) {
-          mensajeDiv.textContent   = 'Error al enviar el formulario. Intenta de nuevo.';
-          mensajeDiv.className     = 'form-message error';
-          mensajeDiv.style.display = 'block';
-        }
-      } finally {
-        submitBtn.innerHTML = textoOriginal;
-        submitBtn.disabled  = false;
-      }
-    });
-  }
+      if (!res.ok) throw new Error('Error al enviar');
 
+      mostrar('ok', `Mensaje enviado. Un asesor te contactará por ${datos.medioContacto === 'telefono' ? 'teléfono' : datos.medioContacto}.`);
+      form.reset();
+      if (selectPropiedad) selectPropiedad.value = '';
+
+    } catch (err) {
+      console.error('Error enviando contacto:', err);
+      mostrar('error', 'No pudimos enviar tu mensaje. Revisa tu conexión e inténtalo de nuevo.');
+    } finally {
+      submitBtn.innerHTML = textoOriginal;
+      submitBtn.disabled  = false;
+    }
+  });
 });

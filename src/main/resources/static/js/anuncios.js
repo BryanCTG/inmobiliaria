@@ -14,17 +14,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                   window.location.pathname === '';
 
   try {
-    const res = await fetch('http://localhost:8080/api/propiedades/visibles');
+    const res = await fetch('/api/propiedades/visibles');
     if (!res.ok) throw new Error('Error al cargar propiedades');
     const propiedades = await res.json();
 
     if (propiedades.length === 0) {
-      contenedor.innerHTML = `
-        <div class="empty-state" style="grid-column:1/-1;">
-          <span class="material-symbols-rounded">home</span>
-          <h3>Sin propiedades disponibles</h3>
-          <p>En este momento no hay propiedades publicadas. Vuelve pronto.</p>
-        </div>`;
+      contenedor.innerHTML = _estado('house', 'Aún no hay propiedades publicadas',
+        'Estamos preparando nuevas residencias. Vuelve pronto o escríbenos y te avisamos.');
       return;
     }
 
@@ -40,18 +36,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     _todasPropiedades = propiedades;
     _listaFiltrada    = [...propiedades];
     _vincularFiltros();
-    _mostrarPagina(1);
+    if (_precargarFiltrosDesdeUrl()) {
+      _aplicarFiltros();
+    } else {
+      _mostrarPagina(1, false);
+    }
 
   } catch (err) {
     console.error('Error cargando anuncios:', err);
-    contenedor.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1;">
-        <span class="material-symbols-rounded">error</span>
-        <h3>Error al cargar</h3>
-        <p>No se pudieron obtener las propiedades. Verifica tu conexión.</p>
-      </div>`;
+    contenedor.innerHTML = _estado('warning-circle', 'No pudimos cargar las propiedades',
+      'Revisa tu conexión e intenta de nuevo en unos segundos.');
   }
 });
+
+// ─── Estado vacío / error ─────────────────────────────────────────────────────
+function _estado(icono, titulo, texto) {
+  return `
+    <div class="state-box">
+      <i class="ph ph-${icono}" aria-hidden="true"></i>
+      <h3 class="heading-6">${esc(titulo)}</h3>
+      <p class="body-6">${esc(texto)}</p>
+    </div>`;
+}
 
 // ─── Vincular eventos ─────────────────────────────────────────────────────────
 function _vincularFiltros() {
@@ -63,12 +69,29 @@ function _vincularFiltros() {
   btnLimpiar.addEventListener('click', _limpiarFiltros);
 
   document.getElementById('fBusqueda')?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') _aplicarFiltros();
+    if (e.key === 'Enter') { e.preventDefault(); _aplicarFiltros(); }
   });
 
   ['fCiudad', 'fHabitaciones', 'fBanos', 'fPrecio'].forEach(id => {
     document.getElementById(id)?.addEventListener('change', _aplicarFiltros);
   });
+}
+
+// ─── Precargar filtros desde la URL (ej: /anuncio.html?ciudad=Cartagena&habitaciones=3) ──
+function _precargarFiltrosDesdeUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const mapa = { ciudad: 'fCiudad', habitaciones: 'fHabitaciones', precio: 'fPrecio', q: 'fBusqueda' };
+  let hayFiltros = false;
+
+  Object.entries(mapa).forEach(([param, idCampo]) => {
+    const valor = params.get(param);
+    const campo = document.getElementById(idCampo);
+    if (!valor || !campo) return;
+    campo.value = valor;
+    // Si el valor no existe entre las opciones del select, el campo queda vacío y se ignora
+    if (campo.value === valor) hayFiltros = true;
+  });
+  return hayFiltros;
 }
 
 // ─── Aplicar filtros ──────────────────────────────────────────────────────────
@@ -93,7 +116,7 @@ function _aplicarFiltros() {
   });
 
   _renderizarChips({ busqueda, ciudad, habitaciones, banos, precioMax });
-  _mostrarPagina(1);
+  _mostrarPagina(1, false);
 }
 
 // ─── Limpiar filtros ──────────────────────────────────────────────────────────
@@ -104,7 +127,7 @@ function _limpiarFiltros() {
   });
   _listaFiltrada = [..._todasPropiedades];
   _renderizarChips({});
-  _mostrarPagina(1);
+  _mostrarPagina(1, false);
 }
 
 // ─── Chips activos ────────────────────────────────────────────────────────────
@@ -115,31 +138,30 @@ function _renderizarChips({ busqueda, ciudad, habitaciones, banos, precioMax } =
 
   const agregar = (label, clearFn) => {
     const chip = document.createElement('span');
-    chip.className = 'chip-filtro';
-    chip.innerHTML = `${label}<button title="Quitar filtro"><span class="material-symbols-rounded">close</span></button>`;
+    chip.className = 'chip';
+    chip.innerHTML = `${esc(label)}<button type="button" aria-label="Quitar filtro ${esc(label)}"><i class="ph ph-x" aria-hidden="true"></i></button>`;
     chip.querySelector('button').addEventListener('click', clearFn);
     wrapper.appendChild(chip);
   };
 
-  if (busqueda) agregar(`"${busqueda}"`, () => {
+  if (busqueda) agregar(`“${busqueda}”`, () => {
     document.getElementById('fBusqueda').value = '';
     _aplicarFiltros();
   });
-  if (ciudad) agregar(ciudad, () => {
+  if (ciudad) agregar(ciudadLegible(ciudad), () => {
     document.getElementById('fCiudad').value = '';
     _aplicarFiltros();
   });
-  if (habitaciones) agregar(`${habitaciones}+ hab.`, () => {
+  if (habitaciones) agregar(`${habitaciones} o más habitaciones`, () => {
     document.getElementById('fHabitaciones').value = '';
     _aplicarFiltros();
   });
-  if (banos) agregar(`${banos}+ baños`, () => {
+  if (banos) agregar(`${banos} o más baños`, () => {
     document.getElementById('fBanos').value = '';
     _aplicarFiltros();
   });
   if (precioMax) {
-    const label = `Hasta $${(precioMax / 1_000_000).toLocaleString('es-CO')}M`;
-    agregar(label, () => {
+    agregar(`Hasta $${(precioMax / 1_000_000).toLocaleString('es-CO')} millones`, () => {
       document.getElementById('fPrecio').value = '';
       _aplicarFiltros();
     });
@@ -147,7 +169,7 @@ function _renderizarChips({ busqueda, ciudad, habitaciones, banos, precioMax } =
 }
 
 // ─── Paginación ───────────────────────────────────────────────────────────────
-function _mostrarPagina(pagina) {
+function _mostrarPagina(pagina, desplazar = true) {
   _paginaActual = pagina;
   const total        = _listaFiltrada.length;
   const totalPaginas = Math.max(1, Math.ceil(total / POR_PAGINA));
@@ -161,12 +183,16 @@ function _mostrarPagina(pagina) {
   const textoEl = document.getElementById('resultados-texto');
   if (textoEl) {
     textoEl.textContent = total === 0
-      ? 'No se encontraron propiedades con esos filtros.'
-      : `Mostrando ${inicio + 1}–${fin} de ${total} propiedad${total !== 1 ? 'es' : ''}`;
+      ? 'No encontramos propiedades con esos filtros.'
+      : `Mostrando ${inicio + 1} a ${fin} de ${total} propiedad${total !== 1 ? 'es' : ''}`;
   }
 
   _renderizarPaginacion(totalPaginas);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (desplazar) {
+    const destino = document.getElementById('resultados');
+    if (destino && window.Premium) window.Premium.scrollTo(destino);
+  }
 }
 
 function _renderizarPaginacion(totalPaginas) {
@@ -175,84 +201,55 @@ function _renderizarPaginacion(totalPaginas) {
   pag.innerHTML = '';
   if (totalPaginas <= 1) return;
 
-  if (_paginaActual > 1) {
+  const boton = (html, etiqueta, destino, activo = false) => {
     const btn = document.createElement('button');
-    btn.innerHTML = '<span class="material-symbols-rounded" style="font-size:2rem;">chevron_left</span>';
-    btn.onclick = () => _mostrarPagina(_paginaActual - 1);
+    btn.type = 'button';
+    btn.innerHTML = html;
+    btn.setAttribute('aria-label', etiqueta);
+    if (activo) btn.setAttribute('aria-current', 'page');
+    btn.addEventListener('click', () => _mostrarPagina(destino));
     pag.appendChild(btn);
-  }
-  for (let i = 1; i <= totalPaginas; i++) {
-    const btn = document.createElement('button');
-    btn.textContent = i;
-    btn.classList.toggle('active', i === _paginaActual);
-    btn.onclick = () => _mostrarPagina(i);
-    pag.appendChild(btn);
-  }
-  if (_paginaActual < totalPaginas) {
-    const btn = document.createElement('button');
-    btn.innerHTML = '<span class="material-symbols-rounded" style="font-size:2rem;">chevron_right</span>';
-    btn.onclick = () => _mostrarPagina(_paginaActual + 1);
-    pag.appendChild(btn);
-  }
+  };
+
+  if (_paginaActual > 1) boton('<i class="ph ph-caret-left" aria-hidden="true"></i>', 'Página anterior', _paginaActual - 1);
+  for (let i = 1; i <= totalPaginas; i++) boton(String(i), `Página ${i}`, i, i === _paginaActual);
+  if (_paginaActual < totalPaginas) boton('<i class="ph ph-caret-right" aria-hidden="true"></i>', 'Página siguiente', _paginaActual + 1);
 }
 
-// ─── Render de cards ──────────────────────────────────────────────────────────
+// ─── Render de tarjetas ───────────────────────────────────────────────────────
 function renderizarPropiedades(lista, contenedor) {
   if (lista.length === 0) {
-    contenedor.innerHTML = `
-      <div class="empty-state" style="grid-column:1/-1;">
-        <span class="material-symbols-rounded">search_off</span>
-        <h3>Sin resultados</h3>
-        <p>Intenta con otros filtros o amplía tu búsqueda.</p>
-      </div>`;
+    contenedor.innerHTML = _estado('magnifying-glass', 'Sin resultados',
+      'Prueba con otros filtros o amplía tu búsqueda para ver más propiedades.');
     return;
   }
 
   contenedor.innerHTML = lista.map(p => {
-    const imagenUrl = (p.imagenes && p.imagenes.length > 0) ? p.imagenes[0] : '/img/default.jpg';
+    const imagenUrl = (p.imagenes && p.imagenes.length > 0) ? p.imagenes[0] : '/img/default.svg';
+    const ciudad = ciudadLegible(p.ciudad);
+    const ubicacion = [p.barrio, ciudad].filter(Boolean).join(', ');
+    const precio = Number(p.precio || 0).toLocaleString('es-CO');
+
     return `
-      <div class="property-card">
-        <div class="card-banner">
-          <div class="img-holder" style="--width:4;--height:3;">
-            <img loading="lazy" src="${imagenUrl}" alt="${p.titulo}" class="img-cover" onerror="this.src='/img/default.jpg'">
-          </div>
-          <span class="tag card-tag">En Venta</span>
+      <article class="prop" data-reveal>
+        <div class="prop-media">
+          <img loading="lazy" src="${esc(imagenUrl)}" alt="${esc(p.titulo)}" onerror="this.onerror=null;this.src='/img/default.svg'">
+          ${ciudad ? `<span class="prop-city">${esc(ciudad)}</span>` : ''}
         </div>
-        <div class="card-body">
-          <h3 class="card-title title-small">
-            <a href="/propiedad.html?id=${p.id}">${p.titulo}</a>
-          </h3>
-          ${p.ciudad ? `
-          <div style="display:flex;align-items:center;gap:4px;color:var(--neutral-60);font-size:var(--fs-label-medium);margin-bottom:8px;">
-            <span class="material-symbols-rounded" style="font-size:1.6rem;color:var(--primary-100);">location_on</span>
-            ${[p.barrio, p.ciudad].filter(Boolean).join(', ')}
-          </div>` : ''}
-          <p class="card-desc">${p.descripcion || ''}</p>
-          <p class="card-price">$${p.precio.toLocaleString('es-CO')}</p>
-          <div class="card-features">
-            <div class="card-feature-item">
-              <span class="material-symbols-rounded">bed</span>
-              <span>${p.habitaciones} hab.</span>
-            </div>
-            <div class="card-feature-item">
-              <span class="material-symbols-rounded">bathroom</span>
-              <span>${p.wc} baños</span>
-            </div>
-            <div class="card-feature-item">
-              <span class="material-symbols-rounded">directions_car</span>
-              <span>${p.estacionamiento} parq.</span>
-            </div>
-            ${p.metrosCuadrados ? `
-            <div class="card-feature-item">
-              <span class="material-symbols-rounded">square_foot</span>
-              <span>${p.metrosCuadrados} m²</span>
-            </div>` : ''}
+        <div class="prop-body">
+          <h3 class="prop-title"><a href="/propiedad.html?id=${esc(p.id)}">${esc(p.titulo)}</a></h3>
+          ${ubicacion ? `<p class="prop-where"><i class="ph ph-map-pin" aria-hidden="true"></i>${esc(ubicacion)}</p>` : ''}
+          ${p.descripcion ? `<p class="prop-desc">${esc(p.descripcion)}</p>` : ''}
+          <p class="prop-price">$${precio}</p>
+          <div class="prop-meta">
+            <span title="Habitaciones"><i class="ph ph-bed" aria-hidden="true"></i>${esc(p.habitaciones)}<span class="sr-only"> habitaciones</span></span>
+            <span title="Baños"><i class="ph ph-bathtub" aria-hidden="true"></i>${esc(p.wc)}<span class="sr-only"> baños</span></span>
+            <span title="Parqueaderos"><i class="ph ph-car" aria-hidden="true"></i>${esc(p.estacionamiento)}<span class="sr-only"> parqueaderos</span></span>
+            ${p.metrosCuadrados ? `<span title="Área"><i class="ph ph-ruler" aria-hidden="true"></i>${esc(p.metrosCuadrados)} m²</span>` : ''}
           </div>
-          <a href="/propiedad.html?id=${p.id}" class="btn btn-fill" style="width:100%;justify-content:center;">
-            <span class="material-symbols-rounded">visibility</span>
-            Ver propiedad
-          </a>
         </div>
-      </div>`;
+      </article>`;
   }).join('');
+
+  if (window.Premium) window.Premium.reveal(contenedor);
 }
