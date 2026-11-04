@@ -4,127 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contactos | Admin Belar</title>
-  <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="/img/belar-mark.svg" type="image/svg+xml">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#131209">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
-  <link rel="stylesheet" href="/css/app.css">
-  <link rel="stylesheet" href="/css/responsive.css">
-  <style>
-    /* ── Paginación ───────────────────────────────────────────── */
-    .paginacion-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 32px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .paginacion-info {
-      font-size: var(--fs-label-medium);
-      color: var(--neutral-60);
-    }
-
-    .paginacion-info strong {
-      color: var(--neutral-20);
-    }
-
-    .paginacion-controles {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .page-btn {
-      min-width: 36px;
-      height: 36px;
-      padding: 0 10px;
-      border-radius: var(--radius-small);
-      border: 2px solid var(--neutral-90);
-      background: var(--white);
-      color: var(--neutral-40);
-      font-size: var(--fs-label-medium);
-      font-weight: var(--weight-semiBold);
-      font-family: var(--font-primary);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      transition: all var(--transition-duration-quick) var(--transition-easing-quick);
-    }
-
-    .page-btn:hover:not(:disabled) {
-      border-color: var(--primary-100);
-      color: var(--primary-100);
-      background: #EBF3FF;
-    }
-
-    .page-btn.active {
-      background: var(--primary-100);
-      border-color: var(--primary-100);
-      color: var(--white);
-    }
-
-    .page-btn:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-    }
-
-    .page-btn .material-symbols-rounded {
-      font-size: 1.8rem;
-      display: block;
-    }
-
-    .page-ellipsis {
-      min-width: 36px;
-      height: 36px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--neutral-60);
-      font-size: var(--fs-label-medium);
-      font-weight: var(--weight-semiBold);
-      pointer-events: none;
-    }
-
-    .por-pagina-selector {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: var(--fs-label-medium);
-      color: var(--neutral-60);
-    }
-
-    .por-pagina-selector select {
-      border: 2px solid var(--neutral-90);
-      border-radius: var(--radius-small);
-      padding: 6px 10px;
-      font-size: var(--fs-label-medium);
-      font-family: var(--font-primary);
-      font-weight: var(--weight-semiBold);
-      color: var(--neutral-20);
-      background: var(--white);
-      cursor: pointer;
-      width: auto;
-    }
-
-    .por-pagina-selector select:focus {
-      border-color: var(--primary-100);
-      outline: none;
-    }
-
-    /* animación suave al cambiar página */
-    #contenedor-contactos {
-      transition: opacity 150ms ease;
-    }
-    #contenedor-contactos.fade-out {
-      opacity: 0;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body class="admin-body">
 
@@ -133,37 +20,37 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo">
-        <img src="/img/logo.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
-        <div class="sidebar-logo-text">Belar<small>Panel de Administración</small></div>
+        <img src="/img/belar-mark.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
+        <div class="sidebar-logo-text">Belar Inmobiliaria<small>Panel de Administración</small></div>
       </div>
     </div>
     <nav class="sidebar-nav">
       <div class="sidebar-section">
         <p class="sidebar-section-label">Principal</p>
-        <a href="/admin/index.html" class="sidebar-link"><span class="material-symbols-rounded">dashboard</span> Dashboard</a>
+        <a href="/admin/index.html" class="sidebar-link"><i class="ph ph-squares-four"></i> Dashboard</a>
       </div>
       <div class="sidebar-section">
         <p class="sidebar-section-label">Gestión</p>
-        <a href="/admin/propiedades.html" class="sidebar-link"><span class="material-symbols-rounded">home</span> Propiedades</a>
-        <a href="/admin/crear.html" class="sidebar-link"><span class="material-symbols-rounded">add_circle</span> Nueva Propiedad</a>
-        <a href="/admin/contactos.html" class="sidebar-link active"><span class="material-symbols-rounded">mail</span> Contactos</a>
+        <a href="/admin/propiedades.html" class="sidebar-link"><i class="ph ph-house"></i> Propiedades</a>
+        <a href="/admin/crear.html" class="sidebar-link"><i class="ph ph-plus-circle"></i> Nueva Propiedad</a>
+        <a href="/admin/contactos.html" class="sidebar-link active"><i class="ph ph-envelope-simple"></i> Contactos</a>
       </div>
       <div class="sidebar-section">
         <p class="sidebar-section-label">Sitio</p>
-        <a href="/" class="sidebar-link" target="_blank"><span class="material-symbols-rounded">open_in_new</span> Ver sitio</a>
+        <a href="/" class="sidebar-link" target="_blank"><i class="ph ph-arrow-square-out"></i> Ver sitio</a>
       </div>
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <div class="sidebar-user-avatar"><span class="material-symbols-rounded">person</span></div>
+        <div class="sidebar-user-avatar"><i class="ph ph-user"></i></div>
         <div>
           <div class="sidebar-user-name">Administrador</div>
           <div class="sidebar-user-role">Super Admin</div>
         </div>
       </div>
-      <form action="/logout" method="post">
+      <form action="/logout?destino=admin" method="post">
         <button type="submit" class="btn btn-danger btn-sm" style="width:100%;justify-content:center;">
-          <span class="material-symbols-rounded">logout</span> Cerrar sesión
+          <i class="ph ph-sign-out"></i> Cerrar sesión
         </button>
       </form>
     </div>
@@ -172,18 +59,18 @@
   <div class="admin-main">
     <header class="admin-topbar">
       <div class="topbar-left">
-        <button class="sidebar-toggle-btn" id="sidebarToggle"><span class="material-symbols-rounded">menu</span></button>
+        <button class="sidebar-toggle-btn" id="sidebarToggle"><i class="ph ph-list"></i></button>
         <div>
           <div class="topbar-title">Mensajes de Contacto</div>
           <div class="topbar-breadcrumb">
             <a href="/admin/index.html">Admin</a>
-            <span class="material-symbols-rounded sep">chevron_right</span>
+            <i class="ph ph-caret-right sep"></i>
             <span>Contactos</span>
           </div>
         </div>
       </div>
       <div class="topbar-right">
-        <a href="/" target="_blank" class="topbar-icon-btn"><span class="material-symbols-rounded">open_in_new</span></a>
+        <a href="/" target="_blank" class="topbar-icon-btn"><i class="ph ph-arrow-square-out"></i></a>
       </div>
     </header>
 
@@ -201,7 +88,7 @@
         <div class="admin-card-body" style="padding:16px 24px;">
           <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
             <div style="position:relative;flex:1;min-width:200px;">
-              <span class="material-symbols-rounded" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--neutral-60);font-size:2rem;">search</span>
+              <i class="ph ph-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--neutral-60);font-size:2rem;"></i>
               <input type="text" id="searchContacto" class="form-control" placeholder="Buscar por nombre o correo..." style="padding-left:44px;">
             </div>
             <select id="filtroEstado" class="form-control" style="max-width:200px;">
@@ -215,18 +102,18 @@
 
       <!-- Contadores de estado -->
       <div style="display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
-        <div style="background:#FEF9C3;border:1px solid #FDE047;border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
-          <span class="material-symbols-rounded" style="font-size:2.4rem;color:#A16207;">schedule</span>
+        <div style="background:rgba(201,169,110,0.14);border:1px solid rgba(201,169,110,0.4);border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
+          <i class="ph ph-clock" style="font-size:2.4rem;color:#C9A96E;"></i>
           <div>
-            <div style="font-size:2.4rem;font-weight:700;color:#A16207;line-height:1;" id="numeroPendientes">—</div>
-            <div style="font-size:var(--fs-label-small);color:#A16207;">Pendientes</div>
+            <div style="font-size:2.4rem;font-weight:700;color:#C9A96E;line-height:1;" id="numeroPendientes">—</div>
+            <div style="font-size:var(--fs-label-small);color:#C9A96E;">Pendientes</div>
           </div>
         </div>
-        <div style="background:#DCFCE7;border:1px solid #86EFAC;border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
-          <span class="material-symbols-rounded" style="font-size:2.4rem;color:#15803D;">check_circle</span>
+        <div style="background:rgba(140,201,160,0.12);border:1px solid rgba(140,201,160,0.4);border-radius:var(--radius-medium);padding:14px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:160px;">
+          <i class="ph ph-check-circle" style="font-size:2.4rem;color:#8CC9A0;"></i>
           <div>
-            <div style="font-size:2.4rem;font-weight:700;color:#15803D;line-height:1;" id="numeroAtendidos">—</div>
-            <div style="font-size:var(--fs-label-small);color:#15803D;">Atendidos</div>
+            <div style="font-size:2.4rem;font-weight:700;color:#8CC9A0;line-height:1;" id="numeroAtendidos">—</div>
+            <div style="font-size:var(--fs-label-small);color:#8CC9A0;">Atendidos</div>
           </div>
         </div>
       </div>
@@ -265,6 +152,7 @@
     </div>
   </div>
 
+  <script src="/js/utils.js"></script>
   <script src="/js/admin-layout.js"></script>
   <script>
     // ═══════════════════════════════════════════════════════════
@@ -282,8 +170,8 @@
     async function cargarContactos() {
       try {
         const [resC, resP] = await Promise.all([
-          fetch('http://localhost:8080/api/contacto'),
-          fetch('http://localhost:8080/api/propiedades')
+          fetch('/api/contacto'),
+          fetch('/api/propiedades')
         ]);
         todosContactos = await resC.json();
         const propiedades = await resP.json();
@@ -297,7 +185,7 @@
 
       } catch (err) {
         document.getElementById('contenedor-contactos').innerHTML =
-          '<div class="empty-state"><span class="material-symbols-rounded">error</span><h3>Error al cargar</h3><p>No se pudieron obtener los mensajes</p></div>';
+          '<div class="empty-state"><i class="ph ph-warning-circle"></i><h3>Error al cargar</h3><p>No se pudieron obtener los mensajes</p></div>';
       }
     }
 
@@ -343,7 +231,7 @@
 
       // ← Anterior
       const btnPrev = crearBotonPag('', false, paginaActual === 1, () => mostrarPagina(paginaActual - 1));
-      btnPrev.innerHTML = '<span class="material-symbols-rounded">chevron_left</span>';
+      btnPrev.innerHTML = '<i class="ph ph-caret-left"></i>';
       btnPrev.title = 'Página anterior';
       controlesEl.appendChild(btnPrev);
 
@@ -369,7 +257,7 @@
 
       // → Siguiente
       const btnNext = crearBotonPag('', false, paginaActual === totalPags, () => mostrarPagina(paginaActual + 1));
-      btnNext.innerHTML = '<span class="material-symbols-rounded">chevron_right</span>';
+      btnNext.innerHTML = '<i class="ph ph-caret-right"></i>';
       btnNext.title = 'Página siguiente';
       controlesEl.appendChild(btnNext);
     }
@@ -453,19 +341,19 @@
       if (lista.length === 0) {
         contenedor.innerHTML = `
           <div class="empty-state" style="grid-column:1/-1;">
-            <span class="material-symbols-rounded">mail</span>
+            <i class="ph ph-envelope-simple"></i>
             <h3>Sin mensajes</h3>
             <p>No hay mensajes que coincidan con el filtro</p>
           </div>`;
         return;
       }
 
-      const medioIconos = { telefono: 'phone', correo: 'mail', whatsapp: 'chat' };
+      const medioIconos = { telefono: 'phone', correo: 'envelope-simple', whatsapp: 'whatsapp-logo' };
 
       contenedor.innerHTML = lista.map(c => {
         const nombrePropiedad = mapaPropiedades[c.casaInteres] || 'No especificada';
         const iniciales  = c.nombre ? c.nombre.charAt(0).toUpperCase() : '?';
-        const iconoMedio = medioIconos[c.medioContacto] || 'contact_mail';
+        const iconoMedio = medioIconos[c.medioContacto] || 'address-book';
         const atendido   = c.atendido === true;
 
         return `
@@ -473,19 +361,19 @@
 
             <div class="contact-card-header">
               <div class="contact-card-avatar"
-                   style="background:${atendido ? 'linear-gradient(135deg,#22c55e,#15803d)' : ''};">
+                   style="background:${atendido ? 'rgba(140,201,160,0.18);color:#8CC9A0' : ''};">
                 ${iniciales}
               </div>
               <div style="flex:1;">
-                <div class="contact-card-name">${c.nombre}</div>
+                <div class="contact-card-name">${esc(c.nombre)}</div>
                 <div class="contact-card-date" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:4px;">
                   <span class="badge badge-blue" style="display:inline-flex;align-items:center;gap:4px;">
-                    <span class="material-symbols-rounded" style="font-size:1.4rem;">${iconoMedio}</span>
-                    ${c.medioContacto || 'correo'}
+                    <i class="ph ph-${iconoMedio}" style="font-size:1.4rem;"></i>
+                    ${esc(c.medioContacto || 'correo')}
                   </span>
                   <span class="badge ${atendido ? 'badge-green' : ''}"
-                        style="${!atendido ? 'background:#FEF9C3;color:#A16207;' : ''}display:inline-flex;align-items:center;gap:4px;">
-                    <span class="material-symbols-rounded" style="font-size:1.4rem;">${atendido ? 'check_circle' : 'schedule'}</span>
+                        style="${!atendido ? 'background:rgba(201,169,110,0.14);color:#C9A96E;' : ''}display:inline-flex;align-items:center;gap:4px;">
+                    <i class="ph ph-${atendido ? 'check-circle' : 'clock'}" style="font-size:1.4rem;"></i>
                     ${atendido ? 'Atendido' : 'Pendiente'}
                   </span>
                 </div>
@@ -494,32 +382,37 @@
 
             <div class="contact-card-body">
               <div class="contact-card-row">
-                <span class="material-symbols-rounded">mail</span>
-                <span>${c.correo}</span>
+                <i class="ph ph-envelope-simple"></i>
+                <span>${esc(c.correo)}</span>
               </div>
               ${c.celular ? `
               <div class="contact-card-row">
-                <span class="material-symbols-rounded">phone</span>
-                <span>${c.celular}</span>
+                <i class="ph ph-phone"></i>
+                <span>${esc(c.celular)}</span>
               </div>` : ''}
               <div class="contact-card-row">
-                <span class="material-symbols-rounded">home</span>
-                <span>${nombrePropiedad}</span>
+                <i class="ph ph-house"></i>
+                <span>${esc(nombrePropiedad)}</span>
               </div>
-              ${c.mensaje ? `<div class="contact-card-message">"${c.mensaje}"</div>` : ''}
+              ${c.fechaVisita ? `
+              <div class="contact-card-row">
+                <i class="ph ph-calendar-check"></i>
+                <span><strong style="color:var(--gold)">Visita solicitada:</strong> ${esc(new Date(c.fechaVisita + 'T12:00:00').toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' }))}${c.horaVisita ? ' a las ' + esc(c.horaVisita) : ''}</span>
+              </div>` : ''}
+              ${c.mensaje ? `<div class="contact-card-message">"${esc(c.mensaje)}"</div>` : ''}
             </div>
 
             <div style="display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--neutral-95);">
               <button onclick="toggleAtendido('${c.id}')"
                 class="btn btn-sm ${atendido ? 'btn-outline' : 'btn-fill'}"
                 style="flex:1;justify-content:center;">
-                <span class="material-symbols-rounded" style="font-size:1.6rem;">${atendido ? 'undo' : 'check_circle'}</span>
+                <i class="ph ph-${atendido ? 'arrow-counter-clockwise' : 'check-circle'}" style="font-size:1.6rem;"></i>
                 ${atendido ? 'Marcar pendiente' : 'Marcar atendido'}
               </button>
               <button onclick="eliminarContacto('${c.id}')"
                 class="btn btn-danger btn-sm"
                 title="Eliminar mensaje">
-                <span class="material-symbols-rounded" style="font-size:1.6rem;">delete</span>
+                <i class="ph ph-trash" style="font-size:1.6rem;"></i>
               </button>
             </div>
 
@@ -533,7 +426,7 @@
     // ═══════════════════════════════════════════════════════════
     async function toggleAtendido(id) {
       try {
-        const res = await fetch(`http://localhost:8080/api/contacto/${id}/atendido`, { method: 'PATCH' });
+        const res = await fetch(`/api/contacto/${id}/atendido`, { method: 'PATCH' });
         if (!res.ok) throw new Error();
         const idx = todosContactos.findIndex(c => c.id === id);
         if (idx !== -1) todosContactos[idx].atendido = !todosContactos[idx].atendido;
@@ -547,7 +440,7 @@
     async function eliminarContacto(id) {
       if (!confirm('¿Seguro que deseas eliminar este mensaje? Esta acción no se puede deshacer.')) return;
       try {
-        const res = await fetch(`http://localhost:8080/api/contacto/${id}`, { method: 'DELETE' });
+        const res = await fetch(`/api/contacto/${id}`, { method: 'DELETE' });
         if (!res.ok) throw new Error();
         todosContactos = todosContactos.filter(c => c.id !== id);
         listaFiltrada  = listaFiltrada.filter(c => c.id !== id);

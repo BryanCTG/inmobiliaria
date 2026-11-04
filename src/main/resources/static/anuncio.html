@@ -3,404 +3,223 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Propiedades | Bienes Raíces</title>
-  <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
+  <title>Propiedades | Belar Inmobiliaria</title>
+  <meta name="description" content="Catálogo de casas, villas y penthouses en Cartagena, Bogotá, Medellín y Barranquilla. Filtra por ciudad, habitaciones y precio.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Propiedades | Belar Inmobiliaria">
+  <meta property="og:description" content="Catálogo de casas, villas y penthouses en Cartagena, Bogotá, Medellín y Barranquilla. Filtra por ciudad, habitaciones y precio.">
+  <meta name="theme-color" content="#131209">
+  <link rel="icon" href="/img/belar-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/app.css">
-  <link rel="stylesheet" href="/css/responsive.css">
-  <style>
-    /* ── Barra de filtros ─────────────────────────────────── */
-    .filtros-card {
-      background: var(--white);
-      border-radius: var(--radius-large);
-      box-shadow: var(--shadow-2);
-      padding: 20px 24px;
-      margin-bottom: 32px;
-    }
-
-    .filtros-titulo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: var(--fs-label-large);
-      font-weight: var(--weight-semiBold);
-      color: var(--neutral-40);
-      margin-bottom: 16px;
-    }
-
-    .filtros-titulo .material-symbols-rounded {
-      font-size: 2rem;
-      color: var(--primary-100);
-    }
-
-    .filtros-grid {
-      display: grid;
-      grid-template-columns: 2fr repeat(4, 1fr) auto;
-      gap: 12px;
-      align-items: end;
-    }
-
-    .filtro-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .filtro-label {
-      font-size: 1.1rem;
-      font-weight: var(--weight-semiBold);
-      color: var(--neutral-60);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-    }
-
-    .filtro-control {
-      background: var(--neutral-98);
-      border: 2px solid var(--neutral-90);
-      border-radius: var(--radius-small);
-      padding: 10px 14px;
-      color: var(--neutral-10);
-      font-size: var(--fs-body-medium);
-      font-family: var(--font-primary);
-      transition: border-color var(--transition-duration-quick);
-      width: 100%;
-      outline: none;
-      appearance: none;
-      -webkit-appearance: none;
-    }
-
-    .filtro-control:focus {
-      border-color: var(--primary-100);
-      background: var(--white);
-    }
-
-    .filtro-control::placeholder {
-      color: var(--neutral-60);
-    }
-
-    /* Select arrow */
-    .filtro-select-wrapper {
-      position: relative;
-    }
-    .filtro-select-wrapper .material-symbols-rounded {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.8rem;
-      color: var(--primary-100);
-      pointer-events: none;
-    }
-
-    .btn-filtrar {
-      background: var(--primary-100);
-      color: var(--white);
-      border: none;
-      border-radius: var(--radius-small);
-      padding: 10px 20px;
-      font-size: var(--fs-label-large);
-      font-weight: var(--weight-semiBold);
-      font-family: var(--font-primary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-      transition: background var(--transition-duration-quick);
-      height: 42px;
-    }
-    .btn-filtrar:hover { background: var(--primary-90); }
-
-    .btn-limpiar {
-      background: var(--neutral-95);
-      color: var(--neutral-40);
-      border: none;
-      border-radius: var(--radius-small);
-      padding: 10px 16px;
-      font-size: var(--fs-label-medium);
-      font-weight: var(--weight-semiBold);
-      font-family: var(--font-primary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      white-space: nowrap;
-      transition: all var(--transition-duration-quick);
-      height: 42px;
-    }
-    .btn-limpiar:hover { background: var(--neutral-90); color: var(--neutral-20); }
-
-    /* Chips de filtros activos */
-    .filtros-activos {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-    .chip-filtro {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #EBF3FF;
-      color: var(--primary-100);
-      font-size: var(--fs-label-small);
-      font-weight: var(--weight-semiBold);
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
-      animation: fadeIn 200ms ease;
-    }
-    .chip-filtro button {
-      background: none;
-      border: none;
-      color: var(--primary-100);
-      cursor: pointer;
-      display: flex;
-      padding: 0;
-      font-size: 1.4rem;
-      line-height: 1;
-    }
-    .chip-filtro button .material-symbols-rounded { font-size: 1.5rem; }
-
-    @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-
-    /* Resultados heading */
-    .resultados-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    /* Responsive filtros */
-    @media (max-width: 1024px) {
-      .filtros-grid {
-        grid-template-columns: 1fr 1fr 1fr;
-      }
-      .filtros-grid .filtro-btns { grid-column: 1 / -1; display: flex; gap: 8px; justify-content: flex-end; }
-    }
-    @media (max-width: 600px) {
-      .filtros-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .filtros-grid .filtro-grupo-busqueda { grid-column: 1 / -1; }
-      .filtros-grid .filtro-btns { grid-column: 1 / -1; }
-    }
-    @media (max-width: 400px) {
-      .filtros-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+  <link rel="stylesheet" href="/css/premium.css">
+  <link rel="stylesheet" href="/css/premium-pages.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
-<body>
+<body data-page="catalogo">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <!-- HEADER -->
-  <header class="header scrolled" id="mainHeader">
-    <div class="container">
-      <a href="/" class="logo">
-        <img src="/img/logo.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
-        <span class="logo-text" style="color:var(--neutral-10);">Bienes<span>Raíces</span></span>
+  <header class="site-header" id="siteHeader">
+    <nav class="nav" aria-label="Principal">
+      <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+        <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+        <span>Belar <em>Inmobiliaria</em></span>
       </a>
-      <nav class="navbar" id="navbar">
-        <ul class="navbar-list">
-          <li><a href="/" class="navbar-link" style="color:var(--neutral-20);">Inicio</a></li>
-          <li><a href="/nosotros.html" class="navbar-link" style="color:var(--neutral-20);">Nosotros</a></li>
-          <li><a href="/anuncio.html" class="navbar-link active" style="color:var(--primary-100);background:#EBF3FF;">Propiedades</a></li>
-          <li><a href="/blog.html" class="navbar-link" style="color:var(--neutral-20);">Blog</a></li>
-        </ul>
-        <div class="navbar-cta">
-          <a href="/admin/login.html" class="btn-link">Login</a>
-          <a href="/contacto.html" class="btn btn-fill">Contáctanos</a>
-        </div>
-      </nav>
-      <button class="nav-toggle-btn" id="navToggle" style="color:var(--neutral-10);">
-        <span class="material-symbols-rounded">menu</span>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/anuncio.html" aria-current="page">Propiedades</a></li>
+        <li><a href="/valoracion.html">Valoración</a></li>
+        <li><a href="/nosotros.html">Nosotros</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/favoritos.html" class="nav-fav" aria-label="Mis favoritos"><i class="ph ph-heart" aria-hidden="true"></i><span class="nav-fav-count" hidden>0</span></a>
+        <a href="/ingresar.html" class="nav-login" id="navCuenta">Ingresar</a>
+        <a href="/contacto.html" class="btn btn-gold btn-sm">Contáctanos</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
+        <span></span><span></span>
       </button>
-    </div>
+    </nav>
   </header>
 
-  <!-- PAGE HERO -->
-  <div class="page-hero">
-    <div class="container" data-aos="fade-up">
-      <span class="section-eyebrow" style="color:var(--secondary-100);margin-bottom:12px;display:block;">Catálogo</span>
-      <h1 class="page-hero-title headline-large">Todas las propiedades</h1>
-      <p class="page-hero-text">Explora nuestra selección completa de casas y apartamentos disponibles</p>
+  <div class="mobile-menu" id="mobileMenu" data-lenis-prevent>
+    <ul>
+      <li><a class="mm-link" href="/">Inicio</a></li>
+      <li><a class="mm-link" href="/anuncio.html" aria-current="page">Propiedades</a></li>
+      <li><a class="mm-link" href="/valoracion.html">Valoración</a></li>
+      <li><a class="mm-link" href="/nosotros.html">Nosotros</a></li>
+      <li><a class="mm-link" href="/contacto.html">Contacto</a></li>
+      <li><a class="mm-link" href="/favoritos.html">Favoritos</a></li>
+      <li><a class="mm-link" href="/ingresar.html" id="mmCuenta">Ingresar</a></li>
+    </ul>
+    <div class="mobile-menu-cta">
+      <a href="/anuncio.html" class="btn btn-gold btn-lg">Ver propiedades <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
     </div>
   </div>
 
-  <main>
-    <section class="section">
+  <main id="contenido">
+  <div class="page-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="Ruta de navegación"><a href="/">Inicio</a> <i class="ph ph-caret-right" aria-hidden="true"></i> <span aria-current="page">Propiedades</span></nav>
+      <span class="eyebrow" data-reveal>Catálogo</span>
+      <h1 class="heading-2" data-reveal style="--d:80">Todas las propiedades</h1>
+      <p data-reveal style="--d:160">Explora la selección completa de casas, villas y penthouses disponibles.</p>
+    </div>
+  </div>
+
+    <section class="section--tight" style="padding-bottom:var(--s-900)" aria-label="Catálogo de propiedades">
       <div class="container">
 
-        <!-- ── BARRA DE FILTROS ─────────────────────────────── -->
-        <div class="filtros-card" data-aos="fade-up">
-          <div class="filtros-titulo">
-            <span class="material-symbols-rounded">tune</span>
-            Buscar propiedades
-          </div>
-
-          <div class="filtros-grid">
-
-            <!-- Búsqueda libre -->
-            <div class="filtro-group filtro-grupo-busqueda">
-              <span class="filtro-label">Buscar</span>
-              <input
-                type="text"
-                id="fBusqueda"
-                class="filtro-control"
-                placeholder="Título o descripción...">
+        <form class="filters" role="search" aria-label="Filtrar propiedades" onsubmit="return false">
+          <div class="filters-title"><i class="ph ph-sliders-horizontal" aria-hidden="true"></i> Afina tu búsqueda</div>
+          <div class="filters-grid">
+            <div class="field">
+              <label for="fBusqueda">Buscar</label>
+              <input type="search" id="fBusqueda" class="control" placeholder="Título, descripción o barrio" autocomplete="off">
             </div>
-
-            <!-- Ciudad -->
-            <div class="filtro-group">
-              <span class="filtro-label">Ciudad</span>
-              <div class="filtro-select-wrapper">
-                <select id="fCiudad" class="filtro-control">
+            <div class="field">
+              <label for="fCiudad">Ciudad</label>
+              <div class="select-wrap">
+                <select id="fCiudad" class="control">
                   <option value="">Todas</option>
                   <option value="Cartagena">Cartagena</option>
                   <option value="Bogota">Bogotá</option>
                   <option value="Medellin">Medellín</option>
                   <option value="Barranquilla">Barranquilla</option>
                 </select>
-                <span class="material-symbols-rounded">location_on</span>
+                <i class="ph ph-caret-down" aria-hidden="true"></i>
               </div>
             </div>
-
-            <!-- Habitaciones -->
-            <div class="filtro-group">
-              <span class="filtro-label">Habitaciones</span>
-              <div class="filtro-select-wrapper">
-                <select id="fHabitaciones" class="filtro-control">
+            <div class="field">
+              <label for="fHabitaciones">Habitaciones</label>
+              <div class="select-wrap">
+                <select id="fHabitaciones" class="control">
                   <option value="">Cualquiera</option>
-                  <option value="1">1+</option>
-                  <option value="2">2+</option>
-                  <option value="3">3+</option>
-                  <option value="4">4+</option>
-                  <option value="5">5+</option>
+                  <option value="1">1 o más</option>
+                  <option value="2">2 o más</option>
+                  <option value="3">3 o más</option>
+                  <option value="4">4 o más</option>
+                  <option value="5">5 o más</option>
                 </select>
-                <span class="material-symbols-rounded">bed</span>
+                <i class="ph ph-caret-down" aria-hidden="true"></i>
               </div>
             </div>
-
-            <!-- Baños -->
-            <div class="filtro-group">
-              <span class="filtro-label">Baños</span>
-              <div class="filtro-select-wrapper">
-                <select id="fBanos" class="filtro-control">
+            <div class="field">
+              <label for="fBanos">Baños</label>
+              <div class="select-wrap">
+                <select id="fBanos" class="control">
                   <option value="">Cualquiera</option>
-                  <option value="1">1+</option>
-                  <option value="2">2+</option>
-                  <option value="3">3+</option>
+                  <option value="1">1 o más</option>
+                  <option value="2">2 o más</option>
+                  <option value="3">3 o más</option>
                 </select>
-                <span class="material-symbols-rounded">bathroom</span>
+                <i class="ph ph-caret-down" aria-hidden="true"></i>
               </div>
             </div>
-
-            <!-- Precio máximo -->
-            <div class="filtro-group">
-              <span class="filtro-label">Precio máx.</span>
-              <div class="filtro-select-wrapper">
-                <select id="fPrecio" class="filtro-control">
+            <div class="field">
+              <label for="fPrecio">Precio máximo</label>
+              <div class="select-wrap">
+                <select id="fPrecio" class="control">
                   <option value="">Sin límite</option>
-                  <option value="200000000">$200M</option>
-                  <option value="400000000">$400M</option>
-                  <option value="600000000">$600M</option>
-                  <option value="800000000">$800M</option>
-                  <option value="1000000000">$1.000M</option>
-                  <option value="2000000000">$2.000M</option>
+                  <option value="400000000">$400 millones</option>
+                  <option value="800000000">$800 millones</option>
+                  <option value="1000000000">$1.000 millones</option>
+                  <option value="2000000000">$2.000 millones</option>
+                  <option value="3000000000">$3.000 millones</option>
                 </select>
-                <span class="material-symbols-rounded">payments</span>
+                <i class="ph ph-caret-down" aria-hidden="true"></i>
               </div>
             </div>
-
-            <!-- Botones -->
-            <div class="filtro-btns" style="display:flex;gap:8px;align-items:flex-end;">
-              <button class="btn-filtrar" id="btnFiltrar">
-                <span class="material-symbols-rounded" style="font-size:1.8rem;">search</span>
-                Buscar
-              </button>
-              <button class="btn-limpiar" id="btnLimpiar" title="Limpiar filtros">
-                <span class="material-symbols-rounded" style="font-size:1.8rem;">close</span>
-              </button>
+            <div class="filters-actions">
+              <button type="button" class="btn btn-gold" id="btnFiltrar"><i class="ph ph-magnifying-glass" aria-hidden="true"></i> Buscar</button>
+              <button type="button" class="btn btn-ghost" id="btnLimpiar" aria-label="Limpiar filtros"><i class="ph ph-x" aria-hidden="true"></i></button>
             </div>
-
           </div>
+          <div class="chips" id="chipsActivos" aria-label="Filtros activos"></div>
+        </form>
 
-          <!-- Chips de filtros activos -->
-          <div class="filtros-activos" id="chipsActivos"></div>
+        <div class="results-bar" id="resultados">
+          <p id="resultados-texto" role="status">Cargando propiedades</p>
+          <div class="results-tools">
+            <div class="select-wrap select-wrap--inline">
+              <label for="fOrden" class="sr-only">Ordenar por</label>
+              <select id="fOrden" class="control">
+                <option value="">Más recientes</option>
+                <option value="precio-asc">Precio de menor a mayor</option>
+                <option value="precio-desc">Precio de mayor a menor</option>
+                <option value="area-desc">Mayor área</option>
+              </select>
+              <i class="ph ph-caret-down" aria-hidden="true"></i>
+            </div>
+            <div class="seg" role="group" aria-label="Tipo de vista">
+              <button type="button" id="vistaLista" aria-pressed="true"><i class="ph ph-squares-four" aria-hidden="true"></i> Lista</button>
+              <button type="button" id="vistaMapa" aria-pressed="false"><i class="ph ph-map-trifold" aria-hidden="true"></i> Mapa</button>
+            </div>
+          </div>
         </div>
-        <!-- ── FIN FILTROS ──────────────────────────────────── -->
 
-        <!-- Cabecera de resultados -->
-        <div class="resultados-header">
-          <p id="resultados-texto" class="body-large" style="color:var(--neutral-50);">Cargando propiedades...</p>
+        <div id="lista-anuncios" class="grid-props" aria-live="polite">
+          <article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article>
         </div>
+        <div id="mapaCatalogo" class="map map--catalog" hidden role="region" aria-label="Mapa de propiedades"></div>
 
-        <div id="lista-anuncios" class="properties-grid">
-          <div class="spinner">Cargando propiedades...</div>
-        </div>
-
-        <!-- Pagination -->
-        <div id="paginacion" class="pagination"></div>
-
+        <nav id="paginacion" class="pager" aria-label="Paginación"></nav>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="/" class="logo" style="margin-bottom:16px;">
-            <img src="/img/logo.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
-            <span class="logo-text" style="color:var(--white);">Bienes<span>Raíces</span></span>
+          <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+            <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+            <span>Belar <em>Inmobiliaria</em></span>
           </a>
-          <p>Tu aliado de confianza en el mercado inmobiliario.</p>
+          <p>Residencias seleccionadas con criterio y acompañamiento experto en las principales ciudades de Colombia.</p>
         </div>
         <div>
-          <h4 class="footer-title">Navegación</h4>
+          <h4>Navegación</h4>
           <div class="footer-links">
-            <a href="/nosotros.html">Nosotros</a>
+            <a href="/">Inicio</a>
             <a href="/anuncio.html">Propiedades</a>
-            <a href="/blog.html">Blog</a>
+            <a href="/valoracion.html">Valoración</a>
+            <a href="/nosotros.html">Nosotros</a>
             <a href="/contacto.html">Contacto</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-title">Servicios</h4>
+          <h4>Servicios</h4>
           <div class="footer-links">
-            <a href="#">Compra de inmuebles</a>
-            <a href="#">Venta de propiedades</a>
-            <a href="#">Arriendo</a>
+            <a href="/anuncio.html">Compra de inmuebles</a>
+            <a href="/valoracion.html">Valora tu propiedad</a>
+            <a href="/contacto.html">Arriendo</a>
+            <a href="/contacto.html">Asesoría legal</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-title">Contacto</h4>
+          <h4>Contacto</h4>
           <div class="footer-links">
-            <a href="mailto:info@bienesraices.com">info@bienesraices.com</a>
+            <a href="mailto:contacto@belar.example">contacto@belar.example</a>
             <a href="tel:+573001234567">+57 300 123 4567</a>
+            <a href="https://www.openstreetmap.org/search?query=Cartagena%2C%20Colombia" target="_blank" rel="noopener">Cartagena, Colombia</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copyright">© 2025 Bienes Raíces. Todos los derechos reservados.</p>
+        <span>© 2026 Belar Inmobiliaria. Proyecto de portafolio con datos de demostración.</span>
+        <span class="footer-legal"><a href="/privacidad.html">Política de privacidad</a><a href="/terminos.html">Términos de uso</a><a href="/admin/login.html">Administración</a></span>
       </div>
     </div>
   </footer>
-
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/site-config.js"></script>
+  <script src="/js/premium.js"></script>
+  <script src="/js/app.js"></script>
   <script src="/js/anuncios.js"></script>
-  <script>
-    AOS.init({ duration: 700, once: true, offset: 60 });
-    document.getElementById('navToggle').addEventListener('click', () => {
-      document.getElementById('navbar').classList.toggle('open');
-    });
-  </script>
 </body>
 </html>

@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const submitBtn = form.querySelector('button[type="submit"]');
     const textoOriginal = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span class="material-symbols-rounded" style="animation:spin .7s linear infinite;">refresh</span> Publicando...';
+    submitBtn.innerHTML = '<i class="ph ph-arrows-clockwise" style="animation:spin .7s linear infinite;"></i> Publicando...';
     submitBtn.disabled = true;
     ocultarMensaje();
 
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     archivos.forEach((file) => formData.append('imagenes', file));
 
     try {
-      const response = await fetch('http://localhost:8080/api/propiedades', {
+      const response = await fetch('/api/propiedades', {
         method: 'POST',
         body: formData
       });

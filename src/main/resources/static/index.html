@@ -1,279 +1,284 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bienes Raíces – Tu hogar ideal</title>
-  <meta name="description"
-    content="Encuentra la propiedad de tus sueños con nuestra selección exclusiva de casas y departamentos.">
-  <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
+  <title>Belar Inmobiliaria | Residencias exclusivas en Colombia</title>
+  <meta name="description" content="Casas, villas y penthouses en Cartagena, Bogotá, Medellín y Barranquilla. Te acompañamos desde la primera visita hasta la firma.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Belar Inmobiliaria | Residencias exclusivas en Colombia">
+  <meta property="og:description" content="Casas, villas y penthouses en Cartagena, Bogotá, Medellín y Barranquilla.">
+  <meta name="theme-color" content="#131209">
+  <link rel="icon" href="/img/belar-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/app.css">
-  <link rel="stylesheet" href="/css/responsive.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+  <link rel="stylesheet" href="/css/premium.css">
+  <link rel="stylesheet" href="/css/premium-pages.css">
 </head>
+<body data-page="home">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-<body>
-
-  <!-- HEADER -->
-  <header class="header" id="mainHeader">
-    <div class="container">
-      <a href="/" class="logo">
-        <img src="/img/logo.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
-        <span class="logo-text">Bienes<span>Raíces</span></span>
+  <!-- NAVEGACIÓN -->
+              <header class="site-header" id="siteHeader">
+    <nav class="nav" aria-label="Principal">
+      <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+        <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+        <span>Belar <em>Inmobiliaria</em></span>
       </a>
-      <nav class="navbar" id="navbar">
-        <ul class="navbar-list">
-          <li><a href="/" class="navbar-link active">Inicio</a></li>
-          <li><a href="/nosotros.html" class="navbar-link">Nosotros</a></li>
-          <li><a href="/anuncio.html" class="navbar-link">Propiedades</a></li>
-          <li><a href="/blog.html" class="navbar-link">Blog</a></li>
-
-        </ul>
-        <div class="navbar-cta">
-          <a href="/admin/login.html" class="btn-link">Login</a>
-          <a href="/contacto.html" class="btn btn-fill">Contáctanos</a>
-        </div>
-      </nav>
-      <button class="nav-toggle-btn" id="navToggle" aria-label="Abrir menú">
-        <span class="material-symbols-rounded">menu</span>
+      <ul class="nav-links">
+        <li><a href="/" aria-current="page">Inicio</a></li>
+        <li><a href="/anuncio.html">Propiedades</a></li>
+        <li><a href="/valoracion.html">Valoración</a></li>
+        <li><a href="/nosotros.html">Nosotros</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/favoritos.html" class="nav-fav" aria-label="Mis favoritos"><i class="ph ph-heart" aria-hidden="true"></i><span class="nav-fav-count" hidden>0</span></a>
+        <a href="/ingresar.html" class="nav-login" id="navCuenta">Ingresar</a>
+        <a href="/contacto.html" class="btn btn-gold btn-sm">Contáctanos</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
+        <span></span><span></span>
       </button>
-    </div>
+    </nav>
   </header>
 
-  <main>
+  <div class="mobile-menu" id="mobileMenu" data-lenis-prevent>
+    <ul>
+      <li><a class="mm-link" href="/" aria-current="page">Inicio</a></li>
+      <li><a class="mm-link" href="/anuncio.html">Propiedades</a></li>
+      <li><a class="mm-link" href="/valoracion.html">Valoración</a></li>
+      <li><a class="mm-link" href="/nosotros.html">Nosotros</a></li>
+      <li><a class="mm-link" href="/contacto.html">Contacto</a></li>
+      <li><a class="mm-link" href="/favoritos.html">Favoritos</a></li>
+      <li><a class="mm-link" href="/ingresar.html" id="mmCuenta">Ingresar</a></li>
+    </ul>
+    <div class="mobile-menu-cta">
+      <a href="/anuncio.html" class="btn btn-gold btn-lg">Ver propiedades <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </div>
+  <main id="contenido">
 
     <!-- HERO -->
-    <section class="hero">
-      <div class="container">
-        <span class="hero-eyebrow" data-aos="fade-down">
-          <span class="material-symbols-rounded" style="font-size:1.6rem">verified</span>
-          La inmobiliaria de confianza
-        </span>
-        <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
-          Encuentra un lugar donde <span>ser tú mismo</span>
-        </h1>
-        <p class="hero-text" data-aos="fade-up" data-aos-delay="200">
-          Ofrecemos propiedades exclusivas que se adaptan a tu estilo de vida. Compra, vende o arrienda con el respaldo
-          de expertos.
-        </p>
-        <form class="search-bar" data-aos="fade-up" data-aos-delay="300" onsubmit="buscarPropiedades(event)">
-          <label class="search-item">
-            <span class="label-medium label">Operación</span>
-            <select class="search-item-field body-medium" id="searchTipo">
-              <option value="">Cualquiera</option>
-              <option value="compra">Comprar</option>
+    <section class="hero" aria-labelledby="hero-titulo">
+      <div class="hero-media"><img src="/img/destacada2.jpg" alt="Piscina infinita al atardecer con vista a la ciudad" fetchpriority="high"></div>
+      <div class="hero-scrim"></div>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <span class="eyebrow" data-reveal>Cartagena · Bogotá · Medellín · Barranquilla</span>
+          <h1 class="heading-1 text-gradient" id="hero-titulo" data-reveal style="--d:80">Residencias excepcionales, elegidas con criterio</h1>
+          <p data-reveal style="--d:160">Casas, villas y penthouses para quienes buscan algo más que metros cuadrados. Te acompañamos desde la primera visita hasta la firma.</p>
+        </div>
+
+        <form class="search" onsubmit="buscarPropiedades(event)" data-reveal style="--d:240" aria-label="Buscar propiedades">
+          <div class="search-field">
+            <label for="searchCiudad">Ciudad</label>
+            <select id="searchCiudad">
+              <option value="">Todas</option>
+              <option value="Cartagena">Cartagena</option>
+              <option value="Bogota">Bogotá</option>
+              <option value="Medellin">Medellín</option>
+              <option value="Barranquilla">Barranquilla</option>
             </select>
-            <span class="material-symbols-rounded">real_estate_agent</span>
-          </label>
-          <label class="search-item">
-            <span class="label-medium label">Tipo de propiedad</span>
-            <select class="search-item-field body-medium" id="searchCategoria">
+            <i class="ph ph-caret-down" aria-hidden="true"></i>
+          </div>
+          <div class="search-field">
+            <label for="searchHabitaciones">Habitaciones</label>
+            <select id="searchHabitaciones">
               <option value="">Cualquiera</option>
-              <option value="casa">Casa</option>
-              <option value="apartamento">Apartamento</option>
-              <option value="villa">Villa</option>
+              <option value="1">1 o más</option>
+              <option value="2">2 o más</option>
+              <option value="3">3 o más</option>
+              <option value="4">4 o más</option>
+              <option value="5">5 o más</option>
             </select>
-            <span class="material-symbols-rounded">apartment</span>
-          </label>
-          <label class="search-item">
-            <span class="label-medium label">Ubicación</span>
-            <input type="text" class="search-item-field body-medium" id="searchUbicacion"
-              placeholder="Ciudad o zona...">
-          </label>
-          <a href="/anuncio.html" class="btn btn-fill">
-            <span class="material-symbols-rounded">search</span>
-            Buscar
-          </a>
+            <i class="ph ph-caret-down" aria-hidden="true"></i>
+          </div>
+          <div class="search-field">
+            <label for="searchPrecio">Precio máximo</label>
+            <select id="searchPrecio">
+              <option value="">Sin límite</option>
+              <option value="1000000000">$1.000 millones</option>
+              <option value="2000000000">$2.000 millones</option>
+              <option value="3000000000">$3.000 millones</option>
+            </select>
+            <i class="ph ph-caret-down" aria-hidden="true"></i>
+          </div>
+          <button type="submit" class="btn btn-gold btn-lg">
+            <i class="ph ph-magnifying-glass" aria-hidden="true"></i> Buscar propiedades
+          </button>
         </form>
+
+        <p class="hero-proof" data-reveal style="--d:320">
+          <i class="ph ph-seal-check" aria-hidden="true"></i>
+          <span><span id="heroCount">Propiedades disponibles en </span>Cartagena, Bogotá, Medellín y Barranquilla</span>
+        </p>
       </div>
-      <div class="hero-shape"></div>
+      <span class="scroll-cue" aria-hidden="true">Desliza</span>
     </section>
 
-    <!-- FEATURES -->
-    <section class="section" style="background: var(--white);">
+    <!-- FRASE -->
+    <section class="tagline" aria-label="Nuestra promesa">
       <div class="container">
-        <div class="section-header" data-aos="fade-up">
-          <span class="section-eyebrow">¿Por qué elegirnos?</span>
-          <h2 class="section-title">Tu mejor decisión inmobiliaria</h2>
-          <p class="section-text">Contamos con años de experiencia acompañando a familias en la búsqueda de su hogar
-            ideal.</p>
+        <p class="tagline-text" data-accent="hogar,vida">Una casa es un lugar. Un hogar es la vida que construyes dentro. Te ayudamos a encontrar el primero y a convertirlo en el segundo.</p>
+      </div>
+    </section>
+
+    <!-- PROPIEDADES DESTACADAS -->
+    <section class="section" aria-labelledby="destacadas-titulo">
+      <div class="container">
+        <div class="section-head section-head--row" data-reveal>
+          <div>
+            <span class="eyebrow">Selección actual</span>
+            <h2 class="heading-2" id="destacadas-titulo">Propiedades destacadas</h2>
+            <p class="body-3">Las últimas residencias que sumamos a nuestro portafolio.</p>
+          </div>
+          <a href="/anuncio.html" class="link-arrow">Ver todo el catálogo <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
         </div>
-        <div class="features-grid">
-          <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
-            <div class="feature-icon"><span class="material-symbols-rounded">verified_user</span></div>
-            <h3>Seguridad Garantizada</h3>
-            <p>Todas nuestras propiedades pasan por un riguroso proceso de verificación legal y técnica para tu total
-              tranquilidad.</p>
-          </div>
-          <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-            <div class="feature-icon"><span class="material-symbols-rounded">payments</span></div>
-            <h3>Precios Justos</h3>
-            <p>Ofrecemos tasaciones precisas y precios competitivos en el mercado. Sin sorpresas, sin costos ocultos.
-            </p>
-          </div>
-          <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="feature-icon"><span class="material-symbols-rounded">schedule</span></div>
-            <h3>Atención Inmediata</h3>
-            <p>Nuestro equipo responde en menos de 24 horas. Siempre disponibles para resolver tus dudas.</p>
-          </div>
-          <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-            <div class="feature-icon"><span class="material-symbols-rounded">handshake</span></div>
-            <h3>Asesoría Experta</h3>
-            <p>Te acompañamos en cada paso del proceso, desde la búsqueda hasta la firma de escrituras.</p>
-          </div>
+        <div id="lista-anuncios" class="grid-props" aria-live="polite">
+          <article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article>
+          <article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article>
+          <article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article>
         </div>
       </div>
     </section>
 
-    <!-- FEATURED PROPERTIES -->
-    <section class="section">
+    <!-- BENEFICIOS -->
+    <section class="section" style="padding-top:0" aria-labelledby="beneficios-titulo">
       <div class="container">
-        <div class="section-header" data-aos="fade-up">
-          <span class="section-eyebrow">Propiedades destacadas</span>
-          <h2 class="section-title">Casas y Apartamentos en Venta</h2>
-          <p class="section-text">Descubre nuestra selección más exclusiva de propiedades disponibles.</p>
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Por qué Belar</span>
+          <h2 class="heading-2" id="beneficios-titulo">Una compra tranquila empieza con buena información</h2>
         </div>
-        <div id="lista-anuncios" class="properties-grid">
-          <div class="spinner">Cargando propiedades...</div>
+        <div class="benefits" data-reveal-group>
+          <article class="benefit">
+            <span class="benefit-num">01</span>
+            <h3>Información completa</h3>
+            <p>Cada propiedad muestra precio, medidas, ubicación en el mapa y fotos, sin letra pequeña.</p>
+          </article>
+          <article class="benefit">
+            <span class="benefit-num">02</span>
+            <h3>Precios con respaldo</h3>
+            <p>Apoyamos las valoraciones en un modelo de estimación y te mostramos su margen de error.</p>
+          </article>
+          <article class="benefit">
+            <span class="benefit-num">03</span>
+            <h3>Tú eliges cómo hablar</h3>
+            <p>Escríbenos por WhatsApp, correo o teléfono, según lo que prefieras.</p>
+          </article>
+          <article class="benefit">
+            <span class="benefit-num">04</span>
+            <h3>Acompañamiento en cada paso</h3>
+            <p>Te guiamos desde la búsqueda hasta la firma de escrituras, paso a paso.</p>
+          </article>
         </div>
-        <div style="text-align:center; margin-top:40px;" data-aos="fade-up">
-          <a href="/anuncio.html" class="btn btn-outline">
-            <span class="material-symbols-rounded">grid_view</span>
-            Ver todas las propiedades
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section class="section" style="padding-top:0" aria-labelledby="pasos-titulo">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Cómo funciona</span>
+          <h2 class="heading-2" id="pasos-titulo">De la primera idea a las llaves en tres pasos</h2>
+        </div>
+        <div class="steps" data-reveal-group>
+          <article class="step">
+            <h3>Cuéntanos qué buscas</h3>
+            <p>Ciudad, tamaño y presupuesto. Con eso preparamos una selección que sí encaja contigo.</p>
+          </article>
+          <article class="step">
+            <h3>Visitas con criterio</h3>
+            <p>Agendamos las visitas que valen la pena y te explicamos lo que no se ve a simple vista.</p>
+          </article>
+          <article class="step">
+            <h3>Cierre acompañado</h3>
+            <p>Te acompañamos en la negociación y en los trámites hasta la firma de escrituras.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HERRAMIENTAS -->
+    <section class="section" style="padding-top:0" aria-labelledby="herramientas-titulo">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow">Para decidir con calma</span>
+          <h2 class="heading-2" id="herramientas-titulo">Todo lo que necesitas antes de dar el paso</h2>
+        </div>
+        <div class="tools" data-reveal-group>
+          <a class="tool" href="/favoritos.html">
+            <i class="ph ph-heart" aria-hidden="true"></i>
+            <h3>Favoritos</h3>
+            <p>Guarda las propiedades que te gustan y compáralas cuando quieras, sin crear una cuenta.</p>
+            <span class="link-arrow">Ver mis favoritos <i class="ph ph-arrow-right" aria-hidden="true"></i></span>
+          </a>
+          <a class="tool" href="/anuncio.html?vista=mapa">
+            <i class="ph ph-map-trifold" aria-hidden="true"></i>
+            <h3>Mapa del catálogo</h3>
+            <p>Mira dónde está cada propiedad antes de visitarla y filtra por ciudad y precio.</p>
+            <span class="link-arrow">Abrir el mapa <i class="ph ph-arrow-right" aria-hidden="true"></i></span>
+          </a>
+          <a class="tool" href="/anuncio.html">
+            <i class="ph ph-calculator" aria-hidden="true"></i>
+            <h3>Calculadora de cuota</h3>
+            <p>En la ficha de cada propiedad simulas la cuota mensual según tu inicial, plazo y tasa.</p>
+            <span class="link-arrow">Explorar propiedades <i class="ph ph-arrow-right" aria-hidden="true"></i></span>
+          </a>
+          <a class="tool" href="/valoracion.html">
+            <i class="ph ph-chart-line-up" aria-hidden="true"></i>
+            <h3>Valora tu propiedad</h3>
+            <p>Obtén una estimación de referencia, con su rango y margen de error, en segundos.</p>
+            <span class="link-arrow">Calcular valoración <i class="ph ph-arrow-right" aria-hidden="true"></i></span>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-section">
-      <div class="container" data-aos="fade-up">
-        <h2 class="cta-title headline-medium">Encuentra la casa de tus sueños</h2>
-        <p class="cta-text body-large">Llena el formulario y un asesor se pondrá en contacto contigo a la brevedad</p>
-        <a href="/contacto.html" class="btn btn-white">
-          <span class="material-symbols-rounded">mail</span>
-          Contáctanos ahora
-        </a>
-      </div>
-    </section>
-
-    <!-- BLOG -->
-    <section class="section" style="background: var(--white);">
-      <div class="container">
-        <div class="section-header" data-aos="fade-up">
-          <span class="section-eyebrow">Blog inmobiliario</span>
-          <h2 class="section-title">Últimas publicaciones</h2>
-          <p class="section-text">Consejos, tendencias y guías para compradores y vendedores.</p>
+    <!-- PREGUNTAS FRECUENTES -->
+    <section class="section" style="padding-top:0" aria-labelledby="faq-titulo">
+      <div class="container faq">
+        <div class="section-head" style="margin-bottom:0" data-reveal>
+          <span class="eyebrow">Preguntas frecuentes</span>
+          <h2 class="heading-2" id="faq-titulo">Lo que suelen preguntarnos</h2>
+          <p class="body-3">¿Tienes otra duda? Escríbenos y un asesor te responde.</p>
+          <a href="/contacto.html" class="link-arrow">Ir a contacto <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
         </div>
-        <div class="blog-grid">
-          <div class="blog-card" data-aos="fade-up">
-            <div class="card-banner">
-              <div class="img-holder"><img src="/img/blog1.jpg" alt="Terraza en el techo" class="img-cover"
-                  loading="lazy"></div>
-            </div>
-            <div class="card-body">
-              <div class="meta">
-                <span><span class="material-symbols-rounded" style="font-size:1.6rem">calendar_today</span> 21 Abr
-                  2025</span>
-                <span><span class="material-symbols-rounded" style="font-size:1.6rem">person</span> Admin</span>
-              </div>
-              <h3><a href="/blog.html">Terraza en el techo de tu casa</a></h3>
-              <p>Consejos para construir una terraza con los mejores materiales y ahorrando dinero.</p>
-              <a href="/blog.html" class="btn-link" style="font-size:1.4rem">Leer más →</a>
-            </div>
-          </div>
-          <div class="blog-card" data-aos="fade-up" data-aos-delay="100">
-            <div class="card-banner">
-              <div class="img-holder"><img src="/img/blog2.jpg" alt="Decoración hogar" class="img-cover" loading="lazy">
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="meta">
-                <span><span class="material-symbols-rounded" style="font-size:1.6rem">calendar_today</span> 18 Abr
-                  2025</span>
-                <span><span class="material-symbols-rounded" style="font-size:1.6rem">person</span> Admin</span>
-              </div>
-              <h3><a href="/blog.html">Guía para decoración de tu hogar</a></h3>
-              <p>Maximiza el espacio con esta guía, aprende a combinar muebles y colores.</p>
-              <a href="/blog.html" class="btn-link" style="font-size:1.4rem">Leer más →</a>
-            </div>
-          </div>
-          <div class="blog-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="card-banner">
-              <div class="img-holder"><img src="/img/blog3.jpg" alt="Inversión inmobiliaria" class="img-cover"
-                  loading="lazy"></div>
-            </div>
-            <div class="card-body">
-              <div class="meta">
-                <span><span class="material-symbols-rounded" style="font-size:1.6rem">calendar_today</span> 10 Abr
-                  2025</span>
-                <span><span class="material-symbols-rounded" style="font-size:1.6rem">person</span> Admin</span>
-              </div>
-              <h3><a href="/blog.html">Cómo invertir en bienes raíces</a></h3>
-              <p>Todo lo que necesitas saber antes de hacer tu primera inversión inmobiliaria.</p>
-              <a href="/blog.html" class="btn-link" style="font-size:1.4rem">Leer más →</a>
-            </div>
-          </div>
+        <div class="faq-list" data-reveal>
+          <details class="faq-item">
+            <summary>¿Cómo agendo una visita? <i class="ph ph-plus" aria-hidden="true"></i></summary>
+            <p>Entra a la ficha de la propiedad, pulsa Contactar asesor y elige la fecha y la hora que prefieras. Atendemos visitas de lunes a viernes, y también puedes escribirnos por WhatsApp.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿En qué ciudades tienen propiedades? <i class="ph ph-plus" aria-hidden="true"></i></summary>
+            <p>Publicamos en Cartagena, Bogotá, Medellín y Barranquilla. En el catálogo puedes filtrar por ciudad, habitaciones y precio máximo, y verlas en lista o en el mapa.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Cómo estiman el valor de una propiedad? <i class="ph ph-plus" aria-hidden="true"></i></summary>
+            <p>Usamos un modelo de regresión lineal entrenado con 250 propiedades de ejemplo para dar una referencia rápida. Te mostramos el valor con su rango y su margen de error, y no reemplaza el avalúo de un perito.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Puedo conversar las condiciones de una propiedad? <i class="ph ph-plus" aria-hidden="true"></i></summary>
+            <p>Cada propiedad muestra su precio de referencia. Si quieres conversar las condiciones, deja tu mensaje y un asesor te contacta.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Qué pasa después de enviar el formulario? <i class="ph ph-plus" aria-hidden="true"></i></summary>
+            <p>Un asesor revisa tu mensaje y te contacta por el medio que elegiste: teléfono, correo o WhatsApp. Si dejaste tu correo, también recibes una confirmación.</p>
+          </details>
         </div>
       </div>
     </section>
 
-    <!-- TESTIMONIALS -->
-    <section class="section">
+    <!-- LLAMADO FINAL -->
+    <section class="section" style="padding-top:0" aria-labelledby="cta-titulo">
       <div class="container">
-        <div class="section-header" data-aos="fade-up">
-          <span class="section-eyebrow">Testimoniales</span>
-          <h2 class="section-title">Lo que dicen nuestros clientes</h2>
-        </div>
-        <div class="testimonials-grid">
-          <div class="testimonial-card" data-aos="fade-up">
-            <div class="stars">★★★★★</div>
-            <blockquote>"El personal se comportó de una excelente forma, muy buena atención y la casa que me ofrecieron
-              cumple con todas mis expectativas."</blockquote>
-            <div class="author">
-              <div
-                style="width:44px;height:44px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:1.8rem;flex-shrink:0;">
-                J</div>
-              <div>
-                <div class="author-name">Juan De la Torre</div>
-                <div class="author-role">Cliente satisfecho</div>
-              </div>
-            </div>
-          </div>
-          <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
-            <div class="stars">★★★★★</div>
-            <blockquote>"Encontré mi departamento ideal en tiempo récord. El equipo me guió en todo el proceso de compra
-              sin complicaciones."</blockquote>
-            <div class="author">
-              <div
-                style="width:44px;height:44px;background:linear-gradient(135deg,#0F4392,#21FFFF22);background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:1.8rem;flex-shrink:0;">
-                M</div>
-              <div>
-                <div class="author-name">María Fernández</div>
-                <div class="author-role">Compradora</div>
-              </div>
-            </div>
-          </div>
-          <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="stars">★★★★★</div>
-            <blockquote>"Vendí mi casa al mejor precio del mercado gracias al equipo de Bienes Raíces. Altamente
-              recomendado."</blockquote>
-            <div class="author">
-              <div
-                style="width:44px;height:44px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:1.8rem;flex-shrink:0;">
-                C</div>
-              <div>
-                <div class="author-name">Carlos Morales</div>
-                <div class="author-role">Vendedor</div>
-              </div>
-            </div>
-          </div>
+        <div class="cta-final" data-reveal>
+          <span class="eyebrow">Tu próximo paso</span>
+          <h2 class="heading-2" id="cta-titulo">Encuentra la residencia que estabas buscando</h2>
+          <p class="body-3">Explora el catálogo completo o cuéntanos qué necesitas y preparamos una selección para ti.</p>
+          <a href="/anuncio.html" class="btn btn-gold btn-lg">Ver propiedades <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
         </div>
       </div>
     </section>
@@ -281,71 +286,70 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer">
+              <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="/" class="logo" style="margin-bottom:16px;">
-            <img src="/img/logo.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
-            <span class="logo-text" style="color:var(--white);">Bienes<span>Raíces</span></span>
+          <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+            <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+            <span>Belar <em>Inmobiliaria</em></span>
           </a>
-          <p>Tu aliado de confianza en el mercado inmobiliario. Encontramos el hogar perfecto para cada familia.</p>
+          <p>Residencias seleccionadas con criterio y acompañamiento experto en las principales ciudades de Colombia.</p>
         </div>
         <div>
-          <h4 class="footer-title">Navegación</h4>
+          <h4>Navegación</h4>
           <div class="footer-links">
-            <a href="/nosotros.html">Nosotros</a>
+            <a href="/">Inicio</a>
             <a href="/anuncio.html">Propiedades</a>
-            <a href="/blog.html">Blog</a>
+            <a href="/valoracion.html">Valoración</a>
+            <a href="/nosotros.html">Nosotros</a>
             <a href="/contacto.html">Contacto</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-title">Servicios</h4>
+          <h4>Servicios</h4>
           <div class="footer-links">
-            <a href="#">Compra de inmuebles</a>
-            <a href="#">Venta de propiedades</a>
-            <a href="#">Arriendo</a>
-            <a href="#">Asesoría legal</a>
+            <a href="/anuncio.html">Compra de inmuebles</a>
+            <a href="/valoracion.html">Valora tu propiedad</a>
+            <a href="/contacto.html">Arriendo</a>
+            <a href="/contacto.html">Asesoría legal</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-title">Contacto</h4>
+          <h4>Contacto</h4>
           <div class="footer-links">
-            <a href="mailto:info@bienesraices.com">info@bienesraices.com</a>
+            <a href="mailto:contacto@belar.example">contacto@belar.example</a>
             <a href="tel:+573001234567">+57 300 123 4567</a>
-            <a href="#">Cartagena, Colombia</a>
+            <a href="https://www.openstreetmap.org/search?query=Cartagena%2C%20Colombia" target="_blank" rel="noopener">Cartagena, Colombia</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copyright">© 2025 Bienes Raíces. Todos los derechos reservados.</p>
+        <span>© 2026 Belar Inmobiliaria. Proyecto de portafolio con datos de demostración.</span>
+        <span class="footer-legal"><a href="/privacidad.html">Política de privacidad</a><a href="/terminos.html">Términos de uso</a><a href="/admin/login.html">Administración</a></span>
       </div>
     </div>
   </footer>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/site-config.js"></script>
+  <script src="/js/premium.js"></script>
+  <script src="/js/app.js"></script>
   <script src="/js/anuncios.js"></script>
   <script>
-    AOS.init({ duration: 700, once: true, offset: 60 });
-
-    // Header scroll effect
-    const header = document.getElementById('mainHeader');
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 40);
-    });
-
-    // Mobile nav
-    document.getElementById('navToggle').addEventListener('click', () => {
-      document.getElementById('navbar').classList.toggle('open');
-    });
-
     function buscarPropiedades(e) {
       e.preventDefault();
-      window.location.href = '/anuncio.html';
+      const params = new URLSearchParams();
+      const ciudad = document.getElementById('searchCiudad').value;
+      const habitaciones = document.getElementById('searchHabitaciones').value;
+      const precio = document.getElementById('searchPrecio').value;
+      if (ciudad) params.set('ciudad', ciudad);
+      if (habitaciones) params.set('habitaciones', habitaciones);
+      if (precio) params.set('precio', precio);
+      const query = params.toString();
+      window.location.href = '/anuncio.html' + (query ? '?' + query : '');
     }
   </script>
 </body>
-
 </html>

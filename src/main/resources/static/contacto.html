@@ -3,145 +3,160 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contacto | Bienes Raíces</title>
-  <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
+  <title>Contacto | Belar Inmobiliaria</title>
+  <meta name="description" content="Escríbenos y un asesor te contacta por teléfono, correo o WhatsApp.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contacto | Belar Inmobiliaria">
+  <meta property="og:description" content="Escríbenos y un asesor te contacta por teléfono, correo o WhatsApp.">
+  <meta name="theme-color" content="#131209">
+  <link rel="icon" href="/img/belar-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/app.css">
-  <link rel="stylesheet" href="/css/responsive.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+  <link rel="stylesheet" href="/css/premium.css">
+  <link rel="stylesheet" href="/css/premium-pages.css">
 </head>
-<body>
+<body data-page="contacto">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <header class="header scrolled" id="mainHeader">
-    <div class="container">
-      <a href="/" class="logo">
-        <img src="/img/logo.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
-        <span class="logo-text" style="color:var(--neutral-10);">Bienes<span>Raíces</span></span>
+  <header class="site-header" id="siteHeader">
+    <nav class="nav" aria-label="Principal">
+      <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+        <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+        <span>Belar <em>Inmobiliaria</em></span>
       </a>
-      <nav class="navbar" id="navbar">
-        <ul class="navbar-list">
-          <li><a href="/" class="navbar-link" style="color:var(--neutral-20);">Inicio</a></li>
-          <li><a href="/nosotros.html" class="navbar-link" style="color:var(--neutral-20);">Nosotros</a></li>
-          <li><a href="/anuncio.html" class="navbar-link" style="color:var(--neutral-20);">Propiedades</a></li>
-          <li><a href="/blog.html" class="navbar-link" style="color:var(--neutral-20);">Blog</a></li>
-        
-        </ul>
-        <div class="navbar-cta">
-          <a href="/admin/login.html" class="btn-link">Login</a>
-          <a href="/contacto.html" class="btn btn-fill">Contáctanos</a>
-        </div>
-      </nav>
-      <button class="nav-toggle-btn" id="navToggle" style="color:var(--neutral-10);">
-        <span class="material-symbols-rounded">menu</span>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/anuncio.html">Propiedades</a></li>
+        <li><a href="/valoracion.html">Valoración</a></li>
+        <li><a href="/nosotros.html">Nosotros</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/favoritos.html" class="nav-fav" aria-label="Mis favoritos"><i class="ph ph-heart" aria-hidden="true"></i><span class="nav-fav-count" hidden>0</span></a>
+        <a href="/ingresar.html" class="nav-login" id="navCuenta">Ingresar</a>
+        <a href="/contacto.html" class="btn btn-gold btn-sm" aria-current="page">Contáctanos</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
+        <span></span><span></span>
       </button>
-    </div>
+    </nav>
   </header>
 
-  <div class="page-hero">
-    <div class="container" data-aos="fade-up">
-      <span class="section-eyebrow" style="color:var(--secondary-100);margin-bottom:12px;display:block;">Estamos aquí</span>
-      <h1 class="page-hero-title headline-large">Contáctanos</h1>
-      <p class="page-hero-text">Un asesor se pondrá en contacto contigo a la brevedad</p>
+  <div class="mobile-menu" id="mobileMenu" data-lenis-prevent>
+    <ul>
+      <li><a class="mm-link" href="/">Inicio</a></li>
+      <li><a class="mm-link" href="/anuncio.html">Propiedades</a></li>
+      <li><a class="mm-link" href="/valoracion.html">Valoración</a></li>
+      <li><a class="mm-link" href="/nosotros.html">Nosotros</a></li>
+      <li><a class="mm-link" href="/contacto.html" aria-current="page">Contacto</a></li>
+      <li><a class="mm-link" href="/favoritos.html">Favoritos</a></li>
+      <li><a class="mm-link" href="/ingresar.html" id="mmCuenta">Ingresar</a></li>
+    </ul>
+    <div class="mobile-menu-cta">
+      <a href="/anuncio.html" class="btn btn-gold btn-lg">Ver propiedades <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
     </div>
   </div>
 
-  <main>
-    <section class="section">
+  <main id="contenido">
+  <div class="page-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="Ruta de navegación"><a href="/">Inicio</a> <i class="ph ph-caret-right" aria-hidden="true"></i> <span aria-current="page">Contacto</span></nav>
+      <span class="eyebrow" data-reveal>Contacto</span>
+      <h1 class="heading-2" data-reveal style="--d:80">Cuéntanos qué estás buscando</h1>
+      <p data-reveal style="--d:160">Un asesor revisa tu mensaje y te contacta por el medio que prefieras.</p>
+    </div>
+  </div>
+
+    <section class="section--tight" style="padding-bottom:var(--s-900)">
       <div class="container">
-        <div class="contact-grid" data-aos="fade-up">
+        <div class="contact">
 
-          <!-- Contact info -->
-          <div class="contact-info-card">
-            <h3>Información de contacto</h3>
-            <p>Estamos listos para ayudarte a encontrar tu propiedad ideal. No dudes en comunicarte con nosotros.</p>
-            <div class="contact-info-list">
-              <div class="contact-info-item">
-                <div class="contact-info-icon"><span class="material-symbols-rounded">location_on</span></div>
-                <div>
-                  <strong>Dirección</strong>
-                  <span>Cartagena de Indias, Colombia</span>
-                </div>
-              </div>
-              <div class="contact-info-item">
-                <div class="contact-info-icon"><span class="material-symbols-rounded">phone</span></div>
-                <div>
-                  <strong>Teléfono</strong>
-                  <span>+57 300 123 4567</span>
-                </div>
-              </div>
-              <div class="contact-info-item">
-                <div class="contact-info-icon"><span class="material-symbols-rounded">mail</span></div>
-                <div>
-                  <strong>Email</strong>
-                  <span>info@bienesraices.com</span>
-                </div>
-              </div>
-              <div class="contact-info-item">
-                <div class="contact-info-icon"><span class="material-symbols-rounded">schedule</span></div>
-                <div>
-                  <strong>Horario</strong>
-                  <span>Lun–Vie: 8am – 6pm</span>
-                </div>
-              </div>
+          <aside class="contact-info" data-reveal aria-label="Información de contacto">
+            <h2 class="heading-5">Información de contacto</h2>
+            <p class="body-3">Estamos listos para ayudarte a encontrar la propiedad ideal. Escríbenos o llámanos.</p>
+            <ul>
+              <li><i class="ph ph-map-pin" aria-hidden="true"></i><div><strong>Dirección</strong><span class="v">Cartagena de Indias, Colombia</span></div></li>
+              <li><i class="ph ph-phone" aria-hidden="true"></i><div><strong>Teléfono</strong><a href="tel:+573001234567">+57 300 123 4567</a></div></li>
+              <li><i class="ph ph-envelope-simple" aria-hidden="true"></i><div><strong>Correo</strong><a href="mailto:contacto@belar.example">contacto@belar.example</a></div></li>
+              <li><i class="ph ph-whatsapp-logo" aria-hidden="true"></i><div><strong>WhatsApp</strong><a href="#" id="waContacto" target="_blank" rel="noopener">Escríbenos por WhatsApp</a></div></li>
+              <li><i class="ph ph-clock" aria-hidden="true"></i><div><strong>Horario</strong><span class="v">Lunes a viernes, de 8 a. m. a 6 p. m.</span></div></li>
+            </ul>
+          </aside>
+
+          <div class="form-card" data-reveal style="--d:120">
+            <div>
+              <h2 class="heading-5">Envíanos un mensaje</h2>
+              <p class="body-6 muted" style="margin-top:var(--s-50)">Los campos marcados con asterisco son obligatorios.</p>
             </div>
-          </div>
 
-          <!-- Contact form -->
-          <div class="form-card">
-            <h2 class="title-large" style="margin-bottom:8px;">Envíanos un mensaje</h2>
-            <p class="body-medium" style="color:var(--neutral-60);margin-bottom:28px;">Completa el formulario y te contactaremos pronto</p>
+            <div id="mensajeContacto" class="form-message" role="status" aria-live="polite"></div>
 
-            <div id="mensajeContacto" class="form-message"></div>
-
-            <form id="formContacto">
+            <form id="formContacto" novalidate>
               <div class="form-grid">
-                <div class="form-group">
-                  <label class="form-label" for="nombre">Nombre completo *</label>
-                  <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Tu nombre" required>
+                <div class="field">
+                  <label for="nombre">Nombre completo *</label>
+                  <input type="text" id="nombre" name="nombre" class="control" placeholder="Tu nombre" maxlength="100" autocomplete="name" required>
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="email">Correo electrónico *</label>
-                  <input type="email" id="email" name="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                <div class="field">
+                  <label for="email">Correo electrónico *</label>
+                  <input type="email" id="email" name="email" class="control" placeholder="correo@ejemplo.com" maxlength="150" autocomplete="email" required>
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="telefono">Teléfono / Celular</label>
-                  <input type="tel" id="telefono" name="telefono" class="form-control" placeholder="+57 300 000 0000">
+                <div class="field">
+                  <label for="telefono">Celular</label>
+                  <input type="tel" id="telefono" name="telefono" class="control" placeholder="+57 300 000 0000" maxlength="20" autocomplete="tel" pattern="[0-9+ \(\)\-]{7,20}">
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="propiedad">Propiedad de interés</label>
-                  <select id="propiedad" name="propiedad" class="form-control">
-                    <option value="">Selecciona una propiedad</option>
-                  </select>
-                </div>
-                <div class="form-group full">
-                  <label class="form-label" for="mensaje">Mensaje *</label>
-                  <textarea id="mensaje" name="mensaje" class="form-control" rows="4" placeholder="Cuéntanos qué estás buscando..." required></textarea>
-                </div>
-                <div class="form-group full">
-                  <label class="form-label">Medio de contacto preferido</label>
-                  <div class="radio-group">
-                    <label class="radio-option">
-                      <input type="radio" name="contacto" value="telefono">
-                      <span>Teléfono</span>
-                    </label>
-                    <label class="radio-option">
-                      <input type="radio" name="contacto" value="correo" checked>
-                      <span>Correo</span>
-                    </label>
-                    <label class="radio-option">
-                      <input type="radio" name="contacto" value="whatsapp">
-                      <span>WhatsApp</span>
-                    </label>
+                <div class="field">
+                  <label for="propiedad">Propiedad de interés</label>
+                  <div class="select-wrap">
+                    <select id="propiedad" name="propiedad" class="control">
+                      <option value="">Ninguna en particular</option>
+                    </select>
+                    <i class="ph ph-caret-down" aria-hidden="true"></i>
                   </div>
                 </div>
+                <fieldset class="field full visita" id="bloqueVisita" hidden>
+                  <legend class="legend">Agendar una visita (opcional)</legend>
+                  <p class="body-6 muted">Atendemos visitas de lunes a viernes, de 8:00 a. m. a 6:00 p. m. Te confirmaremos la disponibilidad.</p>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label for="fechaVisita">Fecha</label>
+                      <input type="date" id="fechaVisita" class="control">
+                    </div>
+                    <div class="field">
+                      <label for="horaVisita">Hora</label>
+                      <div class="select-wrap">
+                        <select id="horaVisita" class="control">
+                          <option value="">Elige una hora</option>
+                          <option value="08:00">8:00 a. m.</option><option value="09:00">9:00 a. m.</option><option value="10:00">10:00 a. m.</option>
+                          <option value="11:00">11:00 a. m.</option><option value="12:00">12:00 m.</option><option value="13:00">1:00 p. m.</option>
+                          <option value="14:00">2:00 p. m.</option><option value="15:00">3:00 p. m.</option><option value="16:00">4:00 p. m.</option>
+                          <option value="17:00">5:00 p. m.</option>
+                        </select>
+                        <i class="ph ph-caret-down" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div class="field full">
+                  <label for="mensaje">Mensaje *</label>
+                  <textarea id="mensaje" name="mensaje" class="control" rows="4" placeholder="Cuéntanos qué estás buscando" maxlength="1000" required></textarea>
+                </div>
+                <fieldset class="field full" style="border:0">
+                  <legend class="label" style="font-size:0.75rem;line-height:1rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:var(--s-75)">Medio de contacto preferido</legend>
+                  <div class="choices">
+                    <label class="choice"><input type="radio" name="contacto" value="telefono"><span>Teléfono</span></label>
+                    <label class="choice"><input type="radio" name="contacto" value="correo" checked><span>Correo</span></label>
+                    <label class="choice"><input type="radio" name="contacto" value="whatsapp"><span>WhatsApp</span></label>
+                  </div>
+                </fieldset>
               </div>
-              <button type="submit" class="btn btn-fill" style="margin-top:16px;width:100%;justify-content:center;">
-                <span class="material-symbols-rounded">send</span>
-                Enviar mensaje
-              </button>
+              <label class="check-row">
+                <input type="checkbox" id="acepto" name="acepto" required>
+                <span>Acepto la <a href="/privacidad.html" target="_blank" rel="noopener">política de privacidad</a> y autorizo el tratamiento de mis datos para responder a mi solicitud.</span>
+              </label>
+              <button type="submit" class="btn btn-gold btn-lg"><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i> Enviar mensaje</button>
             </form>
           </div>
 
@@ -154,50 +169,51 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="/" class="logo" style="margin-bottom:16px;">
-            <img src="/img/logo.svg" alt="Belar" width="36" height="36" style="border-radius:9px;">
-            <span class="logo-text" style="color:var(--white);">Bienes<span>Raíces</span></span>
+          <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+            <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+            <span>Belar <em>Inmobiliaria</em></span>
           </a>
-          <p>Tu aliado de confianza en el mercado inmobiliario.</p>
+          <p>Residencias seleccionadas con criterio y acompañamiento experto en las principales ciudades de Colombia.</p>
         </div>
         <div>
-          <h4 class="footer-title">Navegación</h4>
+          <h4>Navegación</h4>
           <div class="footer-links">
-            <a href="/nosotros.html">Nosotros</a>
+            <a href="/">Inicio</a>
             <a href="/anuncio.html">Propiedades</a>
-            <a href="/blog.html">Blog</a>
+            <a href="/valoracion.html">Valoración</a>
+            <a href="/nosotros.html">Nosotros</a>
             <a href="/contacto.html">Contacto</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-title">Servicios</h4>
+          <h4>Servicios</h4>
           <div class="footer-links">
-            <a href="#">Compra de inmuebles</a>
-            <a href="#">Venta de propiedades</a>
-            <a href="#">Arriendo</a>
+            <a href="/anuncio.html">Compra de inmuebles</a>
+            <a href="/valoracion.html">Valora tu propiedad</a>
+            <a href="/contacto.html">Arriendo</a>
+            <a href="/contacto.html">Asesoría legal</a>
           </div>
         </div>
         <div>
-          <h4 class="footer-title">Contacto</h4>
+          <h4>Contacto</h4>
           <div class="footer-links">
-            <a href="mailto:info@bienesraices.com">info@bienesraices.com</a>
+            <a href="mailto:contacto@belar.example">contacto@belar.example</a>
             <a href="tel:+573001234567">+57 300 123 4567</a>
+            <a href="https://www.openstreetmap.org/search?query=Cartagena%2C%20Colombia" target="_blank" rel="noopener">Cartagena, Colombia</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copyright">© 2025 Bienes Raíces. Todos los derechos reservados.</p>
+        <span>© 2026 Belar Inmobiliaria. Proyecto de portafolio con datos de demostración.</span>
+        <span class="footer-legal"><a href="/privacidad.html">Política de privacidad</a><a href="/terminos.html">Términos de uso</a><a href="/admin/login.html">Administración</a></span>
       </div>
     </div>
   </footer>
-
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/site-config.js"></script>
+  <script src="/js/premium.js"></script>
+  <script src="/js/app.js"></script>
   <script src="/js/main.js"></script>
-  <script>
-    AOS.init({ duration: 700, once: true, offset: 60 });
-    document.getElementById('navToggle').addEventListener('click', () => {
-      document.getElementById('navbar').classList.toggle('open');
-    });
-  </script>
 </body>
 </html>

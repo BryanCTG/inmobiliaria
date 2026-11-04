@@ -45,3 +45,7 @@ application-local.properties
 
 # Screenshots del README (opcional, son pesadas)
 screenshots/uploads/
+
+# Pruebas
+tests/node_modules/
+tests/*.png

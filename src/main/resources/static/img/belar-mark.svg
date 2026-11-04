@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Belar Inmobiliaria">
+  <rect width="32" height="32" rx="8" fill="#C9A96E"/>
+  <g fill="none" stroke="#131209" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7.5 16.5 16 8.5l8.5 8"/>
+    <path d="M10.5 15v8.5h11V15"/>
+    <path d="M14 23.5v-4.5h4v4.5"/>
+  </g>
+</svg>

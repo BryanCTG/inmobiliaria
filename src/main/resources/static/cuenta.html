@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi cuenta | Belar Inmobiliaria</title>
+  <meta name="description" content="Tus favoritos, solicitudes y datos personales.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mi cuenta | Belar Inmobiliaria">
+  <meta property="og:description" content="Tus favoritos, solicitudes y datos personales.">
+  <meta name="theme-color" content="#131209">
+  <link rel="icon" href="/img/belar-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+  <link rel="stylesheet" href="/css/premium.css">
+  <link rel="stylesheet" href="/css/premium-pages.css">
+</head>
+<body data-page="cuenta">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="site-header" id="siteHeader">
+    <nav class="nav" aria-label="Principal">
+      <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+        <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+        <span>Belar <em>Inmobiliaria</em></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/anuncio.html">Propiedades</a></li>
+        <li><a href="/valoracion.html">Valoración</a></li>
+        <li><a href="/nosotros.html">Nosotros</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/favoritos.html" class="nav-fav" aria-label="Mis favoritos"><i class="ph ph-heart" aria-hidden="true"></i><span class="nav-fav-count" hidden>0</span></a>
+        <a href="/ingresar.html" class="nav-login" id="navCuenta">Ingresar</a>
+        <a href="/contacto.html" class="btn btn-gold btn-sm">Contáctanos</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
+        <span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" data-lenis-prevent>
+    <ul>
+      <li><a class="mm-link" href="/">Inicio</a></li>
+      <li><a class="mm-link" href="/anuncio.html">Propiedades</a></li>
+      <li><a class="mm-link" href="/valoracion.html">Valoración</a></li>
+      <li><a class="mm-link" href="/nosotros.html">Nosotros</a></li>
+      <li><a class="mm-link" href="/contacto.html">Contacto</a></li>
+      <li><a class="mm-link" href="/favoritos.html">Favoritos</a></li>
+      <li><a class="mm-link" href="/ingresar.html" id="mmCuenta">Ingresar</a></li>
+    </ul>
+    <div class="mobile-menu-cta">
+      <a href="/anuncio.html" class="btn btn-gold btn-lg">Ver propiedades <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </div>
+
+  <main id="contenido">
+  <div class="page-hero">
+    <div class="container">
+      <span class="eyebrow" data-reveal>Mi cuenta</span>
+      <h1 class="heading-2" id="saludo" data-reveal style="--d:80">Hola</h1>
+      <p data-reveal style="--d:160">Tus favoritos, el estado de tus solicitudes y tus datos personales.</p>
+    </div>
+  </div>
+
+    <section class="section--tight" style="padding-bottom:var(--s-900)" aria-label="Panel del cliente">
+      <div class="container">
+        <div class="seg" role="tablist" aria-label="Secciones de tu cuenta" style="margin-bottom:var(--s-400)">
+          <button type="button" role="tab" id="tabFavoritos" aria-selected="true" aria-controls="panelFavoritos"><i class="ph ph-heart" aria-hidden="true"></i> Favoritos</button>
+          <button type="button" role="tab" id="tabSolicitudes" aria-selected="false" aria-controls="panelSolicitudes"><i class="ph ph-chat-circle-text" aria-hidden="true"></i> Mis solicitudes</button>
+          <button type="button" role="tab" id="tabPerfil" aria-selected="false" aria-controls="panelPerfil"><i class="ph ph-user" aria-hidden="true"></i> Perfil</button>
+        </div>
+
+        <div id="panelFavoritos" role="tabpanel" aria-labelledby="tabFavoritos">
+          <div id="favGrid" class="grid-props" aria-live="polite"></div>
+        </div>
+
+        <div id="panelSolicitudes" role="tabpanel" aria-labelledby="tabSolicitudes" hidden>
+          <div id="listaSolicitudes" class="solicitudes" aria-live="polite"></div>
+        </div>
+
+        <div id="panelPerfil" role="tabpanel" aria-labelledby="tabPerfil" hidden>
+          <div class="perfil-grid">
+            <div class="form-card">
+              <h2 class="heading-6">Mis datos</h2>
+              <div id="msgPerfil" class="form-message" role="status" aria-live="polite"></div>
+              <form id="formPerfil" novalidate>
+                <div class="field"><label for="pfNombre">Nombre completo</label><input id="pfNombre" class="control" maxlength="100" autocomplete="name" required></div>
+                <div class="field"><label for="pfCorreo">Correo electrónico</label><input id="pfCorreo" class="control" disabled></div>
+                <div class="field"><label for="pfTel" id="pfTelLabel">Celular</label><input id="pfTel" class="control" type="tel" maxlength="20" autocomplete="tel" pattern="[0-9+ \(\)\-]{7,20}"></div>
+                <button class="btn btn-gold btn-lg" type="submit">Guardar cambios</button>
+              </form>
+            </div>
+            <div class="form-card">
+              <h2 class="heading-6">Cambiar contraseña</h2>
+              <div id="msgPass" class="form-message" role="status" aria-live="polite"></div>
+              <form id="formPassword" novalidate>
+                <div class="field"><label for="pwActual">Contraseña actual</label><input id="pwActual" class="control" type="password" autocomplete="current-password" required></div>
+                <div class="field"><label for="pwNueva">Contraseña nueva</label><input id="pwNueva" class="control" type="password" autocomplete="new-password" minlength="8" maxlength="72" required><span class="hint">Mínimo 8 caracteres, con letras y números.</span></div>
+                <button class="btn btn-ghost btn-lg" type="submit">Actualizar contraseña</button>
+              </form>
+            </div>
+          </div>
+          <div class="perfil-salir"><button type="button" class="btn btn-ghost" id="btnSalir"><i class="ph ph-sign-out" aria-hidden="true"></i> Cerrar sesión</button></div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+            <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+            <span>Belar <em>Inmobiliaria</em></span>
+          </a>
+          <p>Residencias seleccionadas con criterio y acompañamiento experto en las principales ciudades de Colombia.</p>
+        </div>
+        <div>
+          <h4>Navegación</h4>
+          <div class="footer-links">
+            <a href="/">Inicio</a>
+            <a href="/anuncio.html">Propiedades</a>
+            <a href="/valoracion.html">Valoración</a>
+            <a href="/nosotros.html">Nosotros</a>
+            <a href="/contacto.html">Contacto</a>
+          </div>
+        </div>
+        <div>
+          <h4>Servicios</h4>
+          <div class="footer-links">
+            <a href="/anuncio.html">Compra de inmuebles</a>
+            <a href="/valoracion.html">Valora tu propiedad</a>
+            <a href="/contacto.html">Arriendo</a>
+            <a href="/contacto.html">Asesoría legal</a>
+          </div>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <div class="footer-links">
+            <a href="mailto:contacto@belar.example">contacto@belar.example</a>
+            <a href="tel:+573001234567">+57 300 123 4567</a>
+            <a href="https://www.openstreetmap.org/search?query=Cartagena%2C%20Colombia" target="_blank" rel="noopener">Cartagena, Colombia</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Belar Inmobiliaria. Proyecto de portafolio con datos de demostración.</span>
+        <span class="footer-legal"><a href="/privacidad.html">Política de privacidad</a><a href="/terminos.html">Términos de uso</a><a href="/admin/login.html">Administración</a></span>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/site-config.js"></script>
+  <script src="/js/premium.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/anuncios.js"></script>
+  <script src="/js/perfil.js"></script>
+  <script src="/js/cuenta.js"></script>
+</body>
+</html>

@@ -1,240 +1,267 @@
+/**
+ * Ficha de propiedad: galería, características, descripción y mapa.
+ * Todo texto que viene de la base de datos pasa por esc() antes de pintarse.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
   const contenido = document.getElementById('contenido-propiedad');
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
+  const id = new URLSearchParams(window.location.search).get('id');
+
+  const crumbs = (actual) => `
+    <nav class="crumbs" aria-label="Ruta de navegación">
+      <a href="/">Inicio</a><i class="ph ph-caret-right" aria-hidden="true"></i>
+      <a href="/anuncio.html">Propiedades</a>${actual ? `<i class="ph ph-caret-right" aria-hidden="true"></i><span aria-current="page">${esc(actual)}</span>` : ''}
+    </nav>`;
+
+  const vistaError = (titulo, texto) => `
+    <div class="page-hero"><div class="container">${crumbs('')}</div></div>
+    <section class="section--tight" style="padding-bottom:var(--s-900)">
+      <div class="container">
+        <div class="state-box">
+          <i class="ph ph-house-line" aria-hidden="true"></i>
+          <h1 class="heading-5">${esc(titulo)}</h1>
+          <p class="body-6">${esc(texto)}</p>
+          <a href="/anuncio.html" class="btn btn-gold" style="margin-top:var(--s-100)">Ver todas las propiedades</a>
+        </div>
+      </div>
+    </section>`;
 
   if (!id) {
-    contenido.innerHTML = `
-      <div class="container section">
-        <div class="empty-state">
-          <span class="material-symbols-rounded">error</span>
-          <h3>Propiedad no encontrada</h3>
-          <p>No se especificó una propiedad válida.</p>
-          <a href="/anuncio.html" class="btn btn-fill" style="margin-top:16px;display:inline-flex;">Ver todas las propiedades</a>
-        </div>
-      </div>`;
+    contenido.innerHTML = vistaError('Propiedad no encontrada', 'No se indicó una propiedad válida.');
     return;
   }
 
   try {
-    const res = await fetch(`http://localhost:8080/api/propiedades/${id}`);
+    const res = await fetch(`/api/propiedades/${encodeURIComponent(id)}`);
     if (!res.ok) throw new Error('Propiedad no encontrada');
     const p = await res.json();
 
-    const imagenes = (p.imagenes && p.imagenes.length > 0) ? p.imagenes : ['/img/default.jpg'];
-    const imagenPrincipal = imagenes[0];
+    const imagenes = (p.imagenes && p.imagenes.length > 0) ? p.imagenes : ['/img/default.svg'];
+    const ciudad = ciudadLegible(p.ciudad);
+    const ubicacion = [p.barrio, ciudad].filter(Boolean).join(', ');
+    const direccionCompleta = [p.direccion, p.barrio, ciudad].filter(Boolean).join(' · ');
+    const precio = Number(p.precio || 0).toLocaleString('es-CO');
+    const tieneCoordenadas = Number.isFinite(p.latitud) && Number.isFinite(p.longitud);
 
-    const galeriaHTML = imagenes.length > 1
-      ? `<div class="thumb-gallery" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
-          ${imagenes.map((src, i) => `
-            <img src="${src}" alt="Imagen ${i+1}" onerror="this.src='/img/default.jpg'"
-              style="width:80px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i===0?'var(--primary-100)':'transparent'};"
-              onclick="document.getElementById('imgPrincipal').src=this.src;
-                       document.querySelectorAll('.thumb-gallery img').forEach(t=>t.style.borderColor='transparent');
-                       this.style.borderColor='var(--primary-100)';">
-          `).join('')}
-         </div>`
-      : '';
+    document.title = `${p.titulo} | Belar Inmobiliaria`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', `${p.titulo}${ubicacion ? ' en ' + ubicacion : ''}. ${(p.descripcion || '').slice(0, 120)}`);
 
-    // Location string for display
-    const locationParts = [p.barrio, p.ciudad].filter(Boolean);
-    const locationStr = locationParts.length ? locationParts.join(', ') : '';
-
-    // Build map section HTML (only if coordinates exist)
-    const hasCoords = p.latitud && p.longitud;
-    const mapSectionHTML = hasCoords ? `
-      <div class="admin-card" style="margin-top:24px;">
-        <div class="admin-card-header">
-          <h2 style="font-size:var(--fs-title-medium);">
-            <span class="material-symbols-rounded" style="font-size:2rem;vertical-align:middle;color:var(--primary-100);margin-right:6px;">location_on</span>
-            Ubicación
-          </h2>
-        </div>
-        <div class="admin-card-body" style="padding:0;">
-          ${p.direccion || locationStr ? `
-            <div style="padding:16px 24px 0;display:flex;align-items:center;gap:8px;color:var(--neutral-40);font-size:var(--fs-body-medium);">
-              <span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">place</span>
-              ${[p.direccion, p.barrio, p.ciudad].filter(Boolean).join(' · ')}
-            </div>` : ''}
-          <div id="mapaPropiedad" style="width:100%;height:360px;border-radius:0 0 var(--radius-large) var(--radius-large);"></div>
-        </div>
+    const miniaturas = imagenes.length > 1 ? `
+      <div class="thumbs" role="group" aria-label="Más imágenes">
+        ${imagenes.map((src, i) => `
+          <button type="button" data-src="${esc(src)}" aria-label="Ver imagen ${i + 1}" aria-current="${i === 0}">
+            <img src="${esc(src)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/img/default.svg'">
+          </button>`).join('')}
       </div>` : '';
 
-    document.title = `${p.titulo} | Bienes Raíces`;
+    const specs = [
+      ['bed', p.habitaciones, 'Habitaciones'],
+      ['bathtub', p.wc, 'Baños'],
+      ['car', p.estacionamiento, 'Parqueaderos'],
+      p.metrosCuadrados ? ['ruler', `${p.metrosCuadrados} m²`, 'Área'] : null,
+    ].filter(Boolean).map(([icono, valor, etiqueta]) => `
+      <div class="spec"><i class="ph ph-${icono}" aria-hidden="true"></i><div><strong>${esc(valor)}</strong><span>${etiqueta}</span></div></div>`).join('');
+
+    const mapa = tieneCoordenadas ? `
+      <section class="panel panel--flush" aria-labelledby="mapa-titulo">
+        <h2 id="mapa-titulo">Ubicación</h2>
+        ${direccionCompleta ? `<p class="where"><i class="ph ph-map-pin" aria-hidden="true"></i>${esc(direccionCompleta)}</p>` : ''}
+        <div class="map" id="mapaPropiedad" role="img" aria-label="Mapa con la ubicación de la propiedad"></div>
+      </section>` : '';
+
+    // WhatsApp con el mensaje ya escrito (el número se cambia en js/site-config.js)
+    const numeroWa = (window.BELAR && window.BELAR.whatsapp) || '';
+    const mensajeWa = `Hola, me interesa la propiedad "${p.titulo}"${ubicacion ? ' en ' + ubicacion : ''}. ${window.location.href}`;
+    const urlWhatsApp = `https://wa.me/${numeroWa}?text=${encodeURIComponent(mensajeWa)}`;
+
+    const calculadora = `
+      <section class="panel" data-reveal aria-labelledby="calc-titulo">
+        <h2 id="calc-titulo">Calculadora de cuota</h2>
+        <p class="body-6">Simula la cuota mensual de un crédito para esta propiedad. Los valores son de ejemplo y puedes ajustarlos.</p>
+        <div class="calc">
+          <div class="field">
+            <label for="calcInicial">Cuota inicial <output id="calcInicialOut" for="calcInicial">30 %</output></label>
+            <input type="range" id="calcInicial" min="10" max="70" step="5" value="30">
+          </div>
+          <div class="field">
+            <label for="calcPlazo">Plazo <output id="calcPlazoOut" for="calcPlazo">15 años</output></label>
+            <input type="range" id="calcPlazo" min="5" max="30" step="1" value="15">
+          </div>
+          <div class="field">
+            <label for="calcTasa">Tasa efectiva anual (%)</label>
+            <input type="number" id="calcTasa" class="control" min="1" max="40" step="0.1" value="12" inputmode="decimal">
+          </div>
+        </div>
+        <dl class="calc-result" aria-live="polite">
+          <div class="calc-main"><dt>Cuota mensual estimada</dt><dd id="calcCuota">—</dd></div>
+          <div><dt>Cuota inicial</dt><dd id="calcEntrada">—</dd></div>
+          <div><dt>Valor a financiar</dt><dd id="calcMonto">—</dd></div>
+          <div><dt>Intereses totales</dt><dd id="calcIntereses">—</dd></div>
+        </dl>
+        <p class="body-6 faint">Estimación informativa: no constituye una oferta de crédito. Consulta las condiciones reales con tu entidad financiera.</p>
+      </section>`;
 
     contenido.innerHTML = `
-      <!-- Breadcrumb -->
-      <div style="background:var(--white);padding:20px 0;border-bottom:1px solid var(--neutral-95);margin-bottom:0;">
-        <div class="container">
-          <div style="display:flex;align-items:center;gap:8px;font-size:var(--fs-label-medium);color:var(--neutral-60);">
-            <a href="/" style="color:var(--primary-100);">Inicio</a>
-            <span class="material-symbols-rounded" style="font-size:1.8rem;">chevron_right</span>
-            <a href="/anuncio.html" style="color:var(--primary-100);">Propiedades</a>
-            <span class="material-symbols-rounded" style="font-size:1.8rem;">chevron_right</span>
-            <span>${p.titulo}</span>
-          </div>
-        </div>
-      </div>
+      <div class="page-hero"><div class="container">${crumbs(p.titulo)}</div></div>
 
-      <section class="section">
-        <div class="container">
-          <div class="property-detail-grid">
+      <section class="section--tight" aria-labelledby="desc-titulo">
+        <div class="container detail">
 
-            <!-- Gallery + Description + Map -->
-            <div>
-              <div class="property-gallery">
-                <img id="imgPrincipal" src="${imagenPrincipal}" alt="${p.titulo}" onerror="this.src='/img/default.jpg'">
-              </div>
-              ${galeriaHTML}
-
-              <div class="admin-card" style="margin-top:24px;">
-                <div class="admin-card-header">
-                  <h2 style="font-size:var(--fs-title-medium);">Descripción</h2>
-                </div>
-                <div class="admin-card-body">
-                  <p style="color:var(--neutral-40);font-size:var(--fs-body-large);line-height:1.8;">${p.descripcion || 'Sin descripción disponible.'}</p>
-                </div>
-              </div>
-
-              ${mapSectionHTML}
+          <div class="detail-main">
+            <div class="gallery-main" data-reveal>
+              <img id="imgPrincipal" src="${esc(imagenes[0])}" alt="${esc(p.titulo)}" onerror="this.onerror=null;this.src='/img/default.svg'">
+              <button type="button" class="fav fav--lg" data-fav="${esc(p.id)}" aria-pressed="false" aria-label="Guardar en favoritos"><i class="ph ph-heart" aria-hidden="true"></i></button>
             </div>
+            ${miniaturas}
 
-            <!-- Info Card -->
-            <div>
-              <div class="property-info-card">
-                <span class="tag" style="margin-bottom:16px;">En Venta</span>
-                <h1 style="font-size:var(--fs-headline-small);color:var(--neutral-10);margin-bottom:8px;line-height:1.3;">${p.titulo}</h1>
+            <section class="panel" data-reveal>
+              <h2 id="desc-titulo">Descripción</h2>
+              <p class="body-3">${esc(p.descripcion || 'Esta propiedad aún no tiene una descripción.')}</p>
+            </section>
 
-                ${locationStr ? `
-                  <div style="display:flex;align-items:center;gap:6px;color:var(--neutral-60);font-size:var(--fs-body-medium);margin-bottom:16px;">
-                    <span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">location_on</span>
-                    ${locationStr}
-                  </div>` : ''}
+            ${calculadora}
 
-                <p style="font-size:3.2rem;font-weight:700;color:var(--primary-100);margin-bottom:24px;">$${p.precio.toLocaleString('es-CO')}</p>
+            ${mapa}
+          </div>
 
-                <div class="property-features-list">
-                  <div class="property-feature">
-                    <span class="material-symbols-rounded">bed</span>
-                    <div><strong>${p.habitaciones}</strong><span>Habitaciones</span></div>
-                  </div>
-                  <div class="property-feature">
-                    <span class="material-symbols-rounded">bathroom</span>
-                    <div><strong>${p.wc}</strong><span>Baños</span></div>
-                  </div>
-                  <div class="property-feature">
-                    <span class="material-symbols-rounded">directions_car</span>
-                    <div><strong>${p.estacionamiento}</strong><span>Parqueadero(s)</span></div>
-                  </div>
-                  ${p.metrosCuadrados ? `
-                  <div class="property-feature">
-                    <span class="material-symbols-rounded">square_foot</span>
-                    <div><strong>${p.metrosCuadrados} m²</strong><span>Área</span></div>
-                  </div>` : ''}
-                  ${p.ciudad ? `
-                  <div class="property-feature">
-                    <span class="material-symbols-rounded">location_city</span>
-                    <div><strong>${p.ciudad}</strong><span>Ciudad</span></div>
-                  </div>` : ''}
-                  ${p.barrio ? `
-                  <div class="property-feature">
-                    <span class="material-symbols-rounded">home_pin</span>
-                    <div><strong>${p.barrio}</strong><span>Barrio</span></div>
-                  </div>` : ''}
-                </div>
-
-                <div style="margin-top:24px;display:flex;flex-direction:column;gap:12px;">
-                  <a href="/contacto.html" class="btn btn-fill" style="width:100%;justify-content:center;">
-                    <span class="material-symbols-rounded">mail</span>
-                    Contactar asesor
-                  </a>
-                  ${hasCoords ? `
-                  <button onclick="document.getElementById('mapaPropiedad')?.scrollIntoView({behavior:'smooth'})"
-                    class="btn btn-outline" style="width:100%;justify-content:center;">
-                    <span class="material-symbols-rounded">map</span>
-                    Ver en el mapa
-                  </button>` : ''}
-                  <a href="/anuncio.html" class="btn btn-outline" style="width:100%;justify-content:center;">
-                    <span class="material-symbols-rounded">arrow_back</span>
-                    Ver más propiedades
-                  </a>
-                </div>
+          <aside class="info-card" data-reveal style="--d:120">
+            ${ciudad ? `<span class="eyebrow">${esc(ciudad)}</span>` : ''}
+            <h1>${esc(p.titulo)}</h1>
+            ${ubicacion ? `<p class="where"><i class="ph ph-map-pin" aria-hidden="true"></i>${esc(ubicacion)}</p>` : ''}
+            <p class="price">$${precio}</p>
+            <div class="spec-grid">${specs}</div>
+            <div class="actions">
+              <a href="/contacto.html?propiedad=${encodeURIComponent(p.id)}" class="btn btn-gold btn-lg">
+                <i class="ph ph-paper-plane-tilt" aria-hidden="true"></i> Contactar asesor
+              </a>
+              <a href="${esc(urlWhatsApp)}" class="btn btn-ghost btn-wa" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i> Escribir por WhatsApp</a>
+              <div class="actions-row">
+                ${tieneCoordenadas ? `<button type="button" class="btn btn-ghost" id="verMapa"><i class="ph ph-map-trifold" aria-hidden="true"></i> Mapa</button>` : ''}
+                <button type="button" class="btn btn-ghost" id="compartir"><i class="ph ph-share-network" aria-hidden="true"></i> Compartir</button>
               </div>
             </div>
+          </aside>
 
-          </div>
         </div>
       </section>
-    `;
 
-    // Initialize Leaflet map if coordinates exist
-    if (hasCoords) {
-      // Load Leaflet dynamically if not already loaded
-      const initLeafletMap = () => {
-        const mapEl = document.getElementById('mapaPropiedad');
-        if (!mapEl || !window.L) return;
+      <section class="section--tight" style="padding-bottom:var(--s-900)" id="similares" hidden aria-labelledby="similares-titulo">
+        <div class="container">
+          <div class="section-head" style="margin-bottom:var(--s-400)"><h2 class="heading-4" id="similares-titulo">También te pueden interesar</h2></div>
+          <div class="grid-props" id="similares-grid"></div>
+        </div>
+      </section>`;
 
-        const mapa = L.map('mapaPropiedad', { scrollWheelZoom: false }).setView([p.latitud, p.longitud], 16);
+    window.Premium?.reveal(contenido);
+    window.Belar?.repintar(contenido);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>',
-          maxZoom: 19
-        }).addTo(mapa);
+    // Compartir: menú nativo si existe, si no copia el enlace
+    document.getElementById('compartir')?.addEventListener('click', async () => {
+      const datos = { title: p.titulo, text: `Mira esta propiedad en Belar Inmobiliaria: ${p.titulo}`, url: window.location.href };
+      try {
+        if (navigator.share) { await navigator.share(datos); return; }
+        await navigator.clipboard.writeText(window.location.href);
+        window.Belar?.toast('Enlace copiado');
+      } catch (e) { if (e && e.name !== 'AbortError') window.Belar?.toast('No se pudo compartir. Copia el enlace de la barra.'); }
+    });
 
-        // Custom marker
-        const icon = L.divIcon({
-          html: `<div style="
-            width: 40px; height: 40px;
-            background: var(--primary-100, #2179FF);
-            border-radius: 50% 50% 50% 0;
-            transform: rotate(-45deg);
-            border: 3px solid white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display:flex; align-items:center; justify-content:center;
-          "><span style="transform:rotate(45deg);color:white;font-size:1.4rem;font-family:'Material Symbols Rounded';">home</span></div>`,
-          iconSize: [40, 40],
-          iconAnchor: [20, 40],
-          className: ''
-        });
+    iniciarCalculadora(p.precio);
+    cargarSimilares(p);
 
-        L.marker([p.latitud, p.longitud], { icon })
-          .addTo(mapa)
-          .bindPopup(`
-            <div style="font-family:Montserrat,sans-serif;min-width:180px;">
-              <strong style="font-size:1.4rem;">${p.titulo}</strong><br>
-              ${p.barrio ? `<span style="color:#666;font-size:1.2rem;">${p.barrio}${p.ciudad ? ', ' + p.ciudad : ''}</span><br>` : ''}
-              <span style="color:#2179FF;font-weight:700;font-size:1.3rem;">$${p.precio.toLocaleString('es-CO')}</span>
-            </div>
-          `, { maxWidth: 220 })
-          .openPopup();
-      };
+    // Galería: cambiar imagen principal
+    const principal = document.getElementById('imgPrincipal');
+    contenido.querySelectorAll('.thumbs button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        principal.src = btn.dataset.src;
+        contenido.querySelectorAll('.thumbs button').forEach(b => b.setAttribute('aria-current', String(b === btn)));
+      });
+    });
 
-      if (window.L) {
-        initLeafletMap();
-      } else {
-        // Load Leaflet dynamically
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-        document.head.appendChild(link);
-
-        const script = document.createElement('script');
-        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-        script.onload = initLeafletMap;
-        document.head.appendChild(script);
-      }
+    // Mapa
+    if (tieneCoordenadas) {
+      document.getElementById('verMapa')?.addEventListener('click', () => {
+        window.Premium?.scrollTo(document.getElementById('mapaPropiedad'));
+      });
+      iniciarMapa(p, ubicacion, precio);
     }
 
   } catch (err) {
     console.error('Error cargando propiedad:', err);
-    contenido.innerHTML = `
-      <div class="container section">
-        <div class="empty-state">
-          <span class="material-symbols-rounded">error</span>
-          <h3>Propiedad no encontrada</h3>
-          <p>No pudimos cargar esta propiedad.</p>
-          <a href="/anuncio.html" class="btn btn-fill" style="margin-top:16px;display:inline-flex;">Ver todas las propiedades</a>
-        </div>
-      </div>`;
+    contenido.innerHTML = vistaError('Propiedad no encontrada', 'No pudimos cargar esta propiedad. Puede que ya no esté publicada.');
   }
 });
+
+function iniciarMapa(p, ubicacion, precio) {
+  const montar = () => {
+    const el = document.getElementById('mapaPropiedad');
+    if (!el || !window.L || !window.L.map) return;
+
+    const mapa = L.map(el, { scrollWheelZoom: false }).setView([p.latitud, p.longitud], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(mapa);
+
+    const icono = L.divIcon({
+      html: '<div class="pin"><i class="ph ph-house" aria-hidden="true"></i></div>',
+      iconSize: [40, 40], iconAnchor: [20, 20], className: ''
+    });
+
+    L.marker([p.latitud, p.longitud], { icon: icono })
+      .addTo(mapa)
+      .bindPopup(`
+        <strong>${esc(p.titulo)}</strong><br>
+        ${ubicacion ? `<span>${esc(ubicacion)}</span><br>` : ''}
+        <span style="color:var(--gold);font-weight:600">$${precio}</span>`, { maxWidth: 240 });
+  };
+
+  if (window.L && window.L.map) { montar(); return; }
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  script.onload = montar;
+  document.head.appendChild(script);
+}
+
+/* ─── Calculadora de cuota (sistema francés, cuota fija) ─────────────────── */
+function iniciarCalculadora(precio) {
+  const el = (id) => document.getElementById(id);
+  const inicial = el('calcInicial'), plazo = el('calcPlazo'), tasa = el('calcTasa');
+  if (!inicial || !plazo || !tasa) return;
+  const cop = (n) => '$' + Math.round(n).toLocaleString('es-CO');
+
+  const calcular = () => {
+    const pct = Number(inicial.value) / 100;
+    const anios = Number(plazo.value);
+    const ea = Math.min(Math.max(Number(tasa.value) || 0, 0), 60) / 100;
+    const entrada = precio * pct;
+    const monto = precio - entrada;
+    const n = anios * 12;
+    const r = Math.pow(1 + ea, 1 / 12) - 1;               // tasa mensual equivalente a la efectiva anual
+    const cuota = r === 0 ? monto / n : (monto * r) / (1 - Math.pow(1 + r, -n));
+    el('calcInicialOut').textContent = `${Math.round(pct * 100)} %`;
+    el('calcPlazoOut').textContent = `${anios} años`;
+    el('calcCuota').textContent = cop(cuota);
+    el('calcEntrada').textContent = cop(entrada);
+    el('calcMonto').textContent = cop(monto);
+    el('calcIntereses').textContent = cop(cuota * n - monto);
+  };
+  [inicial, plazo, tasa].forEach(c => c.addEventListener('input', calcular));
+  calcular();
+}
+
+/* ─── Propiedades similares: misma ciudad y rango de precio parecido ───────── */
+async function cargarSimilares(p) {
+  try {
+    const res = await fetch('/api/propiedades/visibles');
+    if (!res.ok) return;
+    const todas = (await res.json()).filter(x => x.id !== p.id);
+    const puntaje = (x) => {
+      const dPrecio = Math.abs(x.precio - p.precio) / Math.max(p.precio, 1);
+      return (x.ciudad === p.ciudad ? 0 : 1) + dPrecio;      // menor es mejor
+    };
+    const similares = todas.sort((a, b) => puntaje(a) - puntaje(b)).slice(0, 3);
+    if (!similares.length || typeof renderizarPropiedades !== 'function') return;
+    renderizarPropiedades(similares, document.getElementById('similares-grid'));
+    document.getElementById('similares').hidden = false;
+  } catch { /* sin similares no pasa nada */ }
+}

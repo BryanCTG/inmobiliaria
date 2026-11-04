@@ -20,9 +20,25 @@ public class Usuario {
     
     private String password; // Se almacena hasheada con BCrypt
     
-    private String rol; // ADMIN o USER
-    
+    private String rol; // ADMIN, CLIENTE o PROPIETARIO
+
     private boolean enabled = true; // Para activar/desactivar usuarios
+
+    private String telefono;
+
+    // IDs de las propiedades que el cliente guardó como favoritas (se sincronizan entre dispositivos)
+    private java.util.List<String> favoritos = new java.util.ArrayList<>();
+
+    private java.time.Instant creado;
+
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public java.util.List<String> getFavoritos() { return favoritos == null ? new java.util.ArrayList<>() : favoritos; }
+    public void setFavoritos(java.util.List<String> favoritos) { this.favoritos = favoritos; }
+
+    public java.time.Instant getCreado() { return creado; }
+    public void setCreado(java.time.Instant creado) { this.creado = creado; }
 
     // Constructores
     public Usuario() {
