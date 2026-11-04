@@ -242,6 +242,49 @@ select.control option { background: var(--surface); color: var(--text); }
 .pop img { width: 100%; height: 100px; object-fit: cover; border-radius: var(--r-lg); }
 .pop strong { font-size: 0.875rem; line-height: 1.25rem; }
 
+/* ───────────────── Herramientas (portada) ───────────────── */
+.tools { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s-300); }
+.tool { display: flex; flex-direction: column; gap: var(--s-200); padding: var(--s-400); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-2xl); transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease); }
+.tool:hover { transform: translateY(calc(var(--s-50) * -1)); border-color: rgba(201, 169, 110, 0.45); }
+.tool > i.ph { font-size: 2rem; color: var(--gold); }
+.tool h3 { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; }
+.tool p { font-size: 0.875rem; line-height: 1.25rem; color: var(--text-muted); flex: 1; }
+.tool:hover .link-arrow i.ph { transform: translateX(var(--s-50)); }
+@media (max-width: 1024px) { .tools { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 767px) { .tools { grid-template-columns: 1fr; } }
+
+/* ───────────────── Valoración ───────────────── */
+.valoracion { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-400); align-items: start; }
+.resultado { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-200); padding: var(--s-500); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-3xl); min-height: 380px; position: sticky; top: var(--s-800); }
+.resultado > i.ph { font-size: 2.25rem; color: var(--gold); }
+.resultado .muted { max-width: 460px; }
+.resultado-notas { display: flex; flex-direction: column; gap: var(--s-100); margin-top: var(--s-100); font-size: 0.875rem; line-height: 1.25rem; color: var(--text-muted); }
+.resultado-notas li { display: flex; align-items: center; gap: var(--s-100); }
+.resultado-notas i.ph { color: var(--gold); font-size: 1.125rem; }
+.resultado.tiene-resultado { border-color: rgba(201, 169, 110, 0.45); }
+.resultado .valor { font-size: 3.75rem; line-height: 1; font-weight: 600; letter-spacing: -0.02em; color: var(--gold); word-break: break-word; }
+.resultado .rango { font-size: 1.125rem; line-height: 1.75rem; color: var(--text-muted); }
+.resultado .rango strong { color: var(--text); font-weight: 600; }
+.rango-barra { position: relative; width: 100%; height: 8px; border-radius: var(--r-full); background: var(--surface-3); }
+.rango-barra span { position: absolute; top: 0; bottom: 0; left: 15%; right: 15%; border-radius: var(--r-full); background: var(--gold); }
+.rango-barra::after { content: ''; position: absolute; top: -4px; left: 50%; width: 16px; height: 16px; transform: translateX(-50%); border-radius: 50%; background: var(--text); border: 3px solid var(--bg); }
+.resultado-acciones { display: flex; flex-wrap: wrap; gap: var(--s-100); margin-block: var(--s-100); }
+@media (max-width: 1024px) {
+  .valoracion { grid-template-columns: 1fr; }
+  .resultado { position: static; min-height: 0; padding: var(--s-400); }
+}
+@media (max-width: 767px) {
+  .resultado .valor { font-size: 2.25rem; }
+  .resultado-acciones .btn { width: 100%; }
+}
+
+/* ───────────────── Visita y leyendas de formulario ───────────────── */
+.legend { padding: 0; margin-bottom: var(--s-75); font-size: 0.75rem; line-height: 1rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+fieldset.field { border: 0; min-inline-size: 0; }
+.visita { gap: var(--s-100); padding: var(--s-200) !important; border: 1px solid var(--line) !important; border-radius: var(--r-xl); background: var(--field); }
+.visita .legend { color: var(--gold); }
+input[type="date"].control { color-scheme: dark; }
+
 /* ───────────────── Calculadora y WhatsApp ───────────────── */
 .calc { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-200); margin-block: var(--s-300); }
 .calc output { margin-left: var(--s-75); color: var(--gold); font-weight: 700; letter-spacing: 0; text-transform: none; }

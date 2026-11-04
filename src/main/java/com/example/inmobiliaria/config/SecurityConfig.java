@@ -50,6 +50,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/propiedades/visibles").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/propiedades/{id}").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/contacto").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/valoracion").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/valoracion/info").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/imagenes/{id}").permitAll()
 
                 // Todo lo demás de la API y del panel: solo ADMIN

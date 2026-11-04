@@ -369,7 +369,7 @@
                 <div class="contact-card-date" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:4px;">
                   <span class="badge badge-blue" style="display:inline-flex;align-items:center;gap:4px;">
                     <i class="ph ph-${iconoMedio}" style="font-size:1.4rem;"></i>
-                    ${c.medioContacto || 'correo'}
+                    ${esc(c.medioContacto || 'correo')}
                   </span>
                   <span class="badge ${atendido ? 'badge-green' : ''}"
                         style="${!atendido ? 'background:rgba(201,169,110,0.14);color:#C9A96E;' : ''}display:inline-flex;align-items:center;gap:4px;">
@@ -392,8 +392,13 @@
               </div>` : ''}
               <div class="contact-card-row">
                 <i class="ph ph-house"></i>
-                <span>${nombrePropiedad}</span>
+                <span>${esc(nombrePropiedad)}</span>
               </div>
+              ${c.fechaVisita ? `
+              <div class="contact-card-row">
+                <i class="ph ph-calendar-check"></i>
+                <span><strong style="color:var(--gold)">Visita solicitada:</strong> ${esc(new Date(c.fechaVisita + 'T12:00:00').toLocaleDateString('es-CO', { weekday: 'long', day: 'numeric', month: 'long' }))}${c.horaVisita ? ' a las ' + esc(c.horaVisita) : ''}</span>
+              </div>` : ''}
               ${c.mensaje ? `<div class="contact-card-message">"${esc(c.mensaje)}"</div>` : ''}
             </div>
 

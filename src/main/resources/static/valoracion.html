@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valora tu propiedad | Belar Inmobiliaria</title>
+  <meta name="description" content="Obtén una estimación de referencia del precio de tu propiedad en segundos, con su rango y margen de error.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Valora tu propiedad | Belar Inmobiliaria">
+  <meta property="og:description" content="Obtén una estimación de referencia del precio de tu propiedad en segundos, con su rango y margen de error.">
+  <meta name="theme-color" content="#131209">
+  <link rel="icon" href="/img/belar-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+  <link rel="stylesheet" href="/css/premium.css">
+  <link rel="stylesheet" href="/css/premium-pages.css">
+</head>
+<body data-page="valoracion">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="site-header" id="siteHeader">
+    <nav class="nav" aria-label="Principal">
+      <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+        <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+        <span>Belar <em>Inmobiliaria</em></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/anuncio.html">Propiedades</a></li>
+        <li><a href="/valoracion.html" aria-current="page">Valoración</a></li>
+        <li><a href="/nosotros.html">Nosotros</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/favoritos.html" class="nav-fav" aria-label="Mis favoritos"><i class="ph ph-heart" aria-hidden="true"></i><span class="nav-fav-count" hidden>0</span></a>
+        <a href="/admin/login.html" class="nav-login" id="navCuenta">Acceso</a>
+        <a href="/contacto.html" class="btn btn-gold btn-sm">Contáctanos</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
+        <span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" data-lenis-prevent>
+    <ul>
+      <li><a class="mm-link" href="/">Inicio</a></li>
+      <li><a class="mm-link" href="/anuncio.html">Propiedades</a></li>
+      <li><a class="mm-link" href="/valoracion.html" aria-current="page">Valoración</a></li>
+      <li><a class="mm-link" href="/nosotros.html">Nosotros</a></li>
+      <li><a class="mm-link" href="/contacto.html">Contacto</a></li>
+    </ul>
+    <div class="mobile-menu-cta">
+      <a href="/anuncio.html" class="btn btn-gold btn-lg">Ver propiedades <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </div>
+
+  <main id="contenido">
+  <div class="page-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="Ruta de navegación"><a href="/">Inicio</a> <i class="ph ph-caret-right" aria-hidden="true"></i> <span aria-current="page">Valoración</span></nav>
+      <span class="eyebrow" data-reveal>Valoración</span>
+      <h1 class="heading-2" data-reveal style="--d:80">¿Cuánto vale tu propiedad?</h1>
+      <p data-reveal style="--d:160">Cuéntanos sus características y obtén una estimación de referencia en segundos.</p>
+    </div>
+  </div>
+
+    <section class="section--tight" style="padding-bottom:var(--s-900)" aria-label="Calculadora de valoración">
+      <div class="container valoracion">
+
+        <div class="form-card" data-reveal>
+          <div>
+            <h2 class="heading-5">Datos de tu propiedad</h2>
+            <p class="body-6 muted" style="margin-top:var(--s-50)">Todos los campos son obligatorios.</p>
+          </div>
+          <div id="mensajeValoracion" class="form-message" role="status" aria-live="polite"></div>
+          <form id="formValoracion" novalidate>
+            <div class="form-grid">
+              <div class="field full">
+                <label for="ciudad">Ciudad</label>
+                <div class="select-wrap">
+                  <select id="ciudad" name="ciudad" class="control" required>
+                    <option value="Cartagena">Cartagena</option>
+                    <option value="Bogota">Bogotá</option>
+                    <option value="Medellin">Medellín</option>
+                    <option value="Barranquilla">Barranquilla</option>
+                  </select>
+                  <i class="ph ph-caret-down" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="field">
+                <label for="habitaciones">Habitaciones</label>
+                <input type="number" id="habitaciones" name="habitaciones" class="control" min="1" max="10" step="1" value="3" inputmode="numeric" required>
+              </div>
+              <div class="field">
+                <label for="wc">Baños</label>
+                <input type="number" id="wc" name="wc" class="control" min="1" max="10" step="1" value="2" inputmode="numeric" required>
+              </div>
+              <div class="field">
+                <label for="estacionamiento">Parqueaderos</label>
+                <input type="number" id="estacionamiento" name="estacionamiento" class="control" min="0" max="10" step="1" value="1" inputmode="numeric" required>
+              </div>
+              <div class="field">
+                <label for="metrosCuadrados">Área en m²</label>
+                <input type="number" id="metrosCuadrados" name="metrosCuadrados" class="control" min="20" max="1000" step="1" value="90" inputmode="decimal" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-gold btn-lg"><i class="ph ph-calculator" aria-hidden="true"></i> Calcular valoración</button>
+          </form>
+        </div>
+
+        <div class="resultado" id="resultadoValoracion" aria-live="polite" data-reveal style="--d:120">
+          <i class="ph ph-chart-line-up" aria-hidden="true"></i>
+          <h2 class="heading-6">Tu estimación aparecerá aquí</h2>
+          <p class="body-6 muted">Completa los datos y pulsa calcular. Verás un valor de referencia, el rango en el que suele moverse y su margen de error.</p>
+          <ul class="resultado-notas">
+            <li><i class="ph ph-check-circle" aria-hidden="true"></i> Sin registro y sin dejar tus datos</li>
+            <li><i class="ph ph-check-circle" aria-hidden="true"></i> Cartagena, Bogotá, Medellín y Barranquilla</li>
+            <li><i class="ph ph-check-circle" aria-hidden="true"></i> Un asesor puede afinarla contigo</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-logo" aria-label="Belar Inmobiliaria, inicio">
+            <img src="/img/belar-mark.svg" alt="" width="28" height="28">
+            <span>Belar <em>Inmobiliaria</em></span>
+          </a>
+          <p>Residencias seleccionadas con criterio y acompañamiento experto en las principales ciudades de Colombia.</p>
+        </div>
+        <div>
+          <h4>Navegación</h4>
+          <div class="footer-links">
+            <a href="/">Inicio</a>
+            <a href="/anuncio.html">Propiedades</a>
+            <a href="/valoracion.html">Valoración</a>
+            <a href="/nosotros.html">Nosotros</a>
+            <a href="/contacto.html">Contacto</a>
+          </div>
+        </div>
+        <div>
+          <h4>Servicios</h4>
+          <div class="footer-links">
+            <a href="/anuncio.html">Compra de inmuebles</a>
+            <a href="/valoracion.html">Valora tu propiedad</a>
+            <a href="/contacto.html">Arriendo</a>
+            <a href="/contacto.html">Asesoría legal</a>
+          </div>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <div class="footer-links">
+            <a href="mailto:contacto@belar.example">contacto@belar.example</a>
+            <a href="tel:+573001234567">+57 300 123 4567</a>
+            <a href="https://www.openstreetmap.org/search?query=Cartagena%2C%20Colombia" target="_blank" rel="noopener">Cartagena, Colombia</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Belar Inmobiliaria. Proyecto de portafolio con datos de demostración.</span>
+        <span class="footer-legal"><a href="/privacidad.html">Política de privacidad</a><a href="/terminos.html">Términos de uso</a></span>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/site-config.js"></script>
+  <script src="/js/premium.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/valoracion.js"></script>
+</body>
+</html>

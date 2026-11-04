@@ -30,6 +30,7 @@
       <ul class="nav-links">
         <li><a href="/">Inicio</a></li>
         <li><a href="/anuncio.html">Propiedades</a></li>
+        <li><a href="/valoracion.html">Valoración</a></li>
         <li><a href="/nosotros.html">Nosotros</a></li>
       </ul>
       <div class="nav-actions">
@@ -47,6 +48,7 @@
     <ul>
       <li><a class="mm-link" href="/">Inicio</a></li>
       <li><a class="mm-link" href="/anuncio.html">Propiedades</a></li>
+      <li><a class="mm-link" href="/valoracion.html">Valoración</a></li>
       <li><a class="mm-link" href="/nosotros.html">Nosotros</a></li>
       <li><a class="mm-link" href="/contacto.html" aria-current="page">Contacto</a></li>
     </ul>
@@ -112,6 +114,29 @@
                     <i class="ph ph-caret-down" aria-hidden="true"></i>
                   </div>
                 </div>
+                <fieldset class="field full visita" id="bloqueVisita" hidden>
+                  <legend class="legend">Agendar una visita (opcional)</legend>
+                  <p class="body-6 muted">Atendemos visitas de lunes a viernes, de 8:00 a. m. a 6:00 p. m. Te confirmaremos la disponibilidad.</p>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label for="fechaVisita">Fecha</label>
+                      <input type="date" id="fechaVisita" class="control">
+                    </div>
+                    <div class="field">
+                      <label for="horaVisita">Hora</label>
+                      <div class="select-wrap">
+                        <select id="horaVisita" class="control">
+                          <option value="">Elige una hora</option>
+                          <option value="08:00">8:00 a. m.</option><option value="09:00">9:00 a. m.</option><option value="10:00">10:00 a. m.</option>
+                          <option value="11:00">11:00 a. m.</option><option value="12:00">12:00 m.</option><option value="13:00">1:00 p. m.</option>
+                          <option value="14:00">2:00 p. m.</option><option value="15:00">3:00 p. m.</option><option value="16:00">4:00 p. m.</option>
+                          <option value="17:00">5:00 p. m.</option>
+                        </select>
+                        <i class="ph ph-caret-down" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
                 <div class="field full">
                   <label for="mensaje">Mensaje *</label>
                   <textarea id="mensaje" name="mensaje" class="control" rows="4" placeholder="Cuéntanos qué estás buscando" maxlength="1000" required></textarea>
@@ -153,6 +178,7 @@
           <div class="footer-links">
             <a href="/">Inicio</a>
             <a href="/anuncio.html">Propiedades</a>
+            <a href="/valoracion.html">Valoración</a>
             <a href="/nosotros.html">Nosotros</a>
             <a href="/contacto.html">Contacto</a>
           </div>
@@ -161,7 +187,7 @@
           <h4>Servicios</h4>
           <div class="footer-links">
             <a href="/anuncio.html">Compra de inmuebles</a>
-            <a href="/contacto.html">Venta de propiedades</a>
+            <a href="/valoracion.html">Valora tu propiedad</a>
             <a href="/contacto.html">Arriendo</a>
             <a href="/contacto.html">Asesoría legal</a>
           </div>
