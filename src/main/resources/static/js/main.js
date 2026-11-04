@@ -4,6 +4,15 @@
  */
 document.addEventListener('DOMContentLoaded', function () {
 
+  // ─── WhatsApp y mensaje precargado desde la URL (?mensaje=...) ───────────
+  const wa = document.getElementById('waContacto');
+  if (wa && window.BELAR) {
+    wa.href = `https://wa.me/${window.BELAR.whatsapp}?text=${encodeURIComponent('Hola, quisiera información sobre una propiedad.')}`;
+  }
+  const mensajePrevio = new URLSearchParams(window.location.search).get('mensaje');
+  const campoMensaje = document.getElementById('mensaje');
+  if (mensajePrevio && campoMensaje) campoMensaje.value = mensajePrevio.slice(0, 1000);
+
   // ─── Propiedades en el selector (y preselección desde la URL) ─────────────
   const selectPropiedad = document.getElementById('propiedad');
   if (selectPropiedad) {

@@ -14,10 +14,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
   <link rel="stylesheet" href="/css/premium.css">
   <link rel="stylesheet" href="/css/premium-pages.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
-<body>
+<body data-page="catalogo">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
   <header class="site-header" id="siteHeader">
@@ -32,7 +34,8 @@
         <li><a href="/nosotros.html">Nosotros</a></li>
       </ul>
       <div class="nav-actions">
-        <a href="/admin/login.html" class="nav-login">Acceso</a>
+        <a href="/favoritos.html" class="nav-fav" aria-label="Mis favoritos"><i class="ph ph-heart" aria-hidden="true"></i><span class="nav-fav-count" hidden>0</span></a>
+        <a href="/admin/login.html" class="nav-login" id="navCuenta">Acceso</a>
         <a href="/contacto.html" class="btn btn-gold btn-sm">Contáctanos</a>
       </div>
       <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
@@ -136,11 +139,28 @@
 
         <div class="results-bar" id="resultados">
           <p id="resultados-texto" role="status">Cargando propiedades</p>
+          <div class="results-tools">
+            <div class="select-wrap select-wrap--inline">
+              <label for="fOrden" class="sr-only">Ordenar por</label>
+              <select id="fOrden" class="control">
+                <option value="">Más recientes</option>
+                <option value="precio-asc">Precio de menor a mayor</option>
+                <option value="precio-desc">Precio de mayor a menor</option>
+                <option value="area-desc">Mayor área</option>
+              </select>
+              <i class="ph ph-caret-down" aria-hidden="true"></i>
+            </div>
+            <div class="seg" role="group" aria-label="Tipo de vista">
+              <button type="button" id="vistaLista" aria-pressed="true"><i class="ph ph-squares-four" aria-hidden="true"></i> Lista</button>
+              <button type="button" id="vistaMapa" aria-pressed="false"><i class="ph ph-map-trifold" aria-hidden="true"></i> Mapa</button>
+            </div>
+          </div>
         </div>
 
         <div id="lista-anuncios" class="grid-props" aria-live="polite">
           <article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article><article class="prop prop--skeleton" aria-hidden="true"><div class="prop-media"></div><div class="prop-body"><div class="sk w90"></div><div class="sk w60"></div><div class="sk w40"></div></div></article>
         </div>
+        <div id="mapaCatalogo" class="map map--catalog" hidden role="region" aria-label="Mapa de propiedades"></div>
 
         <nav id="paginacion" class="pager" aria-label="Paginación"></nav>
       </div>
@@ -192,7 +212,9 @@
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
   <script src="/js/utils.js"></script>
+  <script src="/js/site-config.js"></script>
   <script src="/js/premium.js"></script>
+  <script src="/js/app.js"></script>
   <script src="/js/anuncios.js"></script>
 </body>
 </html>

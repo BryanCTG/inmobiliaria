@@ -2,6 +2,9 @@
 let _todasPropiedades = [];
 let _listaFiltrada    = [];
 let _paginaActual     = 1;
+let _vista            = 'lista';   // 'lista' | 'mapa'
+let _mapa             = null;
+let _capaMarcadores   = null;
 const POR_PAGINA      = 6;
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
@@ -9,14 +12,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   const contenedor = document.getElementById('lista-anuncios');
   if (!contenedor) return;
 
-  const esIndex = window.location.pathname === '/' ||
-                  window.location.pathname.endsWith('index.html') ||
-                  window.location.pathname === '';
+  const pagina = document.body.dataset.page || '';
+  const esIndex = pagina === 'home' || window.location.pathname === '/' || window.location.pathname.endsWith('index.html');
 
   try {
     const res = await fetch('/api/propiedades/visibles');
     if (!res.ok) throw new Error('Error al cargar propiedades');
     const propiedades = await res.json();
+
+    // Favoritos: solo las propiedades guardadas por la persona, en el orden en que las guardó
+    if (pagina === 'favoritos') {
+      const pintarFavoritos = () => {
+        const ids = window.Belar?.favs.lista() || [];
+        const lista = ids.map(id => propiedades.find(p => p.id === id)).filter(Boolean);
+        if (lista.length === 0) {
+          contenedor.innerHTML = _estado('heart', 'Aún no tienes favoritos',
+            'Toca el corazón de una propiedad para guardarla aquí y compararla con calma.');
+          return;
+        }
+        renderizarPropiedades(lista, contenedor);
+        const texto = document.getElementById('resultados-texto');
+        if (texto) texto.textContent = `${lista.length} propiedad${lista.length !== 1 ? 'es guardadas' : ' guardada'}`;
+      };
+      pintarFavoritos();
+      document.addEventListener('favoritos:cambio', pintarFavoritos);
+      return;
+    }
 
     if (propiedades.length === 0) {
       contenedor.innerHTML = _estado('house', 'Aún no hay propiedades publicadas',
@@ -41,6 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       _mostrarPagina(1, false);
     }
+    if (new URLSearchParams(window.location.search).get('vista') === 'mapa') _cambiarVista('mapa');
 
   } catch (err) {
     console.error('Error cargando anuncios:', err);
@@ -56,6 +78,7 @@ function _estado(icono, titulo, texto) {
       <i class="ph ph-${icono}" aria-hidden="true"></i>
       <h3 class="heading-6">${esc(titulo)}</h3>
       <p class="body-6">${esc(texto)}</p>
+      <a href="/anuncio.html" class="btn btn-gold btn-sm" style="margin-top:var(--s-100)">Explorar propiedades</a>
     </div>`;
 }
 
@@ -72,15 +95,18 @@ function _vincularFiltros() {
     if (e.key === 'Enter') { e.preventDefault(); _aplicarFiltros(); }
   });
 
-  ['fCiudad', 'fHabitaciones', 'fBanos', 'fPrecio'].forEach(id => {
+  ['fCiudad', 'fHabitaciones', 'fBanos', 'fPrecio', 'fOrden'].forEach(id => {
     document.getElementById(id)?.addEventListener('change', _aplicarFiltros);
   });
+
+  document.getElementById('vistaLista')?.addEventListener('click', () => _cambiarVista('lista'));
+  document.getElementById('vistaMapa')?.addEventListener('click', () => _cambiarVista('mapa'));
 }
 
 // ─── Precargar filtros desde la URL (ej: /anuncio.html?ciudad=Cartagena&habitaciones=3) ──
 function _precargarFiltrosDesdeUrl() {
   const params = new URLSearchParams(window.location.search);
-  const mapa = { ciudad: 'fCiudad', habitaciones: 'fHabitaciones', precio: 'fPrecio', q: 'fBusqueda' };
+  const mapa = { ciudad: 'fCiudad', habitaciones: 'fHabitaciones', precio: 'fPrecio', q: 'fBusqueda', orden: 'fOrden' };
   let hayFiltros = false;
 
   Object.entries(mapa).forEach(([param, idCampo]) => {
@@ -94,13 +120,14 @@ function _precargarFiltrosDesdeUrl() {
   return hayFiltros;
 }
 
-// ─── Aplicar filtros ──────────────────────────────────────────────────────────
+// ─── Aplicar filtros y orden ──────────────────────────────────────────────────
 function _aplicarFiltros() {
   const busqueda     = document.getElementById('fBusqueda')?.value.trim().toLowerCase() || '';
   const ciudad       = document.getElementById('fCiudad')?.value       || '';
   const habitaciones = parseInt(document.getElementById('fHabitaciones')?.value) || 0;
   const banos        = parseInt(document.getElementById('fBanos')?.value)         || 0;
   const precioMax    = parseInt(document.getElementById('fPrecio')?.value)        || 0;
+  const orden        = document.getElementById('fOrden')?.value || '';
 
   _listaFiltrada = _todasPropiedades.filter(p => {
     if (busqueda && !(
@@ -115,13 +142,20 @@ function _aplicarFiltros() {
     return true;
   });
 
+  const criterios = {
+    'precio-asc':  (a, b) => a.precio - b.precio,
+    'precio-desc': (a, b) => b.precio - a.precio,
+    'area-desc':   (a, b) => (b.metrosCuadrados || 0) - (a.metrosCuadrados || 0),
+  };
+  if (criterios[orden]) _listaFiltrada.sort(criterios[orden]);
+
   _renderizarChips({ busqueda, ciudad, habitaciones, banos, precioMax });
   _mostrarPagina(1, false);
 }
 
 // ─── Limpiar filtros ──────────────────────────────────────────────────────────
 function _limpiarFiltros() {
-  ['fBusqueda', 'fCiudad', 'fHabitaciones', 'fBanos', 'fPrecio'].forEach(id => {
+  ['fBusqueda', 'fCiudad', 'fHabitaciones', 'fBanos', 'fPrecio', 'fOrden'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -168,6 +202,79 @@ function _renderizarChips({ busqueda, ciudad, habitaciones, banos, precioMax } =
   }
 }
 
+// ─── Vista lista / mapa ───────────────────────────────────────────────────────
+function _cambiarVista(vista) {
+  _vista = vista;
+  const lista = document.getElementById('lista-anuncios');
+  const pager = document.getElementById('paginacion');
+  const mapaEl = document.getElementById('mapaCatalogo');
+  document.getElementById('vistaLista')?.setAttribute('aria-pressed', String(vista === 'lista'));
+  document.getElementById('vistaMapa')?.setAttribute('aria-pressed', String(vista === 'mapa'));
+  if (lista) lista.hidden = vista === 'mapa';
+  if (pager) pager.hidden = vista === 'mapa';
+  if (mapaEl) mapaEl.hidden = vista !== 'mapa';
+  if (vista === 'mapa') _renderizarMapa();
+  _actualizarTexto();
+}
+
+function _renderizarMapa() {
+  const el = document.getElementById('mapaCatalogo');
+  if (!el) return;
+
+  const montar = () => {
+    if (!window.L || !window.L.map) return;
+    if (!_mapa) {
+      _mapa = L.map(el, { scrollWheelZoom: false }).setView([6.5, -74.5], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 19
+      }).addTo(_mapa);
+      _capaMarcadores = L.layerGroup().addTo(_mapa);
+    }
+    _capaMarcadores.clearLayers();
+    const puntos = [];
+    _listaFiltrada.forEach(p => {
+      if (!Number.isFinite(p.latitud) || !Number.isFinite(p.longitud)) return;
+      const icono = L.divIcon({
+        html: '<div class="pin"><i class="ph ph-house" aria-hidden="true"></i></div>',
+        iconSize: [40, 40], iconAnchor: [20, 20], className: ''
+      });
+      const foto = (p.imagenes && p.imagenes[0]) || '/img/default.svg';
+      L.marker([p.latitud, p.longitud], { icon: icono, title: p.titulo }).addTo(_capaMarcadores).bindPopup(`
+        <a href="/propiedad.html?id=${esc(p.id)}" class="pop">
+          <img src="${esc(foto)}" alt="" onerror="this.onerror=null;this.src='/img/default.svg'">
+          <strong>${esc(p.titulo)}</strong>
+          <span class="gold">$${Number(p.precio).toLocaleString('es-CO')}</span>
+        </a>`, { maxWidth: 240 });
+      puntos.push([p.latitud, p.longitud]);
+    });
+    setTimeout(() => {
+      _mapa.invalidateSize();
+      if (puntos.length) _mapa.fitBounds(puntos, { padding: [48, 48], maxZoom: 15 });
+    }, 50);
+  };
+
+  if (window.L && window.L.map) { montar(); return; }
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  script.onload = montar;
+  document.head.appendChild(script);
+}
+
+function _actualizarTexto() {
+  const textoEl = document.getElementById('resultados-texto');
+  if (!textoEl) return;
+  const total = _listaFiltrada.length;
+  if (total === 0) { textoEl.textContent = 'No encontramos propiedades con esos filtros.'; return; }
+  if (_vista === 'mapa') {
+    const conPunto = _listaFiltrada.filter(p => Number.isFinite(p.latitud) && Number.isFinite(p.longitud)).length;
+    textoEl.textContent = `${conPunto} de ${total} propiedad${total !== 1 ? 'es' : ''} con ubicación en el mapa`;
+    return;
+  }
+  const inicio = (_paginaActual - 1) * POR_PAGINA;
+  const fin = Math.min(inicio + POR_PAGINA, total);
+  textoEl.textContent = `Mostrando ${inicio + 1} a ${fin} de ${total} propiedad${total !== 1 ? 'es' : ''}`;
+}
+
 // ─── Paginación ───────────────────────────────────────────────────────────────
 function _mostrarPagina(pagina, desplazar = true) {
   _paginaActual = pagina;
@@ -179,15 +286,9 @@ function _mostrarPagina(pagina, desplazar = true) {
   const fin    = Math.min(inicio + POR_PAGINA, total);
 
   renderizarPropiedades(_listaFiltrada.slice(inicio, fin), document.getElementById('lista-anuncios'));
-
-  const textoEl = document.getElementById('resultados-texto');
-  if (textoEl) {
-    textoEl.textContent = total === 0
-      ? 'No encontramos propiedades con esos filtros.'
-      : `Mostrando ${inicio + 1} a ${fin} de ${total} propiedad${total !== 1 ? 'es' : ''}`;
-  }
-
+  _actualizarTexto();
   _renderizarPaginacion(totalPaginas);
+  if (_vista === 'mapa') _renderizarMapa();
 
   if (desplazar) {
     const destino = document.getElementById('resultados');
@@ -235,6 +336,7 @@ function renderizarPropiedades(lista, contenedor) {
         <div class="prop-media">
           <img loading="lazy" src="${esc(imagenUrl)}" alt="${esc(p.titulo)}" onerror="this.onerror=null;this.src='/img/default.svg'">
           ${ciudad ? `<span class="prop-city">${esc(ciudad)}</span>` : ''}
+          <button type="button" class="fav" data-fav="${esc(p.id)}" aria-pressed="false" aria-label="Guardar en favoritos"><i class="ph ph-heart" aria-hidden="true"></i></button>
         </div>
         <div class="prop-body">
           <h3 class="prop-title"><a href="/propiedad.html?id=${esc(p.id)}">${esc(p.titulo)}</a></h3>
@@ -252,4 +354,5 @@ function renderizarPropiedades(lista, contenedor) {
   }).join('');
 
   if (window.Premium) window.Premium.reveal(contenedor);
+  if (window.Belar) window.Belar.repintar(contenedor);
 }

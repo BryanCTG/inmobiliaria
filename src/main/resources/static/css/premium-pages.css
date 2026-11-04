@@ -211,3 +211,56 @@ select.control option { background: var(--surface); color: var(--text); }
 .footer-legal { display: flex; flex-wrap: wrap; gap: var(--s-300); }
 .footer-legal a { color: var(--text-muted); transition: color var(--dur-fast) var(--ease); }
 .footer-legal a:hover { color: var(--gold); }
+
+/* ───────────────── Favoritos y aviso ───────────────── */
+.fav { position: absolute; top: var(--s-100); right: var(--s-100); z-index: 3; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--r-full); background: rgba(19, 18, 9, 0.72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid var(--line-strong); color: var(--text); font-size: 1.25rem; transition: transform var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.fav:hover { border-color: var(--gold); color: var(--gold); }
+.fav:active { transform: scale(0.92); }
+.fav.is-on { color: var(--gold); border-color: var(--gold); }
+.fav--lg { top: var(--s-200); right: var(--s-200); width: 48px; height: 48px; font-size: 1.5rem; }
+.gallery-main { position: relative; }
+
+.nav-fav { position: relative; display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r-full); color: var(--text-muted); font-size: 1.25rem; transition: color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease); }
+.nav-fav:hover { color: var(--gold); background: var(--surface-2); }
+.nav-fav-count { position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; padding: 0 var(--s-50); display: grid; place-items: center; border-radius: var(--r-full); background: var(--gold); color: var(--gold-ink); font-size: 0.75rem; line-height: 1rem; font-weight: 700; }
+.nav-fav-count[hidden] { display: none; }
+
+.toast { position: fixed; left: 50%; bottom: var(--s-400); z-index: 300; max-width: calc(100vw - var(--s-400)); padding: var(--s-100) var(--s-300); border-radius: var(--r-full); background: var(--surface-3); border: 1px solid var(--line-strong); color: var(--text); font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; opacity: 0; transform: translate(-50%, var(--s-200)); pointer-events: none; transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+/* ───────────────── Orden, vista y mapa del catálogo ───────────────── */
+.results-tools { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-100); }
+.select-wrap--inline { min-width: 220px; }
+.select-wrap--inline .control { padding-block: var(--s-75); font-size: 0.875rem; line-height: 1.25rem; }
+.seg { display: inline-flex; padding: var(--s-25); border: 1px solid var(--line-strong); border-radius: var(--r-full); }
+.seg button { display: inline-flex; align-items: center; gap: var(--s-75); padding: var(--s-75) var(--s-200); border-radius: var(--r-full); font-size: 0.875rem; line-height: 1.25rem; font-weight: 600; color: var(--text-muted); transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.seg button:hover { color: var(--text); }
+.seg button[aria-pressed="true"] { background: var(--gold); color: var(--gold-ink); }
+.map--catalog { height: 560px; border-radius: var(--r-2xl); border: 1px solid var(--line); overflow: hidden; }
+.map--catalog[hidden] { display: none; }
+.pop { display: flex; flex-direction: column; gap: var(--s-50); width: 200px; }
+.pop img { width: 100%; height: 100px; object-fit: cover; border-radius: var(--r-lg); }
+.pop strong { font-size: 0.875rem; line-height: 1.25rem; }
+
+/* ───────────────── Calculadora y WhatsApp ───────────────── */
+.calc { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-200); margin-block: var(--s-300); }
+.calc output { margin-left: var(--s-75); color: var(--gold); font-weight: 700; letter-spacing: 0; text-transform: none; }
+.calc input[type="range"] { width: 100%; accent-color: var(--gold); height: 24px; cursor: pointer; }
+.calc-result { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-200); margin-bottom: var(--s-200); padding-top: var(--s-300); border-top: 1px solid var(--line); }
+.calc-result > div { display: flex; flex-direction: column-reverse; gap: var(--s-50); }
+.calc-result dt { font-size: 0.75rem; line-height: 1rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+.calc-result dd { font-size: 1.25rem; line-height: 1.75rem; font-weight: 600; }
+.calc-result .calc-main { grid-column: 1 / -1; }
+.calc-result .calc-main dd { font-size: 3rem; line-height: 1; color: var(--gold); letter-spacing: -0.02em; }
+.faint { color: var(--text-faint) !important; }
+.btn-wa i.ph { color: #4CC38A; }
+.btn-wa:hover i.ph { color: inherit; }
+.info-card .actions-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-100); }
+.info-card .actions-row:has(> :only-child) { grid-template-columns: 1fr; }
+@media (max-width: 767px) {
+  .calc, .calc-result { grid-template-columns: 1fr; }
+  .calc-result .calc-main dd { font-size: 2.25rem; }
+  .map--catalog { height: 420px; }
+  .select-wrap--inline { min-width: 0; width: 100%; }
+  .results-tools { width: 100%; }
+}

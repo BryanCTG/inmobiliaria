@@ -69,22 +69,57 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="map" id="mapaPropiedad" role="img" aria-label="Mapa con la ubicación de la propiedad"></div>
       </section>` : '';
 
+    // WhatsApp con el mensaje ya escrito (el número se cambia en js/site-config.js)
+    const numeroWa = (window.BELAR && window.BELAR.whatsapp) || '';
+    const mensajeWa = `Hola, me interesa la propiedad "${p.titulo}"${ubicacion ? ' en ' + ubicacion : ''}. ${window.location.href}`;
+    const urlWhatsApp = `https://wa.me/${numeroWa}?text=${encodeURIComponent(mensajeWa)}`;
+
+    const calculadora = `
+      <section class="panel" data-reveal aria-labelledby="calc-titulo">
+        <h2 id="calc-titulo">Calculadora de cuota</h2>
+        <p class="body-6">Simula la cuota mensual de un crédito para esta propiedad. Los valores son de ejemplo y puedes ajustarlos.</p>
+        <div class="calc">
+          <div class="field">
+            <label for="calcInicial">Cuota inicial <output id="calcInicialOut" for="calcInicial">30 %</output></label>
+            <input type="range" id="calcInicial" min="10" max="70" step="5" value="30">
+          </div>
+          <div class="field">
+            <label for="calcPlazo">Plazo <output id="calcPlazoOut" for="calcPlazo">15 años</output></label>
+            <input type="range" id="calcPlazo" min="5" max="30" step="1" value="15">
+          </div>
+          <div class="field">
+            <label for="calcTasa">Tasa efectiva anual (%)</label>
+            <input type="number" id="calcTasa" class="control" min="1" max="40" step="0.1" value="12" inputmode="decimal">
+          </div>
+        </div>
+        <dl class="calc-result" aria-live="polite">
+          <div class="calc-main"><dt>Cuota mensual estimada</dt><dd id="calcCuota">—</dd></div>
+          <div><dt>Cuota inicial</dt><dd id="calcEntrada">—</dd></div>
+          <div><dt>Valor a financiar</dt><dd id="calcMonto">—</dd></div>
+          <div><dt>Intereses totales</dt><dd id="calcIntereses">—</dd></div>
+        </dl>
+        <p class="body-6 faint">Estimación informativa: no constituye una oferta de crédito. Consulta las condiciones reales con tu entidad financiera.</p>
+      </section>`;
+
     contenido.innerHTML = `
       <div class="page-hero"><div class="container">${crumbs(p.titulo)}</div></div>
 
-      <section class="section--tight" style="padding-bottom:var(--s-900)">
+      <section class="section--tight" aria-labelledby="desc-titulo">
         <div class="container detail">
 
           <div class="detail-main">
             <div class="gallery-main" data-reveal>
               <img id="imgPrincipal" src="${esc(imagenes[0])}" alt="${esc(p.titulo)}" onerror="this.onerror=null;this.src='/img/default.svg'">
+              <button type="button" class="fav fav--lg" data-fav="${esc(p.id)}" aria-pressed="false" aria-label="Guardar en favoritos"><i class="ph ph-heart" aria-hidden="true"></i></button>
             </div>
             ${miniaturas}
 
-            <section class="panel" data-reveal aria-labelledby="desc-titulo">
+            <section class="panel" data-reveal>
               <h2 id="desc-titulo">Descripción</h2>
               <p class="body-3">${esc(p.descripcion || 'Esta propiedad aún no tiene una descripción.')}</p>
             </section>
+
+            ${calculadora}
 
             ${mapa}
           </div>
@@ -99,15 +134,39 @@ document.addEventListener('DOMContentLoaded', async () => {
               <a href="/contacto.html?propiedad=${encodeURIComponent(p.id)}" class="btn btn-gold btn-lg">
                 <i class="ph ph-paper-plane-tilt" aria-hidden="true"></i> Contactar asesor
               </a>
-              ${tieneCoordenadas ? `<button type="button" class="btn btn-ghost" id="verMapa"><i class="ph ph-map-trifold" aria-hidden="true"></i> Ver en el mapa</button>` : ''}
-              <a href="/anuncio.html" class="btn btn-ghost"><i class="ph ph-arrow-left" aria-hidden="true"></i> Ver más propiedades</a>
+              <a href="${esc(urlWhatsApp)}" class="btn btn-ghost btn-wa" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo" aria-hidden="true"></i> Escribir por WhatsApp</a>
+              <div class="actions-row">
+                ${tieneCoordenadas ? `<button type="button" class="btn btn-ghost" id="verMapa"><i class="ph ph-map-trifold" aria-hidden="true"></i> Mapa</button>` : ''}
+                <button type="button" class="btn btn-ghost" id="compartir"><i class="ph ph-share-network" aria-hidden="true"></i> Compartir</button>
+              </div>
             </div>
           </aside>
 
         </div>
+      </section>
+
+      <section class="section--tight" style="padding-bottom:var(--s-900)" id="similares" hidden aria-labelledby="similares-titulo">
+        <div class="container">
+          <div class="section-head" style="margin-bottom:var(--s-400)"><h2 class="heading-4" id="similares-titulo">También te pueden interesar</h2></div>
+          <div class="grid-props" id="similares-grid"></div>
+        </div>
       </section>`;
 
     window.Premium?.reveal(contenido);
+    window.Belar?.repintar(contenido);
+
+    // Compartir: menú nativo si existe, si no copia el enlace
+    document.getElementById('compartir')?.addEventListener('click', async () => {
+      const datos = { title: p.titulo, text: `Mira esta propiedad en Belar Inmobiliaria: ${p.titulo}`, url: window.location.href };
+      try {
+        if (navigator.share) { await navigator.share(datos); return; }
+        await navigator.clipboard.writeText(window.location.href);
+        window.Belar?.toast('Enlace copiado');
+      } catch (e) { if (e && e.name !== 'AbortError') window.Belar?.toast('No se pudo compartir. Copia el enlace de la barra.'); }
+    });
+
+    iniciarCalculadora(p.precio);
+    cargarSimilares(p);
 
     // Galería: cambiar imagen principal
     const principal = document.getElementById('imgPrincipal');
@@ -161,4 +220,48 @@ function iniciarMapa(p, ubicacion, precio) {
   script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
   script.onload = montar;
   document.head.appendChild(script);
+}
+
+/* ─── Calculadora de cuota (sistema francés, cuota fija) ─────────────────── */
+function iniciarCalculadora(precio) {
+  const el = (id) => document.getElementById(id);
+  const inicial = el('calcInicial'), plazo = el('calcPlazo'), tasa = el('calcTasa');
+  if (!inicial || !plazo || !tasa) return;
+  const cop = (n) => '$' + Math.round(n).toLocaleString('es-CO');
+
+  const calcular = () => {
+    const pct = Number(inicial.value) / 100;
+    const anios = Number(plazo.value);
+    const ea = Math.min(Math.max(Number(tasa.value) || 0, 0), 60) / 100;
+    const entrada = precio * pct;
+    const monto = precio - entrada;
+    const n = anios * 12;
+    const r = Math.pow(1 + ea, 1 / 12) - 1;               // tasa mensual equivalente a la efectiva anual
+    const cuota = r === 0 ? monto / n : (monto * r) / (1 - Math.pow(1 + r, -n));
+    el('calcInicialOut').textContent = `${Math.round(pct * 100)} %`;
+    el('calcPlazoOut').textContent = `${anios} años`;
+    el('calcCuota').textContent = cop(cuota);
+    el('calcEntrada').textContent = cop(entrada);
+    el('calcMonto').textContent = cop(monto);
+    el('calcIntereses').textContent = cop(cuota * n - monto);
+  };
+  [inicial, plazo, tasa].forEach(c => c.addEventListener('input', calcular));
+  calcular();
+}
+
+/* ─── Propiedades similares: misma ciudad y rango de precio parecido ───────── */
+async function cargarSimilares(p) {
+  try {
+    const res = await fetch('/api/propiedades/visibles');
+    if (!res.ok) return;
+    const todas = (await res.json()).filter(x => x.id !== p.id);
+    const puntaje = (x) => {
+      const dPrecio = Math.abs(x.precio - p.precio) / Math.max(p.precio, 1);
+      return (x.ciudad === p.ciudad ? 0 : 1) + dPrecio;      // menor es mejor
+    };
+    const similares = todas.sort((a, b) => puntaje(a) - puntaje(b)).slice(0, 3);
+    if (!similares.length || typeof renderizarPropiedades !== 'function') return;
+    renderizarPropiedades(similares, document.getElementById('similares-grid'));
+    document.getElementById('similares').hidden = false;
+  } catch { /* sin similares no pasa nada */ }
 }
