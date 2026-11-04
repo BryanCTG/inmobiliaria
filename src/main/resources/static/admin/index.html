@@ -70,7 +70,7 @@
           <div class="sidebar-user-role">Super Admin</div>
         </div>
       </div>
-      <form action="/logout" method="post">
+      <form action="/logout?destino=admin" method="post">
         <button type="submit" class="btn btn-danger btn-sm" style="width:100%;justify-content:center;">
           <i class="ph ph-sign-out"></i>
           Cerrar sesión
@@ -148,6 +148,13 @@
             <div class="stat-widget-label">Ocultas</div>
           </div>
         </div>
+        <a class="stat-widget" href="/admin/propiedades.html" title="Revisar propiedades de propietarios">
+          <div class="stat-widget-icon yellow"><i class="ph ph-hourglass-medium"></i></div>
+          <div class="stat-widget-info">
+            <div class="stat-widget-value" id="propiedadesRevision">—</div>
+            <div class="stat-widget-label">En revisión</div>
+          </div>
+        </a>
       </div>
 
       <!-- QUICK ACTIONS -->
@@ -217,13 +224,16 @@
         const propiedades = await resProp.json();
         const contactos   = await resContactos.json();
 
-        const visibles = propiedades.filter(p => p.visible);
-        const ocultas  = propiedades.filter(p => !p.visible);
+        const publicadas = propiedades.filter(p => p.estado === 'PUBLICADA' || !p.estado);
+        const visibles   = publicadas.filter(p => p.visible);
+        const ocultas    = publicadas.filter(p => !p.visible);
+        const enRevision = propiedades.filter(p => p.estado === 'PENDIENTE');
 
         document.getElementById('totalPropiedades').textContent    = propiedades.length;
         document.getElementById('propiedadesVisibles').textContent = visibles.length;
         document.getElementById('totalContactos').textContent      = contactos.length;
         document.getElementById('propiedadesOcultas').textContent  = ocultas.length;
+        document.getElementById('propiedadesRevision').textContent = enRevision.length;
 
         // Recent properties table
         const recientes = propiedades.slice(0, 5);

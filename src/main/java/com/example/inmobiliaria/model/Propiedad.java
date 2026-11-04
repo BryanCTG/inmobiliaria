@@ -50,6 +50,50 @@ public class Propiedad {
     private Double latitud;
     private Double longitud;
 
+    // ── Publicación por propietarios ─────────────────────────────────────────
+    // Las propiedades creadas por el admin (y las anteriores a esta función) son PUBLICADA.
+    // Las de propietarios nacen PENDIENTE y solo salen al público cuando el admin las aprueba.
+    public static final String PENDIENTE = "PENDIENTE";
+    public static final String PUBLICADA = "PUBLICADA";
+    public static final String RECHAZADA = "RECHAZADA";
+    public static final String RETIRADA = "RETIRADA";
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private String propietarioId;
+
+    private String estado = PUBLICADA;
+    private String motivoRechazo;
+    private java.time.Instant creado;
+
+    // Solo para el panel admin: se llenan al listar, no se guardan
+    @org.springframework.data.annotation.Transient
+    private String propietarioNombre;
+    @org.springframework.data.annotation.Transient
+    private String propietarioContacto;
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    public String getPropietarioId() { return propietarioId; }
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    public void setPropietarioId(String propietarioId) { this.propietarioId = propietarioId; }
+
+    public String getEstado() { return estado == null ? PUBLICADA : estado; }
+    public void setEstado(String estado) { this.estado = estado; }
+
+    public String getMotivoRechazo() { return motivoRechazo; }
+    public void setMotivoRechazo(String motivoRechazo) { this.motivoRechazo = motivoRechazo; }
+
+    public java.time.Instant getCreado() { return creado; }
+    public void setCreado(java.time.Instant creado) { this.creado = creado; }
+
+    public String getPropietarioNombre() { return propietarioNombre; }
+    public void setPropietarioNombre(String v) { this.propietarioNombre = v; }
+    public String getPropietarioContacto() { return propietarioContacto; }
+    public void setPropietarioContacto(String v) { this.propietarioContacto = v; }
+
+    /** Visible para el público: marcada como visible Y aprobada. */
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    public boolean isPublica() { return visible && PUBLICADA.equals(getEstado()); }
+
 
     // GETTERS Y SETTERS
 

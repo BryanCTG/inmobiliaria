@@ -61,7 +61,7 @@
           <div class="sidebar-user-role">Super Admin</div>
         </div>
       </div>
-      <form action="/logout" method="post">
+      <form action="/logout?destino=admin" method="post">
         <button type="submit" class="btn btn-danger btn-sm" style="width:100%;justify-content:center;">
           <i class="ph ph-sign-out"></i> Cerrar sesión
         </button>
@@ -114,6 +114,7 @@
               <option value="">Todas</option>
               <option value="visible">Publicadas</option>
               <option value="oculta">Ocultas</option>
+              <option value="revision">En revisión (propietarios)</option>
             </select>
           </div>
         </div>
@@ -143,6 +144,22 @@
   </div>
 
   <!-- Modal confirmar eliminación -->
+  <div id="modalRechazo" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:var(--white);border:1px solid var(--line-strong);border-radius:var(--radius-large);padding:32px;max-width:480px;width:100%;" role="dialog" aria-modal="true" aria-labelledby="tituloRechazo">
+      <h3 id="tituloRechazo" style="font-size:var(--fs-title-large);margin-bottom:8px;">Rechazar propiedad</h3>
+      <p style="color:var(--neutral-50);margin-bottom:16px;font-size:var(--fs-body-medium);">Cuéntale al propietario qué debe corregir. Verá este mensaje en su panel y podrá volver a enviarla.</p>
+      <div class="form-group">
+        <label class="form-label" for="motivoRechazo">Motivo</label>
+        <textarea id="motivoRechazo" class="form-control" rows="4" maxlength="500" placeholder="Ej: Las fotos no se ven bien. Sube imágenes más nítidas."></textarea>
+      </div>
+      <div id="errorRechazo" class="form-message"></div>
+      <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:16px;">
+        <button id="cancelarRechazo" class="btn btn-outline">Cancelar</button>
+        <button id="confirmarRechazo" class="btn btn-danger">Rechazar propiedad</button>
+      </div>
+    </div>
+  </div>
+
   <div id="modalEliminar" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;">
     <div style="background:var(--white);border-radius:var(--radius-large);padding:36px;max-width:440px;width:90%;box-shadow:var(--shadow-4);text-align:center;">
       <div style="width:64px;height:64px;background:rgba(232,138,130,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
@@ -194,6 +211,8 @@ async function cargarPropiedades() {
               <div>
                 <div class="table-property-name">${esc(p.titulo)}</div>
                 <div class="table-property-desc">${esc(p.descripcion || '–')}</div>
+                ${p.propietarioNombre ? `<div class="table-property-desc" style="color:var(--gold);max-width:none;">Propietario: ${esc(p.propietarioNombre)} · ${esc(p.propietarioContacto || '')}</div>` : ''}
+                ${p.estado === 'RECHAZADA' && p.motivoRechazo ? `<div class="table-property-desc" style="max-width:none;">Motivo: ${esc(p.motivoRechazo)}</div>` : ''}
               </div>
             </div>
           </td>
@@ -207,19 +226,27 @@ async function cargarPropiedades() {
             </div>
           </td>
           <td>
-            <span class="badge ${p.visible ? 'badge-green' : 'badge-gray'}">
-              <i class="ph ph-${p.visible ? 'eye' : 'eye-slash'}" style="font-size:1.4rem;"></i>
-              ${p.visible ? 'Publicada' : 'Oculta'}
-            </span>
+            ${p.estado === 'PENDIENTE' ? `<span class="badge badge-blue"><i class="ph ph-hourglass-medium" style="font-size:1.4rem;"></i> En revisión</span>`
+              : p.estado === 'RECHAZADA' ? `<span class="badge" style="background:var(--danger-soft);color:var(--danger);"><i class="ph ph-x-circle" style="font-size:1.4rem;"></i> Rechazada</span>`
+              : p.estado === 'RETIRADA' ? `<span class="badge badge-gray"><i class="ph ph-archive" style="font-size:1.4rem;"></i> Retirada</span>`
+              : `<span class="badge ${p.visible ? 'badge-green' : 'badge-gray'}">
+                  <i class="ph ph-${p.visible ? 'eye' : 'eye-slash'}" style="font-size:1.4rem;"></i>
+                  ${p.visible ? 'Publicada' : 'Oculta'}
+                </span>`}
           </td>
           <td>
             <div class="table-actions" style="justify-content:flex-end;">
+              ${p.estado === 'PENDIENTE' ? `
+              <button onclick="aprobar('${p.id}')" class="btn btn-fill btn-sm" title="Aprobar y publicar"><i class="ph ph-check" style="font-size:1.6rem;"></i> Aprobar</button>
+              <button onclick="abrirRechazo('${p.id}')" class="btn btn-danger btn-sm" title="Rechazar"><i class="ph ph-x" style="font-size:1.6rem;"></i> Rechazar</button>
+              <a href="/admin/actualizar.html?id=${p.id}" class="btn btn-outline btn-sm" title="Revisar y editar"><i class="ph ph-pencil-simple" style="font-size:1.6rem;"></i></a>`
+              : `
               <a href="/admin/actualizar.html?id=${p.id}" class="btn btn-outline btn-sm" title="Editar">
                 <i class="ph ph-pencil-simple" style="font-size:1.6rem;"></i>
               </a>
-              <button onclick="pedirToggle('${p.id}')" class="btn btn-sm ${p.visible ? 'btn-yellow' : 'btn-fill'}" title="${p.visible ? 'Ocultar' : 'Publicar'}">
+              ${p.estado === 'PUBLICADA' ? `<button onclick="pedirToggle('${p.id}')" class="btn btn-sm ${p.visible ? 'btn-yellow' : 'btn-fill'}" title="${p.visible ? 'Ocultar' : 'Publicar'}">
                 <i class="ph ph-${p.visible ? 'eye-slash' : 'eye'}" style="font-size:1.6rem;"></i>
-              </button>
+              </button>` : ''}`}
               <button onclick="pedirEliminar('${p.id}')" class="btn btn-danger btn-sm" title="Eliminar">
                 <i class="ph ph-trash" style="font-size:1.6rem;"></i>
               </button>
@@ -235,12 +262,60 @@ async function cargarPropiedades() {
       const vis = document.getElementById('filtroVisibilidad').value;
       let lista = todasLasPropiedades;
       if (q)   lista = lista.filter(p => p.titulo.toLowerCase().includes(q) || (p.descripcion||'').toLowerCase().includes(q));
-      if (vis === 'visible') lista = lista.filter(p => p.visible);
-      if (vis === 'oculta')  lista = lista.filter(p => !p.visible);
+      if (vis === 'visible') lista = lista.filter(p => p.visible && (p.estado === 'PUBLICADA' || !p.estado));
+      if (vis === 'oculta')  lista = lista.filter(p => !p.visible && (p.estado === 'PUBLICADA' || !p.estado));
+      if (vis === 'revision') lista = lista.filter(p => p.estado === 'PENDIENTE');
       renderizarTabla(lista);
     }
     document.getElementById('searchInput').addEventListener('input', filtrar);
     document.getElementById('filtroVisibilidad').addEventListener('change', filtrar);
+
+    // Revisión de propiedades enviadas por propietarios
+    let idARechazar = null;
+    async function aprobar(id) {
+      try {
+        const res = await fetch(`/api/propiedades/${id}/estado`, {
+          method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ estado: 'PUBLICADA' })
+        });
+        if (!res.ok) throw new Error();
+        await cargarPropiedades();
+      } catch {
+        const aviso = document.getElementById('conteo-propiedades');
+        aviso.textContent = 'No se pudo aprobar la propiedad. Inténtalo de nuevo.';
+        aviso.style.color = 'var(--danger)';
+        setTimeout(() => { aviso.style.color = ''; cargarPropiedades(); }, 3500);
+      }
+    }
+    function abrirRechazo(id) {
+      idARechazar = id;
+      document.getElementById('motivoRechazo').value = '';
+      document.getElementById('errorRechazo').className = 'form-message';
+      document.getElementById('modalRechazo').style.display = 'flex';
+      document.getElementById('motivoRechazo').focus();
+    }
+    document.getElementById('cancelarRechazo').addEventListener('click', () => {
+      document.getElementById('modalRechazo').style.display = 'none';
+    });
+    document.getElementById('confirmarRechazo').addEventListener('click', async () => {
+      const motivo = document.getElementById('motivoRechazo').value.trim();
+      const error = document.getElementById('errorRechazo');
+      if (motivo.length < 5) {
+        error.textContent = 'Escribe un motivo de al menos 5 caracteres.';
+        error.className = 'form-message error';
+        return;
+      }
+      const res = await fetch(`/api/propiedades/${idARechazar}/estado`, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ estado: 'RECHAZADA', motivo })
+      });
+      if (!res.ok) {
+        const c = await res.json().catch(() => ({}));
+        error.textContent = c.mensaje || 'No se pudo rechazar la propiedad.';
+        error.className = 'form-message error';
+        return;
+      }
+      document.getElementById('modalRechazo').style.display = 'none';
+      await cargarPropiedades();
+    });
 
     // Toggle visibility
     async function pedirToggle(id) {

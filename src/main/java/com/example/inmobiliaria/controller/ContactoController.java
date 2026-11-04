@@ -18,6 +18,7 @@ import com.example.inmobiliaria.model.Contacto;
 import com.example.inmobiliaria.model.Propiedad;
 import com.example.inmobiliaria.repository.ContactoRepository;
 import com.example.inmobiliaria.repository.PropiedadRepository;
+import com.example.inmobiliaria.repository.UsuarioRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -36,6 +37,7 @@ public class ContactoController {
     private final PropiedadRepository propiedadRepository;
     private final NotificacionService notificaciones;
     private final RateLimitService limite;
+    private final UsuarioRepository usuarios;
 
     @Value("${app.ratelimit.contacto.max:10}")
     private int maxPorVentana;
@@ -44,16 +46,19 @@ public class ContactoController {
     private long ventanaSegundos;
 
     public ContactoController(ContactoRepository contactoRepository, PropiedadRepository propiedadRepository,
-                              NotificacionService notificaciones, RateLimitService limite) {
+                              NotificacionService notificaciones, RateLimitService limite,
+                              UsuarioRepository usuarios) {
         this.contactoRepository = contactoRepository;
         this.propiedadRepository = propiedadRepository;
         this.notificaciones = notificaciones;
         this.limite = limite;
+        this.usuarios = usuarios;
     }
 
     // Guardar contacto (público)
     @PostMapping
-    public Contacto guardarContacto(@Valid @RequestBody Contacto contacto, HttpServletRequest request) {
+    public Contacto guardarContacto(@Valid @RequestBody Contacto contacto, HttpServletRequest request,
+                                    org.springframework.security.core.Authentication auth) {
         if (!limite.permitir("contacto:" + request.getRemoteAddr(), maxPorVentana, ventanaSegundos)) {
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
                     "Enviaste varios mensajes seguidos. Espera unos minutos antes de escribir de nuevo.");
@@ -62,6 +67,11 @@ public class ContactoController {
         contacto.setId(null);                       // El ID lo genera la base de datos, nunca el cliente
         contacto.setAtendido(false);                // Siempre inicia como pendiente
         contacto.setUsuarioId(null);                // Se asigna solo desde la sesión, nunca desde el cuerpo
+        if (auth != null && !(auth instanceof org.springframework.security.authentication.AnonymousAuthenticationToken)) {
+            usuarios.findByUsername(auth.getName())
+                    .filter(u -> !"ADMIN".equals(u.getRol()))
+                    .ifPresent(u -> contacto.setUsuarioId(u.getId()));
+        }
         contacto.setCreado(Instant.now());
 
         Propiedad propiedad = null;
@@ -82,7 +92,7 @@ public class ContactoController {
             c.setHoraVisita(null);
             return;
         }
-        if (propiedad == null || !propiedad.isVisible()) {
+        if (propiedad == null || !propiedad.isPublica()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Para agendar una visita elige una propiedad disponible.");
         }
         LocalDate hoy = LocalDate.now(BOGOTA);
