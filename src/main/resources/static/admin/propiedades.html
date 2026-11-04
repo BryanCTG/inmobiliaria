@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Propiedades | Admin Bienes Raíces</title>
+  <title>Propiedades | Admin Belar Inmobiliaria</title>
   <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -160,6 +160,7 @@
     </div>
   </div>
 
+  <script src="/js/utils.js"></script>
   <script src="/js/admin-layout.js"></script>
   <script>
     let todasLasPropiedades = [];
@@ -167,7 +168,7 @@
 
 async function cargarPropiedades() {
   try {
-    const res = await fetch('http://localhost:8080/api/propiedades');
+    const res = await fetch('/api/propiedades');
     if (!res.ok) throw new Error('Error al obtener propiedades');
     todasLasPropiedades = await res.json();
     todasLasPropiedades.reverse(); // más reciente primero
@@ -188,11 +189,11 @@ async function cargarPropiedades() {
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:14px;">
-              <img src="${(p.imagenes && p.imagenes.length > 0) ? p.imagenes[0] : '/img/default.jpg'}"
-                   alt="${p.titulo}" class="table-img">
+              <img src="${(p.imagenes && p.imagenes.length > 0) ? p.imagenes[0] : '/img/default.svg'}"
+                   alt="${esc(p.titulo)}" class="table-img">
               <div>
-                <div class="table-property-name">${p.titulo}</div>
-                <div class="table-property-desc">${p.descripcion || '–'}</div>
+                <div class="table-property-name">${esc(p.titulo)}</div>
+                <div class="table-property-desc">${esc(p.descripcion || '–')}</div>
               </div>
             </div>
           </td>
@@ -201,7 +202,6 @@ async function cargarPropiedades() {
             <div style="display:flex;gap:14px;align-items:center;font-size:var(--fs-label-medium);color:var(--neutral-50);">
               <span style="display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">bed</span>${p.habitaciones}</span>
               <span style="display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">bathroom</span>${p.wc}</span>
-              <span style="display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">directions_car</span>${p.estacionamiento}</span>
               <span style="display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">directions_car</span>${p.estacionamiento}</span>
               <span style="display:flex;align-items:center;gap:4px;"><span class="material-symbols-rounded" style="font-size:1.8rem;color:var(--primary-100);">square_foot</span>${p.metrosCuadrados}</span>
             </div>
@@ -245,7 +245,7 @@ async function cargarPropiedades() {
     // Toggle visibility
     async function pedirToggle(id) {
       try {
-        const res = await fetch(`http://localhost:8080/api/propiedades/${id}/visibilidad`, { method: 'PATCH' });
+        const res = await fetch(`/api/propiedades/${id}/visibilidad`, { method: 'PATCH' });
         if (!res.ok) throw new Error();
         await cargarPropiedades();
       } catch { alert('Error al cambiar visibilidad'); }
@@ -263,7 +263,7 @@ async function cargarPropiedades() {
     document.getElementById('confirmarEliminar').addEventListener('click', async () => {
       if (!idAEliminar) return;
       try {
-        const res = await fetch(`http://localhost:8080/api/propiedades/${idAEliminar}`, { method: 'DELETE' });
+        const res = await fetch(`/api/propiedades/${idAEliminar}`, { method: 'DELETE' });
         if (!res.ok) throw new Error();
         document.getElementById('modalEliminar').style.display = 'none';
         idAEliminar = null;

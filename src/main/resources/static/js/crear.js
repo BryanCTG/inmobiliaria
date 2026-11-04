@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     archivos.forEach((file) => formData.append('imagenes', file));
 
     try {
-      const response = await fetch('http://localhost:8080/api/propiedades', {
+      const response = await fetch('/api/propiedades', {
         method: 'POST',
         body: formData
       });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Admin Bienes Raíces</title>
+  <title>Dashboard | Admin Belar Inmobiliaria</title>
   <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -206,6 +206,7 @@
     </div><!-- /admin-content -->
   </div><!-- /admin-main -->
 
+  <script src="/js/utils.js"></script>
   <script src="/js/admin-layout.js"></script>
   <script src="/js/admin.js"></script>
   <script>
@@ -213,8 +214,8 @@
     async function cargarDashboard() {
       try {
         const [resProp, resContactos] = await Promise.all([
-          fetch('http://localhost:8080/api/propiedades'),
-          fetch('http://localhost:8080/api/contacto')
+          fetch('/api/propiedades'),
+          fetch('/api/contacto')
         ]);
         const propiedades = await resProp.json();
         const contactos   = await resContactos.json();
@@ -238,11 +239,11 @@
           <tr>
             <td>
               <div style="display:flex;align-items:center;gap:12px;">
-                <img src="${p.imagenId ? `http://localhost:8080/api/imagenes/${p.imagenId}` : '/img/default.jpg'}" 
-                     alt="${p.titulo}" class="table-img">
+                <img src="${(p.imagenes && p.imagenes.length > 0) ? p.imagenes[0] : '/img/default.svg'}"
+                     alt="${esc(p.titulo)}" class="table-img" onerror="this.onerror=null;this.src='/img/default.svg'">
                 <div>
-                  <div class="table-property-name">${p.titulo}</div>
-                  <div class="table-property-desc">${p.descripcion || ''}</div>
+                  <div class="table-property-name">${esc(p.titulo)}</div>
+                  <div class="table-property-desc">${esc(p.descripcion || '')}</div>
                 </div>
               </div>
             </td>

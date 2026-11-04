@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:8080/api/propiedades/${id}`);
+    const res = await fetch(`/api/propiedades/${id}`);
     if (!res.ok) throw new Error('No encontrado');
     const p = await res.json();
 
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (preview && Array.isArray(p.imagenes) && p.imagenes.length > 0) {
       preview.src = p.imagenes[0];
     } else if (preview) {
-      preview.src = '/img/default.jpg';
+      preview.src = '/img/default.svg';
     }
 
     if (cargando) cargando.style.display = 'none';
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     archivos.forEach((file) => formData.append('imagenes', file));
 
     try {
-      const res = await fetch(`http://localhost:8080/api/propiedades/${id}`, {
+      const res = await fetch(`/api/propiedades/${id}`, {
         method: 'PUT',
         body: formData
       });

@@ -265,6 +265,7 @@
     </div>
   </div>
 
+  <script src="/js/utils.js"></script>
   <script src="/js/admin-layout.js"></script>
   <script>
     // ═══════════════════════════════════════════════════════════
@@ -282,8 +283,8 @@
     async function cargarContactos() {
       try {
         const [resC, resP] = await Promise.all([
-          fetch('http://localhost:8080/api/contacto'),
-          fetch('http://localhost:8080/api/propiedades')
+          fetch('/api/contacto'),
+          fetch('/api/propiedades')
         ]);
         todosContactos = await resC.json();
         const propiedades = await resP.json();
@@ -477,7 +478,7 @@
                 ${iniciales}
               </div>
               <div style="flex:1;">
-                <div class="contact-card-name">${c.nombre}</div>
+                <div class="contact-card-name">${esc(c.nombre)}</div>
                 <div class="contact-card-date" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:4px;">
                   <span class="badge badge-blue" style="display:inline-flex;align-items:center;gap:4px;">
                     <span class="material-symbols-rounded" style="font-size:1.4rem;">${iconoMedio}</span>
@@ -495,18 +496,18 @@
             <div class="contact-card-body">
               <div class="contact-card-row">
                 <span class="material-symbols-rounded">mail</span>
-                <span>${c.correo}</span>
+                <span>${esc(c.correo)}</span>
               </div>
               ${c.celular ? `
               <div class="contact-card-row">
                 <span class="material-symbols-rounded">phone</span>
-                <span>${c.celular}</span>
+                <span>${esc(c.celular)}</span>
               </div>` : ''}
               <div class="contact-card-row">
                 <span class="material-symbols-rounded">home</span>
                 <span>${nombrePropiedad}</span>
               </div>
-              ${c.mensaje ? `<div class="contact-card-message">"${c.mensaje}"</div>` : ''}
+              ${c.mensaje ? `<div class="contact-card-message">"${esc(c.mensaje)}"</div>` : ''}
             </div>
 
             <div style="display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--neutral-95);">
@@ -533,7 +534,7 @@
     // ═══════════════════════════════════════════════════════════
     async function toggleAtendido(id) {
       try {
-        const res = await fetch(`http://localhost:8080/api/contacto/${id}/atendido`, { method: 'PATCH' });
+        const res = await fetch(`/api/contacto/${id}/atendido`, { method: 'PATCH' });
         if (!res.ok) throw new Error();
         const idx = todosContactos.findIndex(c => c.id === id);
         if (idx !== -1) todosContactos[idx].atendido = !todosContactos[idx].atendido;
@@ -547,7 +548,7 @@
     async function eliminarContacto(id) {
       if (!confirm('¿Seguro que deseas eliminar este mensaje? Esta acción no se puede deshacer.')) return;
       try {
-        const res = await fetch(`http://localhost:8080/api/contacto/${id}`, { method: 'DELETE' });
+        const res = await fetch(`/api/contacto/${id}`, { method: 'DELETE' });
         if (!res.ok) throw new Error();
         todosContactos = todosContactos.filter(c => c.id !== id);
         listaFiltrada  = listaFiltrada.filter(c => c.id !== id);

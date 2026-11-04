@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nueva Propiedad | Admin Bienes Raíces</title>
+  <title>Nueva Propiedad | Admin Belar Inmobiliaria</title>
   <link rel="shortcut icon" href="/img/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -405,7 +405,7 @@
       document.getElementById('resultadoPrediccion').style.display = 'none';
 
       try {
-        const res = await fetch('http://localhost:8080/api/prediccion/precio', {
+        const res = await fetch('/api/prediccion/precio', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
