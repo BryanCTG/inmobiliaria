@@ -6,10 +6,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+
+import jakarta.validation.Valid;
 
 import com.example.inmobiliaria.model.Propiedad;
 import com.example.inmobiliaria.repository.PropiedadRepository;
@@ -30,46 +36,40 @@ public class PropiedadRestController {
     }
 
     @GetMapping("/{id}")
-    public Propiedad obtenerPorId(@PathVariable String id) {
-        return repo.findById(id).orElse(null);
+    public Propiedad obtenerPorId(@PathVariable String id, Authentication auth) {
+        Propiedad p = repo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Propiedad no encontrada"));
+
+        // Las propiedades ocultas solo las puede ver un administrador
+        boolean esAdmin = auth != null && auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!p.isVisible() && !esAdmin) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Propiedad no encontrada");
+        }
+        return p;
     }
 
     @PostMapping(consumes = {"multipart/form-data"})
     public Propiedad crear(
-            @RequestPart("propiedad") Propiedad propiedad,
+            @Valid @RequestPart("propiedad") Propiedad propiedad,
             @RequestPart(value = "imagenes", required = false) MultipartFile[] imagenes,
             @RequestPart(value = "imagen", required = false) MultipartFile imagen
     ) throws IOException {
 
-        List<String> rutas = new ArrayList<>();
-        MultipartFile[] archivos = normalizarImagenes(imagenes, imagen);
-
-        if (archivos != null) {
-            asegurarCarpetaUploads();
-            for (MultipartFile imagen1 : archivos) {
-                if (!imagen1.isEmpty()) {
-                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen1.getOriginalFilename();
-                    Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
-                    Files.write(rutaArchivo, imagen1.getBytes());
-                    rutas.add("/uploads/" + nombreArchivo);
-                }
-            }
-        }
-
-        propiedad.setImagenes(rutas);
+        propiedad.setImagenes(guardarImagenes(normalizarImagenes(imagenes, imagen)));
         return repo.save(propiedad);
     }
 
     @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
     public Propiedad actualizar(
             @PathVariable String id,
-            @RequestPart("propiedad") Propiedad nueva,
+            @Valid @RequestPart("propiedad") Propiedad nueva,
             @RequestPart(value = "imagenes", required = false) MultipartFile[] imagenes,
             @RequestPart(value = "imagen", required = false) MultipartFile imagen
     ) throws IOException {
 
-        Propiedad existente = repo.findById(id).orElse(null);
-        if (existente == null) return null;
+        Propiedad existente = repo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Propiedad no encontrada"));
 
         existente.setTitulo(nueva.getTitulo());
         existente.setDescripcion(nueva.getDescripcion());
@@ -88,17 +88,7 @@ public class PropiedadRestController {
 
         MultipartFile[] archivos = normalizarImagenes(imagenes, imagen);
         if (archivos != null && archivos.length > 0) {
-            asegurarCarpetaUploads();
-            List<String> rutas = new ArrayList<>();
-            for (MultipartFile imagen1 : archivos) {
-                if (!imagen1.isEmpty()) {
-                    String nombreArchivo = System.currentTimeMillis() + "_" + imagen1.getOriginalFilename();
-                    Path rutaArchivo = Paths.get(UPLOAD_DIR + nombreArchivo);
-                    Files.write(rutaArchivo, imagen1.getBytes());
-                    rutas.add("/uploads/" + nombreArchivo);
-                }
-            }
-            existente.setImagenes(rutas);
+            existente.setImagenes(guardarImagenes(archivos));
         }
 
         return repo.save(existente);
@@ -110,8 +100,35 @@ public class PropiedadRestController {
         return null;
     }
 
-    private void asegurarCarpetaUploads() throws IOException {
+    /**
+     * Guarda las imágenes en /uploads con un nombre seguro (UUID + extensión validada).
+     * Rechaza archivos que no sean imágenes y nunca usa el nombre original del cliente como ruta.
+     */
+    private List<String> guardarImagenes(MultipartFile[] archivos) throws IOException {
+        List<String> rutas = new ArrayList<>();
+        if (archivos == null) return rutas;
+
         Files.createDirectories(Paths.get(UPLOAD_DIR));
+        for (MultipartFile archivo : archivos) {
+            if (archivo.isEmpty()) continue;
+
+            String tipo = archivo.getContentType();
+            if (tipo == null || !tipo.startsWith("image/")) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Solo se permiten imágenes");
+            }
+
+            String original = archivo.getOriginalFilename() == null ? "" : archivo.getOriginalFilename();
+            int punto = original.lastIndexOf('.');
+            String extension = punto >= 0 ? original.substring(punto).toLowerCase() : "";
+            if (!extension.matches("\\.(jpg|jpeg|png|webp|gif)")) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Formato de imagen no permitido");
+            }
+
+            String nombreArchivo = UUID.randomUUID() + extension;
+            Files.write(Paths.get(UPLOAD_DIR + nombreArchivo), archivo.getBytes());
+            rutas.add("/uploads/" + nombreArchivo);
+        }
+        return rutas;
     }
 
     @DeleteMapping("/{id}")

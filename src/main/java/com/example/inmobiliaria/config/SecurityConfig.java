@@ -2,6 +2,8 @@ package com.example.inmobiliaria.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -10,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -28,44 +32,43 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
-                // Login ADMIN (PÚBLICO)
-                .requestMatchers(
-                    "/admin/login.html",
-                    "/css/**",
-                    "/js/**",
-                    "/img/**"
-                    
-                ).permitAll()
+                // Recursos estáticos e imágenes subidas
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/uploads/**", "/error").permitAll()
 
                 // Páginas públicas
                 .requestMatchers(
-                     "/",
+                    "/",
                     "/index.html",
                     "/nosotros.html",
-                   "/anuncio.html",
-                     "/anuncios.html",
-                     "/blog.html",
-                     "/contacto.html",
-                     "/propiedad.html",
-                     "/css/**",
-                     "/js/**",
-                     "/img/**",
-                     "/admin/login",
-                    "/admin/login.html",
-                    "/api/prediccion/**"
-                 ).permitAll()
+                    "/anuncio.html",
+                    "/contacto.html",
+                    "/propiedad.html",
+                    "/admin/login.html"
+                ).permitAll()
 
-            
-                    
+                // API pública: solo lectura de propiedades publicadas y envío de contacto
+                .requestMatchers(HttpMethod.GET, "/api/propiedades/visibles").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/propiedades/{id}").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/contacto").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/imagenes/{id}").permitAll()
 
-                // Admin protegido
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                // Todo lo demás de la API y del panel: solo ADMIN
+                .requestMatchers("/api/**", "/admin/**").hasRole("ADMIN")
 
-                .anyRequest().authenticated()
+                // Cualquier otra ruta (por ejemplo una URL mal escrita) llega al 404 normal.
+                // Lo sensible (/api/** y /admin/**) ya quedó protegido arriba.
+                .anyRequest().permitAll()
+            )
+
+            // Las llamadas a la API sin sesión responden 401 (en vez de redirigir al HTML de login)
+            .exceptionHandling(ex -> ex
+                .defaultAuthenticationEntryPointFor(
+                    new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                    new AntPathRequestMatcher("/api/**"))
             )
 
             .formLogin(form -> form
-                .loginPage("/admin/login.html")    
+                .loginPage("/admin/login.html")
                 .loginProcessingUrl("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")

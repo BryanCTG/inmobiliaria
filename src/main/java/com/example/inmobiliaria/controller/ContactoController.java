@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import com.example.inmobiliaria.model.Contacto;
 import com.example.inmobiliaria.repository.ContactoRepository;
 
@@ -20,7 +22,8 @@ public class ContactoController {
 
     // Guardar contacto (público)
     @PostMapping
-    public Contacto guardarContacto(@RequestBody Contacto contacto) {
+    public Contacto guardarContacto(@Valid @RequestBody Contacto contacto) {
+        contacto.setId(null);        // El ID lo genera la base de datos, nunca el cliente
         contacto.setAtendido(false); // Siempre inicia como pendiente
         return contactoRepository.save(contacto);
     }

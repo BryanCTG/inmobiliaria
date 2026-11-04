@@ -5,18 +5,37 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
 @Document(collection = "propiedades")
 public class Propiedad {
 
     @Id
     private String id;
 
+    @NotBlank(message = "El título es obligatorio")
+    @Size(max = 150, message = "El título no puede superar 150 caracteres")
     private String titulo;
+
+    @Size(max = 3000, message = "La descripción no puede superar 3000 caracteres")
     private String descripcion;
+
+    @Positive(message = "El precio debe ser mayor que cero")
     private double precio;
+
+    @PositiveOrZero(message = "Las habitaciones no pueden ser negativas")
     private int habitaciones;
+
+    @PositiveOrZero(message = "Los baños no pueden ser negativos")
     private int wc;
+
+    @PositiveOrZero(message = "Los parqueaderos no pueden ser negativos")
     private int estacionamiento;
+
+    @PositiveOrZero(message = "Los metros cuadrados no pueden ser negativos")
     private double metrosCuadrados;
 
     private boolean visible = true;
