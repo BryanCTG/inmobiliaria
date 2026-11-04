@@ -1,0 +1,16 @@
+{
+  "name": "belar-inmobiliaria-tests",
+  "private": true,
+  "description": "Pruebas de extremo a extremo (navegador real) y de API de Belar Inmobiliaria",
+  "scripts": {
+    "publico": "node publico.js",
+    "admin": "node admin.js",
+    "funciones": "node funciones.js",
+    "valoracion-visitas": "node valoracion-visitas.js",
+    "cuentas-ui": "node cuentas-ui.js",
+    "cuentas-api": "python cuentas-api.py"
+  },
+  "dependencies": {
+    "puppeteer-core": "^25.0.0"
+  }
+}
